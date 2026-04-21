@@ -1,0 +1,50 @@
+---
+title: "MadaKapPy: A tool for in situ biomass estimation of kappaphycus cultures"
+shorttitle: MadaKapPy
+author:
+  - name: Simon Oiry
+    orcid: 0000-0001-7161-5246
+    corresponding: true
+    email: oirysimon@gmail.com
+    roles:
+      - Investigation
+      - Writing
+      - Data acquisition
+    affiliations:
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
+      - Consiglio Nazionale delle Ricerche, Istituto di Scienze Marine (CNR-ISMAR), 34149 Trieste, Italy
+  - name: Laurent Barillé
+    orcid: 0000-0001-5138-2684
+    corresponding: false
+    roles: 
+      - Investigation
+      - Data acquisition
+      - Revision
+    affiliations:
+      - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
+  - name: Sebastien Jan
+    corresponding: false
+    roles: 
+      - Investigation
+      - Data acquisition
+      - Revision
+    affiliations:
+      - Nosy Boraha  Seaweed, Sainte-Marie, Madagascar
+keywords:
+  - To be Written
+abstract:
+  "To be Written"
+plain-language-summary: |
+  To be written
+key-points:
+date: last-modified
+citation:
+  container-title: Remote Sensing of Environment
+number-sections: true
+notebook-links: false
+editor_options: 
+  chunk_output_type: console
+csl: RSE.csl
+---
+
+
