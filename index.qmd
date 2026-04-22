@@ -13,6 +13,38 @@ author:
     affiliations:
       - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
       - Consiglio Nazionale delle Ricerche, Istituto di Scienze Marine (CNR-ISMAR), 34149 Trieste, Italy
+  - name: Sébastien Jan
+    corresponding: false
+    roles: 
+      - Investigation
+      - Data acquisition
+      - Revision
+    affiliations:
+      - Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
+  - name: Manon Museux
+    corresponding: false
+    roles: 
+      - Investigation
+      - Data acquisition
+      - Revision
+    affiliations:
+      - Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
+  - name: Ravo A. Mahandrisoa Randriamaroson 
+    corresponding: false
+    roles: 
+      - Investigation
+      - Data acquisition
+      - Revision
+    affiliations:
+      - Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
+  - name: Anthony 
+    corresponding: false
+    roles: 
+      - Investigation
+      - Data acquisition
+      - Revision
+    affiliations:
+      - Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
   - name: Laurent Barillé
     orcid: 0000-0001-5138-2684
     corresponding: false
@@ -22,14 +54,7 @@ author:
       - Revision
     affiliations:
       - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
-  - name: Sebastien Jan
-    corresponding: false
-    roles: 
-      - Investigation
-      - Data acquisition
-      - Revision
-    affiliations:
-      - Nosy Boraha  Seaweed, Sainte-Marie, Madagascar
+
 keywords:
   - To be Written
 abstract:
@@ -45,6 +70,428 @@ notebook-links: false
 editor_options: 
   chunk_output_type: console
 csl: RSE.csl
+engine: knitr
 ---
 
 
+# Introduction
+
+# Materiel & Methods
+## Study site
+
+```{r lagoon volume}
+#| eval: true
+#| echo: false
+#| warning: false
+#| message: false
+
+library(terra)
+library(tidyverse)
+
+mask <- vect("Data/shp/mask_entire_lagoon_32739.shp")
+
+total_volume <- rast("Data/Depth/Depth_S2_20250802.tif")%>%
+  mask(mask)%>%
+  as_tibble(xy=FALSE)%>%
+  rename(depth="Depth_S2_20250802")%>%
+  mutate(volume = depth * 10 * 10)%>%
+  pull(volume)%>%
+  sum()
+
+```
+
+Sainte Marie (also called Nosy Boraha) is a small island located off the east coast of Madagascar, in the Indian Ocean (@fig-study-area-map). Next to the village of Ankobahoba, in the estern part of the island, the study area is situated within a narrow (15km long x 1.5 km wide) and very shallow lagoon (Water depths are generally <1–5 m at low tide), enclosed by a barrier reef and connected to the open ocean through reef passes. The total volume of water in the lagoon is roughly `r round(total_volume / 1e6 ,1)` millions of cubic meters. The dominant substrates consist of sand and coral rubble, associated with seagrass meadows, macroalgal beds, and patch reefs, which become more frequent toward the reef front. Aquaculture represents a major and growing use of the eastern lagoon of Sainte‑Marie Island, where seaweed farming is now a central component of coastal livelihoods. The activity is dominated by the cultivation of *Kappaphycus alvarezii* (“cottonii”), primarily in the northern part of the lagoon, using off-bottom longline techniques adapted to very shallow waters. 
+
+```{python}
+#| label: make-study-area-map
+#| eval: false
+#| echo: false
+#| warning: false
+#| message: false
+#| python.reticulate: false
+
+from pathlib import Path
+
+import contextily as cx
+import geopandas as gpd
+import numpy as np
+import matplotlib.patches as mpatches
+import matplotlib.patheffects as pe
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+import rasterio
+from rasterio.mask import mask as raster_mask
+from rasterio.transform import array_bounds
+from matplotlib.gridspec import GridSpec
+from scipy.ndimage import gaussian_filter
+from shapely.geometry import box
+
+PROJECT_ROOT = Path.cwd()
+STUDY_AREA_CANDIDATES = [
+    PROJECT_ROOT / "Data" / "mask_northernmost_lagoon.shp",
+    PROJECT_ROOT / "Data" / "shp" / "mask_northernmost_lagoon_32739.shp",
+]
+STUDY_AREA = next((path for path in STUDY_AREA_CANDIDATES if path.exists()), None)
+if STUDY_AREA is None:
+    raise FileNotFoundError(
+        "Study-area shapefile not found. Checked: "
+        + ", ".join(str(path) for path in STUDY_AREA_CANDIDATES)
+    )
+
+CADASTER = PROJECT_ROOT / "Data" / "shp" / "Cadaster_NBS_Dec2025.shp"
+if not CADASTER.exists():
+    raise FileNotFoundError(f"Culture-plot cadaster not found: {CADASTER}")
+
+DEPTH_CANDIDATES = [
+    path
+    for folder in (PROJECT_ROOT / "Data" / "depth", PROJECT_ROOT / "Data" / "Depth")
+    for path in sorted(folder.glob("*.tif"))
+]
+DEPTH_RASTER = next(iter(DEPTH_CANDIDATES), None)
+if DEPTH_RASTER is None:
+    raise FileNotFoundError("No depth raster found in Data/depth or Data/Depth")
+
+PICTURE_DIR = PROJECT_ROOT / "Data" / "Pictures"
+PICTURE_PATTERNS = ("*.jpg", "*.jpeg", "*.JPG", "*.JPEG", "*.png", "*.PNG")
+PICTURE_CANDIDATES = [
+    path
+    for pattern in PICTURE_PATTERNS
+    for path in sorted(PICTURE_DIR.glob(pattern))
+]
+PICTURE_FILE = next(iter(PICTURE_CANDIDATES), None)
+if PICTURE_FILE is None:
+    raise FileNotFoundError(f"No picture found in {PICTURE_DIR}")
+
+FIGURE_DIR = PROJECT_ROOT / "Figures"
+FIGURE_DIR.mkdir(exist_ok=True)
+OUT_FILE = FIGURE_DIR / "study_area.png"
+
+REFERENCE_TILE_SOURCE = cx.providers.CartoDB.VoyagerNoLabels
+SATELLITE_TILE_SOURCE = cx.providers.Esri.WorldImagery
+DEPTH_SMOOTHING_SIGMA_PIXELS = 1.4
+
+
+def bbox_wgs84_to_web_mercator(lon_min, lat_min, lon_max, lat_max):
+    bbox = gpd.GeoDataFrame(
+        geometry=[box(lon_min, lat_min, lon_max, lat_max)],
+        crs="EPSG:4326",
+    )
+    return bbox.to_crs("EPSG:3857").total_bounds
+
+
+def square_bounds(bounds, pad_fraction=0.12, min_size=None):
+    xmin, ymin, xmax, ymax = bounds
+    width = xmax - xmin
+    height = ymax - ymin
+    size = max(width, height) * (1 + 2 * pad_fraction)
+    if min_size is not None:
+        size = max(size, min_size)
+    xmid = (xmin + xmax) / 2
+    ymid = (ymin + ymax) / 2
+    return [xmid - size / 2, ymid - size / 2, xmid + size / 2, ymid + size / 2]
+
+
+def add_basemap(ax, extent, zoom, source, crs="EPSG:3857"):
+    ax.set_xlim(extent[0], extent[2])
+    ax.set_ylim(extent[1], extent[3])
+    cx.add_basemap(
+        ax,
+        source=source,
+        crs=crs,
+        zoom=zoom,
+        attribution=False,
+        reset_extent=False,
+    )
+    ax.set_axis_off()
+
+
+def add_red_box(ax, bounds, linewidth=2.2):
+    xmin, ymin, xmax, ymax = bounds
+    ax.add_patch(
+        mpatches.Rectangle(
+            (xmin, ymin),
+            xmax - xmin,
+            ymax - ymin,
+            fill=False,
+            edgecolor="#e31a1c",
+            linewidth=linewidth,
+            zorder=8,
+        )
+    )
+
+
+def add_panel_label(ax, label, fontsize=13):
+    ax.text(
+        0.035,
+        0.955,
+        label,
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=fontsize,
+        fontweight="bold",
+        color="white",
+        bbox={"boxstyle": "square,pad=0.25", "facecolor": "black", "alpha": 0.72, "edgecolor": "none"},
+        zorder=10,
+    )
+
+
+def add_panel_border(ax, color="#222222", linewidth=0.7):
+    ax.add_patch(
+        mpatches.Rectangle(
+            (0, 0),
+            1,
+            1,
+            transform=ax.transAxes,
+            fill=False,
+            edgecolor=color,
+            linewidth=linewidth,
+            zorder=30,
+        )
+    )
+
+
+def add_scale_bar(
+    ax,
+    length_m,
+    label,
+    x_fraction=0.58,
+    y_fraction=0.06,
+    fontsize=7,
+):
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    xspan = xlim[1] - xlim[0]
+    yspan = ylim[1] - ylim[0]
+    x0 = xlim[0] + x_fraction * xspan
+    y0 = ylim[0] + y_fraction * yspan
+    x1 = x0 + length_m
+    outline = [pe.Stroke(linewidth=4, foreground="black"), pe.Normal()]
+
+    ax.plot(
+        [x0, x1],
+        [y0, y0],
+        color="white",
+        linewidth=2.4,
+        solid_capstyle="butt",
+        path_effects=outline,
+        zorder=10,
+    )
+    ax.text(
+        (x0 + x1) / 2,
+        y0 + yspan * 0.025,
+        label,
+        ha="center",
+        va="bottom",
+        fontsize=fontsize,
+        color="white",
+        path_effects=[pe.Stroke(linewidth=2.0, foreground="black"), pe.Normal()],
+        zorder=10,
+    )
+
+
+def center_crop_square(image):
+    height, width = image.shape[:2]
+    side = min(height, width)
+    y0 = (height - side) // 2
+    x0 = (width - side) // 2
+    return image[y0 : y0 + side, x0 : x0 + side]
+
+
+def add_photo(ax, path):
+    image = center_crop_square(plt.imread(path))
+    ax.imshow(image)
+    ax.set_axis_off()
+
+
+def load_masked_depth(raster_path, mask_gdf):
+    with rasterio.open(raster_path) as src:
+        mask_shapes = mask_gdf.to_crs(src.crs).geometry
+        depth, transform = raster_mask(src, mask_shapes, crop=True, filled=True)
+        data = depth[0].astype("float64")
+        if src.nodata is not None:
+            data[data == src.nodata] = np.nan
+        data[data < -1e20] = np.nan
+        bounds = array_bounds(data.shape[0], data.shape[1], transform)
+        raster_crs = src.crs
+    return data, bounds, raster_crs
+
+
+def smooth_depth(depth, sigma=DEPTH_SMOOTHING_SIGMA_PIXELS):
+    valid = np.isfinite(depth)
+    if sigma <= 0 or not np.any(valid):
+        return depth
+
+    filled = np.where(valid, depth, 0.0)
+    weights = valid.astype("float64")
+    smooth_values = gaussian_filter(filled, sigma=sigma, mode="nearest")
+    smooth_weights = gaussian_filter(weights, sigma=sigma, mode="nearest")
+    smoothed = np.full_like(depth, np.nan, dtype="float64")
+    np.divide(
+        smooth_values,
+        smooth_weights,
+        out=smoothed,
+        where=smooth_weights > 0.05,
+    )
+    smoothed[~valid] = np.nan
+    return smoothed
+
+
+def add_bathymetry_overlay(ax, raster_path, mask_gdf):
+    depth, depth_bounds, depth_crs = load_masked_depth(raster_path, mask_gdf)
+    max_depth = np.ceil(np.nanpercentile(depth, 98) * 2) / 2
+    depth = smooth_depth(depth)
+    left, bottom, right, top = depth_bounds
+    image = ax.imshow(
+        depth,
+        extent=[left, right, bottom, top],
+        origin="upper",
+        cmap="YlGnBu",
+        vmin=0,
+        vmax=max_depth,
+        alpha=0.68,
+        interpolation="bilinear",
+        resample=True,
+        zorder=1,
+    )
+    ax.add_patch(
+        mpatches.Rectangle(
+            (0.878, 0.065),
+            0.098,
+            0.30,
+            transform=ax.transAxes,
+            facecolor="white",
+            edgecolor="none",
+            alpha=0.50,
+            zorder=2,
+        )
+    )
+    cax = ax.inset_axes([0.913, 0.095, 0.017, 0.215])
+    cax.set_zorder(20)
+    cax.patch.set_alpha(0)
+    cbar = plt.colorbar(image, cax=cax, orientation="vertical", extend="max")
+    cbar.set_ticks(np.arange(0, max_depth + 0.001, 0.5))
+    cbar.ax.yaxis.set_major_formatter(mticker.FormatStrFormatter("%.1f"))
+    cbar.ax.tick_params(labelsize=7.2, colors="black", length=2.4, pad=1.8)
+    cbar.outline.set_edgecolor("black")
+    for tick_label in cbar.ax.get_yticklabels():
+        tick_label.set_color("black")
+        tick_label.set_fontweight("medium")
+    ax.text(
+        0.927,
+        0.333,
+        "Depth (m)",
+        transform=ax.transAxes,
+        ha="center",
+        va="bottom",
+        fontsize=8.0,
+        color="black",
+        fontweight="medium",
+        zorder=21,
+    )
+    return image
+
+
+study_area_native = gpd.read_file(STUDY_AREA)
+study_crs = study_area_native.crs
+cadaster_native = gpd.read_file(CADASTER).to_crs(study_crs)
+study_area_wm = study_area_native.to_crs("EPSG:3857")
+study_bounds_native = study_area_native.total_bounds
+study_bounds_wm = study_area_wm.total_bounds
+
+madagascar_extent = square_bounds(
+    bbox_wgs84_to_web_mercator(44.3, -26.0, 52.8, -11.5),
+    pad_fraction=0.0,
+)
+sainte_marie_extent = square_bounds(
+    bbox_wgs84_to_web_mercator(49.60, -17.30, 50.10, -16.60),
+    pad_fraction=0.0,
+)
+study_extent = square_bounds(study_bounds_native, pad_fraction=0.0)
+
+sainte_marie_box = square_bounds(sainte_marie_extent, pad_fraction=0.02)
+study_area_box = square_bounds(study_bounds_wm, pad_fraction=0.15)
+
+fig = plt.figure(figsize=(9, 6), facecolor="white")
+grid = GridSpec(
+    2,
+    3,
+    figure=fig,
+    left=0.015,
+    right=0.985,
+    bottom=0.025,
+    top=0.975,
+    wspace=0.025,
+    hspace=0.025,
+)
+
+ax_madagascar = fig.add_subplot(grid[0, 0])
+ax_picture = fig.add_subplot(grid[1, 0])
+ax_study_area = fig.add_subplot(grid[:, 1:3])
+
+add_basemap(ax_madagascar, madagascar_extent, zoom=7, source=REFERENCE_TILE_SOURCE)
+add_red_box(ax_madagascar, sainte_marie_box, linewidth=2.0)
+add_panel_label(ax_madagascar, "A")
+add_scale_bar(ax_madagascar, 200_000, "200 km", x_fraction=0.42)
+add_panel_border(ax_madagascar, color="#ffffff", linewidth=0.8)
+
+ax_sainte_marie = ax_madagascar.inset_axes([0.56, 0.045, 0.40, 0.40])
+add_basemap(ax_sainte_marie, sainte_marie_extent, zoom=11, source=REFERENCE_TILE_SOURCE)
+add_red_box(ax_sainte_marie, study_area_box, linewidth=1.5)
+add_panel_label(ax_sainte_marie, "B", fontsize=9)
+ax_sainte_marie.add_patch(
+    mpatches.Rectangle(
+        (0, 0),
+        1,
+        1,
+        transform=ax_sainte_marie.transAxes,
+        fill=False,
+        edgecolor="black",
+        linewidth=1.3,
+        zorder=20,
+    )
+)
+
+add_basemap(
+    ax_study_area,
+    study_extent,
+    zoom=15,
+    source=SATELLITE_TILE_SOURCE,
+    crs=study_crs,
+)
+add_bathymetry_overlay(ax_study_area, DEPTH_RASTER, study_area_native)
+cadaster_native.plot(
+    ax=ax_study_area,
+    facecolor=(0, 0, 0, 0.16),
+    edgecolor=(0, 0, 0, 0.60),
+    linewidth=0.18,
+    alpha=1.0,
+    zorder=9,
+)
+study_area_native.boundary.plot(ax=ax_study_area, color="#e31a1c", linewidth=1.5, zorder=10)
+ax_study_area.set_xlim(study_extent[0], study_extent[2])
+ax_study_area.set_ylim(study_extent[1], study_extent[3])
+ax_study_area.set_aspect("equal", adjustable="box")
+ax_study_area.set_axis_off()
+add_panel_label(ax_study_area, "C")
+add_scale_bar(ax_study_area, 500, "500 m", x_fraction=0.55)
+add_panel_border(ax_study_area, color="#ffffff", linewidth=0.8)
+
+add_photo(ax_picture, PICTURE_FILE)
+add_panel_label(ax_picture, "D")
+add_panel_border(ax_picture, color="#ffffff", linewidth=0.8)
+
+fig.savefig(OUT_FILE, dpi=300, bbox_inches="tight", facecolor="white")
+plt.close(fig)
+```
+
+```{r}
+#| label: fig-study-area-map
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "Study area location. (A) Madagascar with Sainte Marie indicated by a red square; (B) Sainte Marie Island inset with the study area indicated by a red square; (C) Northernmost part of the lagoon showing a Sentinel-2 derived depth map (image date: 2025-08-02), culture-plot cadaster of the Nosy Boraha Seaweed company at the 1st of December 2025, and study-area boundary; (D) Picture of the study area showing cottonii culture inside of the lagoon."
+#| out-width: "100%"
+
+knitr::include_graphics("Figures/study_area.png")
+```

@@ -7,9 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Simon Oiry">
+<meta name="author" content="Sébastien Jan">
+<meta name="author" content="Manon Museux">
+<meta name="author" content="Ravo A. Mahandrisoa Randriamaroson">
+<meta name="author" content="Anthony">
 <meta name="author" content="Laurent Barillé">
-<meta name="author" content="Sebastien Jan">
-<meta name="dcterms.date" content="2026-04-21">
+<meta name="dcterms.date" content="2026-04-22">
 <meta name="keywords" content="To be Written">
 
 <title>MadaKapPy: A tool for in situ biomass estimation of kappaphycus cultures</title>
@@ -42,18 +45,24 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-67270d1595a62d14f123c043d4fb2f18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 
 
 <meta name="citation_title" content="MadaKapPy: A tool for in situ biomass estimation of kappaphycus cultures">
 <meta name="citation_abstract" content="To be Written">
 <meta name="citation_keywords" content="To be Written">
 <meta name="citation_author" content="Simon Oiry">
+<meta name="citation_author" content="Sébastien Jan">
+<meta name="citation_author" content="Manon Museux">
+<meta name="citation_author" content="Ravo A. Mahandrisoa Randriamaroson">
+<meta name="citation_author" content="Anthony ">
 <meta name="citation_author" content="Laurent Barillé">
-<meta name="citation_author" content="Sebastien Jan">
-<meta name="citation_publication_date" content="2026-04-21">
-<meta name="citation_cover_date" content="2026-04-21">
+<meta name="citation_publication_date" content="2026-04-22">
+<meta name="citation_cover_date" content="2026-04-22">
 <meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-04-21">
+<meta name="citation_online_date" content="2026-04-22">
 <meta name="citation_language" content="en">
 <meta name="citation_journal_title" content="Remote Sensing of Environment">
 <meta name="citation_reference" content="citation_title=High risk water pollution hazards affecting aveiro coastal lagoon (portugal)–a habitat risk assessment using InVEST;,citation_author=MI Bastos;,citation_author=PC Roebeling;,citation_author=Fatima Lopes Alves;,citation_author=S Villasante;,citation_author=L Magalhães Filho;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_volume=76;,citation_journal_title=Ecological Informatics;,citation_publisher=Elsevier;">
@@ -198,19 +207,43 @@ ul.task-list li input[type="checkbox"] {
                       </p>
                   </div>
                       <div class="quarto-title-meta-contents">
+            <p class="author">Sébastien Jan </p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
+                      </p>
+                  </div>
+                      <div class="quarto-title-meta-contents">
+            <p class="author">Manon Museux </p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
+                      </p>
+                  </div>
+                      <div class="quarto-title-meta-contents">
+            <p class="author">Ravo A. Mahandrisoa Randriamaroson </p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
+                      </p>
+                  </div>
+                      <div class="quarto-title-meta-contents">
+            <p class="author">Anthony </p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        Nosy Boraha Seaweed Company, Ilot Madame BP04-Ambodifotatra, Sainte-Marie 515, Madagascar
+                      </p>
+                  </div>
+                      <div class="quarto-title-meta-contents">
             <p class="author">Laurent Barillé <a href="https://orcid.org/0000-0001-5138-2684" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
           </div>
                 <div class="quarto-title-meta-contents">
                     <p class="affiliation">
                         Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
-                      </p>
-                  </div>
-                      <div class="quarto-title-meta-contents">
-            <p class="author">Sebastien Jan </p>
-          </div>
-                <div class="quarto-title-meta-contents">
-                    <p class="affiliation">
-                        Nosy Boraha Seaweed, Sainte-Marie, Madagascar
                       </p>
                   </div>
                     </div>
@@ -221,7 +254,7 @@ ul.task-list li input[type="checkbox"] {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">April 21, 2026</p>
+              <p class="date">April 22, 2026</p>
             </div>
           </div>
           
@@ -250,7 +283,17 @@ ul.task-list li input[type="checkbox"] {
     </div>  </div>
 </header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
 <div id="quarto-sidebar-toc-left" class="sidebar toc-left">
-  
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#materiel-methods" id="toc-materiel-methods" class="nav-link" data-scroll-target="#materiel-methods"><span class="header-section-number">2</span> Materiel &amp; Methods</a>
+  <ul class="collapse">
+  <li><a href="#study-site" id="toc-study-site" class="nav-link" data-scroll-target="#study-site"><span class="header-section-number">2.1</span> Study site</a></li>
+  </ul></li>
+  </ul>
+</nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -261,20 +304,44 @@ ul.task-list li input[type="checkbox"] {
   
 
 
-
+<section id="introduction" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
+</section>
+<section id="materiel-methods" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Materiel &amp; Methods</h1>
+<section id="study-site" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="study-site"><span class="header-section-number">2.1</span> Study site</h2>
+<p>Sainte Marie (also called Nosy Boraha) is a small island located off the east coast of Madagascar, in the Indian Ocean (<a href="#fig-study-area-map" class="quarto-xref">Figure&nbsp;1</a>). Next to the village of Ankobahoba, in the estern part of the island, the study area is situated within a narrow (15km long x 1.5 km wide) and very shallow lagoon (Water depths are generally &lt;1–5 m at low tide), enclosed by a barrier reef and connected to the open ocean through reef passes. The total volume of water in the lagoon is roughly 30.3 millions of cubic meters. The dominant substrates consist of sand and coral rubble, associated with seagrass meadows, macroalgal beds, and patch reefs, which become more frequent toward the reef front. Aquaculture represents a major and growing use of the eastern lagoon of Sainte‑Marie Island, where seaweed farming is now a central component of coastal livelihoods. The activity is dominated by the cultivation of <em>Kappaphycus alvarezii</em> (“cottonii”), primarily in the northern part of the lagoon, using off-bottom longline techniques adapted to very shallow waters.</p>
+<div id="cell-fig-study-area-map" class="cell">
+<div class="cell-output-display">
+<div id="fig-study-area-map" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-study-area-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="Figures/study_area.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Study area location. (A) Madagascar with Sainte Marie indicated by a red square; (B) Sainte Marie Island inset with the study area indicated by a red square; (C) Northernmost part of the lagoon showing a Sentinel-2 derived depth map (image date: 2025-08-02), culture-plot cadaster of the Nosy Boraha Seaweed company at the 1st of December 2025, and study-area boundary; (D) Picture of the study area showing cottonii culture inside of the lagoon."><img src="Figures/study_area.png" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-study-area-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Study area location. (A) Madagascar with Sainte Marie indicated by a red square; (B) Sainte Marie Island inset with the study area indicated by a red square; (C) Northernmost part of the lagoon showing a Sentinel-2 derived depth map (image date: 2025-08-02), culture-plot cadaster of the Nosy Boraha Seaweed company at the 1st of December 2025, and study-area boundary; (D) Picture of the study area showing cottonii culture inside of the lagoon.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{oiry2026,
-  author = {Oiry, Simon and Barillé, Laurent and Jan, Sebastien},
+  author = {Oiry, Simon and Jan, Sébastien and Museux, Manon and A.
+    Mahandrisoa Randriamaroson, Ravo and , Anthony and Barillé, Laurent},
   title = {MadaKapPy: {A} Tool for in Situ Biomass Estimation of
     Kappaphycus Cultures},
-  date = {2026-04-21},
+  date = {2026-04-22},
   langid = {en},
   abstract = {To be Written}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-oiry2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Oiry, S., Barillé, L., Jan, S., 2026. MadaKapPy: A tool for in situ
-biomass estimation of kappaphycus cultures [WWW Document]. Remote
-Sensing of Environment.
+Oiry, S., Jan, S., Museux, M., A. Mahandrisoa Randriamaroson, R., A.,
+Barillé, L., 2026. MadaKapPy: A tool for in situ biomass estimation of
+kappaphycus cultures [WWW Document]. Remote Sensing of Environment.
 </div></div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -678,6 +745,38 @@ Sensing of Environment.
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
