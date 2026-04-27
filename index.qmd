@@ -54,7 +54,6 @@ author:
       - Revision
     affiliations:
       - Institut des Substances et Organismes de la Mer, ISOMer, Nantes Université, UR 2160, F-44000 Nantes, France
-
 keywords:
   - To be Written
 abstract:
@@ -75,6 +74,15 @@ engine: knitr
 
 
 # Introduction
+
+In 2022, global production of red macroalgae was estimated at approximately 20.38 million tons [@FAO2024SOFIA]. Within this group, the genera Eucheuma and Kappaphycus, collectively referred to as eucheumatoids, are of major economic importance because of their carrageenan content [@Zhang2024Carrageenan]. This high-value hydrocolloid is widely used in the food industry for its gelling, thickening, and stabilising properties [@Hurtado2017TropicalSeaweed]. Although Asia overwhelmingly dominates global production, Eastern Africa has emerged as the principal carrageenophyte-producing region on the African continent, with Zanzibar (Tanzania) and Madagascar as its main production centres [@Hayashi2017Kappaphycus]. In Madagascar, the main cultivated carrageenophytes are *Kappaphycus alvarezii* (commonly known as cottonii; hereafter referred to as Kappaphycus), *Kappaphycus striatus*, and *Eucheuma denticulatum*. In 2020, national export volumes reached 17,000 t fresh weight (FW) for Kappaphycus and 3,000 t FW for Eucheuma [@msuya2022seaweed]. Since these estimates, production has reportedly increased, largely driven by the expansion of private companies such as Nosy Boraha Seaweed (NBS) and Sovalg in the Sainte-Marie lagoon [@urbina2026mapping]. With an export biomass of 22,000 t FW of Kappaphycus in 2025, it is now the leading production area, accounting for 43% of national production (S. Jan, pers. comm.).
+
+In Eastern Africa, the cultivation method uses off-bottom and long-line systems with a relatively short cultivation cycle ranging from 35 to 45 days, which is one of the main reasons for its economic attractiveness to small-scale farmers [@msuya2022seaweed ; @urbina2026mapping].  The NBS company, which has developed an innovative community-based aquaculture model, coordinates the management of off-bottom cultivation plots (each plot is 40x12.5 m, with 100 cultivation lines) operated by approximately 120 farmers. Five technicians conduct weekly visual inspections to assess harvest readiness across more than 700 cultivation plots, covering a farming area of nearly 300 ha. At the end of the cultivation cycle, biomass can vary substantially among plots, typically ranging from 2 to 3 tons FW per plot. Given the scale of production, visual errors in plot-level biomass assessment can propagate into substantial uncertainty in total harvest estimates. To address this challenge, the company seeks to optimise harvesting through precision farm-management techniques [@vadassery2024integration]. In this context, drones (Unoccupied Aerial Vehicle, UAV) offer a promising solution, as they can acquire highly detailed data at low altitudes that can be processed with machine-learning algorithms to produce high-precision maps [@Joyce_Fickas_Kalamandeen_2023 ; @oiry2025mapping].
+
+Drones have been used to map Kappaphycus farming areas in Brazil, Indonesia, and Madagascar [@innocentini2024analysis ; @nurdin2025seasionality ; @urbina2026mapping]. Using a five-band multispectral sensor, @nurdin2023precision mapped fresh-weight biomass at the scale of individual cultivation lines, with a pixel size of 1.6 cm. By contrast, high-resolution satellite imagery has a spatial resolution that is roughly two orders of magnitude coarser, typically >1 m, and therefore cannot resolve cultivation lines or the seaweed attached to them [@langford2021monitoring ; @setyawidati2017situ]. A multispectral sensor provides information about Kappaphycus spectral signature (i.e., fraction of reflected light for visible and infrared wavelengths) that cannot be obtained with an RGB sensor alone [@alevizos2024proximal ; @barille2025variability]. However, the algorithms and workflows developed using multispectral data for seaweed mapping can be complex [@oiry2024discriminating ; @oiry2025mapping], limiting their transferability and operational deployment at an industrial scale. At very high spatial resolution, RGB sensors may nevertheless provide valuable information and support the management of small-scale fisheries [@roman2026pixels]. For farming areas in Madagascar, @urbina2026mapping showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. In this work, we therefore used an affordable off-the-shelf RGB drone with automated flight plans to develop a workflow that can be realistically implemented by private seaweed-farming companies for routine monitoring and operational decision-making.
+
+The main objective of this study is to develop a drone- and machine-learning-based workflow to estimate Kappaphycus biomass at the cultivation-plot scale to optimise harvest. All data were collected during routine operations conducted by the NBS company in the Sainte-Marie lagoon, Madagascar. Drone-based biomass estimates were compared with in situ measurements of cultivation-line biomass recorded at harvest. A two-step machine-learning approach was developed. First, a Random Forest classifier was used to identify Kappaphycus within cultivation plots in drone imagery; second, a neural network was trained to predict biomass for each cultivation plot using data collected during drone flights, together with annual biomass data from multiple cultivation cycles. A strategy was implemented to reduce computation time. Finally, a user-friendly, open-access interface was developed to integrate the workflow and enable biomass simulations.
+
 
 # Materiel & Methods
 ## Study site
@@ -100,9 +108,9 @@ total_volume <- rast("Data/Depth/Depth_S2_20250802.tif")%>%
 
 ```
 
-Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (@fig-study-area-map). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from <1 to 5 m at low tide. The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is approximately `r round(total_volume / 1e6 ,1)` million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.
+Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (@fig-study-area-map A & B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from <1 to 5 m at low tide (@fig-study-area-map C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is approximately `r round(total_volume / 1e6 ,1)` million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.
 
-Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of Kappaphycus alvarezii (“cottonii”), primarily in the northern part of the lagoon, using off-bottom longline techniques specifically adapted to very shallow environments. While this activity provides an important alternative source of income in a context of declining fish stocks, it also leads to increasing spatial competition with traditional fishing practices in this confined coastal system.
+Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of Kappaphycus alvarezii (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (@fig-study-area-map D-F). Individual cultivation lines are approximately 10 m in length and are arranged into plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. While this activity provides an important alternative source of income in a context of declining fish stocks, it also contributes to increasing spatial competition with traditional fishing practices within this confined coastal system.
 
 More broadly, the lagoon is now included within the newly established AMTP Sorkay (Marine and Terrestrial Protected Area), a large-scale conservation initiative (~265,000 ha) aimed at preserving the island’s marine biodiversity and promoting sustainable resource management through community-based governance.
 
@@ -609,3 +617,127 @@ plt.close(fig)
 
 knitr::include_graphics("Figures/study_area.png")
 ```
+
+## Data collection
+
+### Freshweight of harvested seaweed
+Between the 1st and the 5th of December 2025, we conducted a field campaign to collect in situ data on the harvested biomass of *Kappaphycus alvarezii* cultures within the study area. The planning of harvesting have been established a few days before the harvesting period, allowing to select and identify **X** cultivation plot that will be harvested in the upcomming days. The harvesting process was conducted by the farmers of the Nosy Boraha Seaweed Company, following their usual practices. Each plot was harvested by detaching cultivation lines of the entire cultivation plot (@fig-data-collection A). The harvested lines where then places on flat boats to be transported to the shore, where all the line of a single plot were weighted using a standard scale (@fig-data-collection B & C). Therefore a dataset of freshweight of the harvested biomass per plot was obtained, which will be used as reference data for the calibration and validation of the algorithm. 
+
+```{python}
+#| label: make-data-collection-figure
+#| echo: false
+#| warning: false
+#| message: false
+#| python.reticulate: false
+
+from pathlib import Path
+
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+
+PROJECT_ROOT = Path.cwd()
+PICTURE_DIR = PROJECT_ROOT / "Data" / "Pictures"
+FIGURE_DIR = PROJECT_ROOT / "Figures"
+FIGURE_DIR.mkdir(exist_ok=True)
+OUT_FILE = FIGURE_DIR / "data_collection.png"
+
+PICTURE_FILES = {
+    "A": PICTURE_DIR / "harvesting_guys.jpg",
+    "B": PICTURE_DIR / "harvesting_boat.jpg",
+    "C": PICTURE_DIR / "harvesting_weight.jpg",
+    "D": PICTURE_DIR / "Harvesting_drying.jpg",
+}
+
+missing_pictures = [str(path) for path in PICTURE_FILES.values() if not path.exists()]
+if missing_pictures:
+    raise FileNotFoundError(
+        "Required picture(s) not found: " + ", ".join(missing_pictures)
+    )
+
+
+def center_crop_to_ratio(image, target_ratio):
+    height, width = image.shape[:2]
+    image_ratio = width / height
+
+    if image_ratio > target_ratio:
+        crop_width = int(round(height * target_ratio))
+        x0 = (width - crop_width) // 2
+        return image[:, x0 : x0 + crop_width]
+
+    crop_height = int(round(width / target_ratio))
+    y0 = (height - crop_height) // 2
+    return image[y0 : y0 + crop_height, :]
+
+
+def add_panel_label(ax, label, fontsize=13):
+    ax.text(
+        0.035,
+        0.955,
+        label,
+        transform=ax.transAxes,
+        ha="left",
+        va="top",
+        fontsize=fontsize,
+        fontweight="bold",
+        color="white",
+        bbox={"boxstyle": "square,pad=0.25", "facecolor": "black", "alpha": 0.72, "edgecolor": "none"},
+        zorder=10,
+    )
+
+
+def add_panel_border(ax, color="#ffffff", linewidth=0.8):
+    ax.add_patch(
+        mpatches.Rectangle(
+            (0, 0),
+            1,
+            1,
+            transform=ax.transAxes,
+            fill=False,
+            edgecolor=color,
+            linewidth=linewidth,
+            zorder=30,
+        )
+    )
+
+
+def add_photo(ax, path, target_ratio=1.0):
+    image = center_crop_to_ratio(plt.imread(path), target_ratio=target_ratio)
+    ax.imshow(image)
+    ax.set_axis_off()
+
+
+fig, axes = plt.subplots(
+    2,
+    2,
+    figsize=(8.4, 8.4),
+    facecolor="white",
+    gridspec_kw={"wspace": 0.025, "hspace": 0.025},
+)
+
+for ax, (label, path) in zip(axes.flat, PICTURE_FILES.items()):
+    add_photo(ax, path, target_ratio=1.0)
+    add_panel_label(ax, label)
+    add_panel_border(ax)
+
+fig.savefig(OUT_FILE, dpi=300, bbox_inches="tight", facecolor="white")
+plt.close(fig)
+```
+
+```{r}
+#| label: fig-data-collection
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "Data collection during harvesting. (A) Harvesters handling culture lines in the lagoon; (B) harvested lines loaded on a flat boat for transport to shore; (C) weighing of harvested biomass on shore; (D) drying of harvested biomass."
+#| out-width: "100%"
+
+knitr::include_graphics("Figures/data_collection.png")
+```
+
+### Drone surveys
+Seaweed harvesting in the lagoon is systematically synchronized with low tide, as reduced water levels facilitate access to the cultivation lines. During the survey period (1–5 December 2025), low tides occurred between 04:25 and 07:54 local time, with sunrise around 05:00. Unmanned aerial vehicle (UAV) surveys were conducted prior to the onset of daily harvesting activities, targeting cultivation plots scheduled for harvest on the same day.
+Early-morning flights were necessary both to coordinate with harvesting operations and to optimize imaging conditions. At this latitude (~ 16°S), solar elevation increases rapidly after sunrise, enhancing sun glint on the water surface and degrading image quality over the cultivation structures. Conducting flights shortly after sunrise, combined with the use of a polarizing filter on the UAV camera, minimized sun glint and enabled the acquisition of high-quality imagery of the cultivation lines.
+Drone surveys were performed using a DJI Mavic 3 Enterprise, equipped with a 4/3 CMOS sensor and a 24 mm equivalent lens. The UAV was flown at an altitude 50 m above ground level, resulting in a ground sampling distance of around 1.5 cm. Flight plans were designed to cover the entire area of each targeted cultivation plot with 80% of front overlap and 70% side overlap. 
+Imagery from each flight was processed using a structure-from-motion photogrammetry workflow implemented in Agisoft Metashape (v2.1.1) to generate orthomosaics. The same processing pipeline was consistently applied across all datasets. Initially, tie points were automatically identified both within individual images and across overlapping image pairs to construct a sparse point cloud. This preliminary cloud was subsequently filtered based on reprojection error to eliminate low-quality or noisy points. A dense point cloud was then generated using multi-view stereo reconstruction. From this dense representation, a continuous surface was interpolated to produce a digital surface model (DSM), which served as the geometric basis for the orthorectification and final orthomosaic generation.
+
+# Bibliography
