@@ -749,4 +749,28 @@ Seaweed harvesting in the lagoon is systematically synchronized with low tide, a
 Because the production of algae was not homogeneous across the lagoon, being able to identify cultivation plot that are more productive then others can help to better predict the production of each individual plot. The total production of each individual plot of the year 2025 have been retrieved from the Nosy Boraha seaweed company. it gathers for each single cultivation plot, the total freshweight harvested along the year. Each cultivation plot is associated with a unique identifier, which allowed production records to be matched to their corresponding spatial location using the lagoon cadaster.\
 For each plot ID, the average and standard deviation of the daily algal production, in kilogram.day^-1^.line^-1^ was assessed.
 
+## Random Forest classification
+
+Seaweed cultivation lines were identified from drone imagery using a Random Forest classifier. This ensemble learning method, originally introduced by @Breiman2001RandomForests combines multiple decision trees built through bootstrap aggregation (bagging) to improve predictive performance and robustness. Random Forest has been widely applied in ecological remote sensing, including ecosystem mapping and aquaculture monitoring [@Oiry2021MPBWaterQuality; @roman2026pixels; @nurdin2023precision]. The approach relies on supervised classification, where the model is trained using labeled samples to learn relationships between predictor variables and target classes. At each iteration, a decision tree is constructed from a bootstrap sample of the training dataset, while a random subset of predictor variables is considered at each split. This dual randomization reduces overfitting and allows the model to effectively handle non-linear relationships and collinearity among predictors. Final pixel-wise classification is obtained through majority voting across all trees, whereby each tree contributes a class prediction and the most frequent class is assigned to the pixel.
+
+This classification represents the first step of the MadaKapPy workflow, enabling the identification of seaweed pixels used to estimate the area covered within each cultivation plot.
+
+### Model building
+
+The training dataset was generated through manual photo-interpretation of drone imagery by three independent operators. Homogeneous areas were delineated and assigned to one of three classes: (i) seaweed cultivation (including both green and brown morphotypes), (ii) bottom substrate (comprising bare sediment and coral reef), and (iii) bottom vegetation (macrophytes naturally occurring within the lagoon). This multi-operator approach was adopted to improve the robustness and consistency of the training dataset while reducing potential bias associated with individual operators.
+
+### Model validation
+
+???
+
+## Neural Network, From area to Biomass
+
+Estimating in situ seaweed biomass from drone imagery cannot rely on a simple univariate relationship. First, the relationship between surface area and biomass is inherently non-linear, as biomass scales with volume rather than area. Second, for a given surface coverage, variations in vertical growth (i.e., canopy thickness) can lead to substantial differences in biomass while remaining indistinguishable in nadir imagery. Third, biomass production may vary independently of areal extent due to factors such as epiphyte presence on cultivation lines, which can reduce overall productivity without necessarily affecting the observed surface coverage.
+
+To account for these sources of variability, a multivariate modeling approach was adopted based on a neural network framework. Biomass was estimated as a function of several complementary predictors:
+
+$$Estimated_{Biomass} = f(Area_{Seaweed}, Density_{Plot}, Average_{Production} )$$
+
+where $Estimated_{Biomass}$ represents the predicted in situ biomass of the cultivation plot, Area_{Seaweed}​ is the surface area (m²) of seaweed identified within the plot using the Random Forest classifier, Density_{Plot}​ is a metric describing the packing density of seaweed within the plot (%), and Average_{Production}​ corresponds to the mean annual productivity (tons) of the plot for the year 2025.
+
 # Bibliography

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,11 +12,14 @@
 <meta name="author" content="Ravo A. Mahandrisoa Randriamaroson">
 <meta name="author" content="Anthony">
 <meta name="author" content="Laurent Barillé">
-<meta name="dcterms.date" content="2026-04-28">
+<meta name="dcterms.date" content="2026-05-05">
 <meta name="keywords" content="To be Written">
 
 <title>MadaKapPy: A tool for in situ biomass estimation of kappaphycus cultures</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -58,14 +61,43 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-813c323200a87c37e262811031999de4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-67270d1595a62d14f123c043d4fb2f18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta name="citation_title" content="MadaKapPy: A tool for in situ biomass estimation of kappaphycus cultures">
 <meta name="citation_abstract" content="To be Written">
@@ -76,10 +108,10 @@ div.csl-indent {
 <meta name="citation_author" content="Ravo A. Mahandrisoa Randriamaroson">
 <meta name="citation_author" content="Anthony ">
 <meta name="citation_author" content="Laurent Barillé">
-<meta name="citation_publication_date" content="2026-04-28">
-<meta name="citation_cover_date" content="2026-04-28">
+<meta name="citation_publication_date" content="2026-05-05">
+<meta name="citation_cover_date" content="2026-05-05">
 <meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-04-28">
+<meta name="citation_online_date" content="2026-05-05">
 <meta name="citation_language" content="en">
 <meta name="citation_journal_title" content="Remote Sensing of Environment">
 <meta name="citation_reference" content="citation_title=What can be learned from fishers’ perceptions for fishery management planning? Case study insights from sainte-marie, madagascar;,citation_author=Thaı̈s A Bernos;,citation_author=Clodio Travouck;,citation_author=Naly Ramasinoro;,citation_author=Dylan J Fraser;,citation_author=Barbara Mathevon;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=11;,citation_volume=16;,citation_journal_title=Plos one;,citation_publisher=Public Library of Science San Francisco, CA USA;">
@@ -101,6 +133,9 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Variability of kappaphycus alvarezii cultivation in south-sulawesi (indonesia) related to the monsoon shift: Water quality, growth and colour quantification;,citation_author=Laurent Barillé;,citation_author=Iona LR Paterson;,citation_author=Simon Oiry;,citation_author=Agus Aris;,citation_author=Elizabeth J Cook-Cottier;,citation_author=Nurjannah Nurdin;,citation_publication_date=2025;,citation_cover_date=2025;,citation_year=2025;,citation_doi=10.1016/j.aqrep.2024.102557;,citation_volume=40;,citation_journal_title=Aquaculture Reports;,citation_publisher=Elsevier;">
 <meta name="citation_reference" content="citation_title=Discriminating seagrasses from green macroalgae in european intertidal areas using high-resolution multispectral drone imagery;,citation_author=Simon Oiry;,citation_author=Bede Ffinian Rowe Davies;,citation_author=Ana I Sousa;,citation_author=Philippe Rosa;,citation_author=Maria Laura Zoffoli;,citation_author=Guillaume Brunier;,citation_author=Pierre Gernez;,citation_author=Laurent Barillé;,citation_publication_date=2024;,citation_cover_date=2024;,citation_year=2024;,citation_issue=23;,citation_doi=10.3390/rs16234383;,citation_volume=16;,citation_journal_title=Remote Sensing;,citation_publisher=MDPI;">
 <meta name="citation_reference" content="citation_title=From pixels to peaks: Integrating LiDAR and RGB drone imagery to map mussel spat on intertidal rocky shores;,citation_author=Marta Román;,citation_author=Bede FR Davies;,citation_author=Philippe Rosa;,citation_author=Simon Oiry;,citation_author=Pierre Gernez;,citation_author=José A Santiago;,citation_author=Celia Olabarria;,citation_author=Laurent Barillé;,citation_publication_date=2026;,citation_cover_date=2026;,citation_year=2026;,citation_doi=10.1016/j.ecss.2025.109671;,citation_journal_title=Estuarine, Coastal and Shelf Science;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Random forests;,citation_author=Leo Breiman;,citation_publication_date=2001;,citation_cover_date=2001;,citation_year=2001;,citation_volume=45;,citation_journal_title=Machine Learning;,citation_publisher=Kluwer Academic Publishers;">
+<meta name="citation_reference" content="citation_title=Using sentinel-2 satellite imagery to develop microphytobenthos-based water quality indices in estuaries;,citation_author=Simon Oiry;,citation_author=Laurent Barillé;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_doi=10.1016/j.ecolind.2020.107184;,citation_volume=121;,citation_journal_title=Ecological Indicators;,citation_publisher=Elsevier;">
+<meta name="citation_reference" content="citation_title=Mapping intertidal oyster farms using unmanned aerial vehicles (UAV) high-resolution multispectral data;,citation_author=Alejandro Roman;,citation_author=Hermansyah Prasyad;,citation_author=Simon Oiry;,citation_author=Bede F. R. Davies;,citation_author=Guillaume Brunier;,citation_author=Laurent Barillé;,citation_publication_date=2023;,citation_cover_date=2023;,citation_year=2023;,citation_doi=10.1016/j.ecss.2023.108432;,citation_volume=291;,citation_journal_title=Estuarine, Coastal and Shelf Science;,citation_publisher=Elsevier;">
 </head>
 
 <body class="quarto-light">
@@ -177,7 +212,7 @@ div.csl-indent {
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">April 28, 2026</p>
+              <p class="date">May 5, 2026</p>
             </div>
           </div>
           
@@ -214,11 +249,18 @@ div.csl-indent {
   <li><a href="#materiel-methods" id="toc-materiel-methods" class="nav-link" data-scroll-target="#materiel-methods"><span class="header-section-number">2</span> Materiel &amp; Methods</a>
   <ul class="collapse">
   <li><a href="#study-site" id="toc-study-site" class="nav-link" data-scroll-target="#study-site"><span class="header-section-number">2.1</span> Study site</a></li>
-  <li><a href="#data-collection" id="toc-data-collection" class="nav-link" data-scroll-target="#data-collection"><span class="header-section-number">2.2</span> Data collection</a>
+  <li><a href="#data-collection-pre-processing" id="toc-data-collection-pre-processing" class="nav-link" data-scroll-target="#data-collection-pre-processing"><span class="header-section-number">2.2</span> Data collection &amp; pre-processing</a>
   <ul class="collapse">
   <li><a href="#freshweight-of-harvested-seaweed" id="toc-freshweight-of-harvested-seaweed" class="nav-link" data-scroll-target="#freshweight-of-harvested-seaweed"><span class="header-section-number">2.2.1</span> Freshweight of harvested seaweed</a></li>
   <li><a href="#drone-surveys" id="toc-drone-surveys" class="nav-link" data-scroll-target="#drone-surveys"><span class="header-section-number">2.2.2</span> Drone surveys</a></li>
+  <li><a href="#spatial-heterogeneity-of-the-algae-production" id="toc-spatial-heterogeneity-of-the-algae-production" class="nav-link" data-scroll-target="#spatial-heterogeneity-of-the-algae-production"><span class="header-section-number">2.2.3</span> Spatial heterogeneity of the algae production</a></li>
   </ul></li>
+  <li><a href="#random-forest-classification" id="toc-random-forest-classification" class="nav-link" data-scroll-target="#random-forest-classification"><span class="header-section-number">2.3</span> Random Forest classification</a>
+  <ul class="collapse">
+  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building"><span class="header-section-number">2.3.1</span> Model building</a></li>
+  <li><a href="#model-validation" id="toc-model-validation" class="nav-link" data-scroll-target="#model-validation"><span class="header-section-number">2.3.2</span> Model validation</a></li>
+  </ul></li>
+  <li><a href="#neural-network-from-area-to-biomass" id="toc-neural-network-from-area-to-biomass" class="nav-link" data-scroll-target="#neural-network-from-area-to-biomass"><span class="header-section-number">2.4</span> Neural Network, From area to Biomass</a></li>
   </ul></li>
   <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography"><span class="header-section-number">3</span> Bibliography</a></li>
   </ul>
@@ -237,9 +279,9 @@ div.csl-indent {
 <h1 data-number="1"><span class="header-section-number">1</span> Introduction</h1>
 <p>In 2022, global production of red macroalgae was estimated at approximately 20.38 million tons <span class="citation" data-cites="FAO2024SOFIA">(<a href="#ref-FAO2024SOFIA" role="doc-biblioref">FAO, 2024</a>)</span>. Within this group, the genera Eucheuma and Kappaphycus, collectively referred to as eucheumatoids, are of major economic importance because of their carrageenan content <span class="citation" data-cites="Zhang2024Carrageenan">(<a href="#ref-Zhang2024Carrageenan" role="doc-biblioref">Zhang et al., 2023</a>)</span>. This high-value hydrocolloid is widely used in the food industry for its gelling, thickening, and stabilising properties <span class="citation" data-cites="Hurtado2017TropicalSeaweed">(<a href="#ref-Hurtado2017TropicalSeaweed" role="doc-biblioref">Hurtado et al., 2017</a>)</span>. Although Asia overwhelmingly dominates global production, Eastern Africa has emerged as the principal carrageenophyte-producing region on the African continent, with Zanzibar (Tanzania) and Madagascar as its main production centres <span class="citation" data-cites="Hayashi2017Kappaphycus">(<a href="#ref-Hayashi2017Kappaphycus" role="doc-biblioref">Hayashi et al., 2017</a>)</span>. In Madagascar, the main cultivated carrageenophytes are <em>Kappaphycus alvarezii</em> (commonly known as cottonii; hereafter referred to as Kappaphycus), <em>Kappaphycus striatus</em>, and <em>Eucheuma denticulatum</em>. In 2020, national export volumes reached 17,000 t fresh weight (FW) for Kappaphycus and 3,000 t FW for Eucheuma <span class="citation" data-cites="msuya2022seaweed">(<a href="#ref-msuya2022seaweed" role="doc-biblioref">Msuya et al., 2022</a>)</span>. Since these estimates, production has reportedly increased, largely driven by the expansion of private companies such as Nosy Boraha Seaweed (NBS) and Sovalg in the Sainte-Marie lagoon <span class="citation" data-cites="urbina2026mapping">(<a href="#ref-urbina2026mapping" role="doc-biblioref">Urbina-Barreto et al., 2026</a>)</span>. With an export biomass of 22,000 t FW of Kappaphycus in 2025, it is now the leading production area, accounting for 43% of national production (S. Jan, pers. comm.).</p>
 <p>In Eastern Africa, the cultivation method uses off-bottom and long-line systems with a relatively short cultivation cycle ranging from 35 to 45 days, which is one of the main reasons for its economic attractiveness to small-scale farmers <span class="citation" data-cites="msuya2022seaweed urbina2026mapping">(<a href="#ref-msuya2022seaweed" role="doc-biblioref">Msuya et al., 2022</a>; <a href="#ref-urbina2026mapping" role="doc-biblioref">Urbina-Barreto et al., 2026</a>)</span>. The NBS company, which has developed an innovative community-based aquaculture model, coordinates the management of off-bottom cultivation plots (each plot is 40x12.5 m, with 100 cultivation lines) operated by approximately 120 farmers. Five technicians conduct weekly visual inspections to assess harvest readiness across more than 700 cultivation plots, covering a farming area of nearly 300 ha. At the end of the cultivation cycle, biomass can vary substantially among plots, typically ranging from 2 to 3 tons FW per plot. Given the scale of production, visual errors in plot-level biomass assessment can propagate into substantial uncertainty in total harvest estimates. To address this challenge, the company seeks to optimise harvesting through precision farm-management techniques <span class="citation" data-cites="vadassery2024integration">(<a href="#ref-vadassery2024integration" role="doc-biblioref">Vadassery and Neish, 2024</a>)</span>. In this context, drones (Unoccupied Aerial Vehicle, UAV) offer a promising solution, as they can acquire highly detailed data at low altitudes that can be processed with machine-learning algorithms to produce high-precision maps <span class="citation" data-cites="Joyce_Fickas_Kalamandeen_2023 oiry2025mapping">(<a href="#ref-Joyce_Fickas_Kalamandeen_2023" role="doc-biblioref">Joyce et al., 2023</a>; <a href="#ref-oiry2025mapping" role="doc-biblioref">Oiry et al., 2025</a>)</span>.</p>
-<p>Drones have been used to map Kappaphycus farming areas in Brazil, Indonesia, and Madagascar <span class="citation" data-cites="innocentini2024analysis nurdin2025seasionality urbina2026mapping">(<a href="#ref-innocentini2024analysis" role="doc-biblioref">Innocentini et al., 2024</a>; <a href="#ref-nurdin2025seasionality" role="doc-biblioref">Nurdin et al., 2025</a>; <a href="#ref-urbina2026mapping" role="doc-biblioref">Urbina-Barreto et al., 2026</a>)</span>. Using a five-band multispectral sensor, <span class="citation" data-cites="nurdin2023precision">Nurdin et al. (<a href="#ref-nurdin2023precision" role="doc-biblioref">2023</a>)</span> mapped fresh-weight biomass at the scale of individual cultivation lines, with a pixel size of 1.6 cm. By contrast, high-resolution satellite imagery has a spatial resolution that is roughly two orders of magnitude coarser, typically &gt;1 m, and therefore cannot resolve cultivation lines or the seaweed attached to them <span class="citation" data-cites="langford2021monitoring setyawidati2017situ">(<a href="#ref-langford2021monitoring" role="doc-biblioref">Langford et al., 2021</a>; <a href="#ref-setyawidati2017situ" role="doc-biblioref">Setyawidati et al., 2017</a>)</span>. A multispectral sensor provides information about Kappaphycus spectral signature (i.e., fraction of reflected light for visible and infrared wavelengths) that cannot be obtained with an RGB sensor alone <span class="citation" data-cites="alevizos2024proximal barille2025variability">(<a href="#ref-alevizos2024proximal" role="doc-biblioref">Alevizos et al., 2024</a>; <a href="#ref-barille2025variability" role="doc-biblioref">Barillé et al., 2025</a>)</span>. However, the algorithms and workflows developed using multispectral data for seaweed mapping can be complex <span class="citation" data-cites="oiry2024discriminating oiry2025mapping">(<a href="#ref-oiry2025mapping" role="doc-biblioref">Oiry et al., 2025</a>, <a href="#ref-oiry2024discriminating" role="doc-biblioref">2024</a>)</span>, limiting their transferability and operational deployment at an industrial scale. At very high spatial resolution, RGB sensors may nevertheless provide valuable information and support the management of small-scale fisheries <span class="citation" data-cites="roman2026pixels">(<a href="#ref-roman2026pixels" role="doc-biblioref">Román et al., 2026</a>)</span>. For farming areas in Madagascar, <span class="citation" data-cites="urbina2026mapping">Urbina-Barreto et al. (<a href="#ref-urbina2026mapping" role="doc-biblioref">2026</a>)</span> showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. In this work, we therefore used an affordable off-the-shelf RGB drone with automated flight plans to develop a workflow that can be realistically implemented by private seaweed-farming companies for routine monitoring and operational decision-making.</p>
+<p>Drones have been used to map Kappaphycus farming areas in Brazil, Indonesia, and Madagascar <span class="citation" data-cites="innocentini2024analysis nurdin2025seasionality urbina2026mapping">(<a href="#ref-innocentini2024analysis" role="doc-biblioref">Innocentini et al., 2024</a>; <a href="#ref-nurdin2025seasionality" role="doc-biblioref">Nurdin et al., 2025</a>; <a href="#ref-urbina2026mapping" role="doc-biblioref">Urbina-Barreto et al., 2026</a>)</span>. Using a five-band multispectral sensor, <span class="citation" data-cites="nurdin2023precision">Nurdin et al. (<a href="#ref-nurdin2023precision" role="doc-biblioref">2023</a>)</span> mapped fresh-weight biomass at the scale of individual cultivation lines, with a pixel size of 1.6 cm. By contrast, high-resolution satellite imagery has a spatial resolution that is roughly two orders of magnitude coarser, typically &gt;1 m, and therefore cannot resolve cultivation lines or the seaweed attached to them <span class="citation" data-cites="langford2021monitoring setyawidati2017situ">(<a href="#ref-langford2021monitoring" role="doc-biblioref"><span class="nocase">Langford et al.</span>, 2021</a>; <a href="#ref-setyawidati2017situ" role="doc-biblioref">Setyawidati et al., 2017</a>)</span>. A multispectral sensor provides information about Kappaphycus spectral signature (i.e., fraction of reflected light for visible and infrared wavelengths) that cannot be obtained with an RGB sensor alone <span class="citation" data-cites="alevizos2024proximal barille2025variability">(<a href="#ref-alevizos2024proximal" role="doc-biblioref">Alevizos et al., 2024</a>; <a href="#ref-barille2025variability" role="doc-biblioref">Barillé et al., 2025</a>)</span>. However, the algorithms and workflows developed using multispectral data for seaweed mapping can be complex <span class="citation" data-cites="oiry2024discriminating oiry2025mapping">(<a href="#ref-oiry2025mapping" role="doc-biblioref">Oiry et al., 2025</a>, <a href="#ref-oiry2024discriminating" role="doc-biblioref">2024</a>)</span>, limiting their transferability and operational deployment at an industrial scale. At very high spatial resolution, RGB sensors may nevertheless provide valuable information and support the management of small-scale fisheries <span class="citation" data-cites="roman2026pixels">(<a href="#ref-roman2026pixels" role="doc-biblioref">Román et al., 2026</a>)</span>. For farming areas in Madagascar, <span class="citation" data-cites="urbina2026mapping">Urbina-Barreto et al. (<a href="#ref-urbina2026mapping" role="doc-biblioref">2026</a>)</span> showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. In this work, we therefore used an affordable off-the-shelf RGB drone with automated flight plans to develop a workflow that can be realistically implemented by private seaweed-farming companies for routine monitoring and operational decision-making.</p>
 <p><strong><em>—- Simon’s version of paragraph 3 —–<br>
-The use of drones has already been demonstrated as an effective approach for mapping Kappaphycus cultivation in regions such as Brazil, Indonesia, and Madagascar <span class="citation" data-cites="innocentini2024analysis nurdin2025seasionality urbina2026mapping">(<a href="#ref-innocentini2024analysis" role="doc-biblioref">Innocentini et al., 2024</a>; <a href="#ref-nurdin2025seasionality" role="doc-biblioref">Nurdin et al., 2025</a>; <a href="#ref-urbina2026mapping" role="doc-biblioref">Urbina-Barreto et al., 2026</a>)</span>. Their ultra-high spatial resolution, far exceeding that of satellite imagery, together with their operational flexibility for on-demand data acquisition, enables the mapping of areas in ways that satellites cannot achieve <span class="citation" data-cites="langford2021monitoring setyawidati2017situ">(<a href="#ref-langford2021monitoring" role="doc-biblioref">Langford et al., 2021</a>; <a href="#ref-setyawidati2017situ" role="doc-biblioref">Setyawidati et al., 2017</a>)</span>. While drone-based multispectral sensors allow for detailed characterization of target reflectance and can enhance the discrimination of vegetation types, their use typically involves complex processing workflows, large data volumes, and substantial computational requirements. These constraints limit their accessibility and operational deployment, particularly for non-expert users and private companies seeking simple, robust, and cost-effective monitoring solutions. At very high spatial resolution, RGB imagery can nevertheless provide sufficient information to discriminate targets of interest within complex environments <span class="citation" data-cites="roman2026pixels">(<a href="#ref-roman2026pixels" role="doc-biblioref">Román et al., 2026</a>)</span>. In Madagascar, <span class="citation" data-cites="urbina2026mapping">Urbina-Barreto et al. (<a href="#ref-urbina2026mapping" role="doc-biblioref">2026</a>)</span> showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. However, despite these promising results, there remains a need for simplified, transferable, and operational workflows based on RGB drone imagery that can be readily adopted by non-expert users for routine monitoring of seaweed farming systems.</em></strong></p>
+The use of drones has already been demonstrated as an effective approach for mapping Kappaphycus cultivation in regions such as Brazil, Indonesia, and Madagascar <span class="citation" data-cites="innocentini2024analysis nurdin2025seasionality urbina2026mapping">(<a href="#ref-innocentini2024analysis" role="doc-biblioref">Innocentini et al., 2024</a>; <a href="#ref-nurdin2025seasionality" role="doc-biblioref">Nurdin et al., 2025</a>; <a href="#ref-urbina2026mapping" role="doc-biblioref">Urbina-Barreto et al., 2026</a>)</span>. Their ultra-high spatial resolution, far exceeding that of satellite imagery, together with their operational flexibility for on-demand data acquisition, enables the mapping of areas in ways that satellites cannot achieve <span class="citation" data-cites="langford2021monitoring setyawidati2017situ">(<a href="#ref-langford2021monitoring" role="doc-biblioref"><span class="nocase">Langford et al.</span>, 2021</a>; <a href="#ref-setyawidati2017situ" role="doc-biblioref">Setyawidati et al., 2017</a>)</span>. While drone-based multispectral sensors allow for detailed characterization of target reflectance and can enhance the discrimination of vegetation types, their use typically involves complex processing workflows, large data volumes, and substantial computational requirements. These constraints limit their accessibility and operational deployment, particularly for non-expert users and private companies seeking simple, robust, and cost-effective monitoring solutions. At very high spatial resolution, RGB imagery can nevertheless provide sufficient information to discriminate targets of interest within complex environments <span class="citation" data-cites="roman2026pixels">(<a href="#ref-roman2026pixels" role="doc-biblioref">Román et al., 2026</a>)</span>. In Madagascar, <span class="citation" data-cites="urbina2026mapping">Urbina-Barreto et al. (<a href="#ref-urbina2026mapping" role="doc-biblioref">2026</a>)</span> showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. However, despite these promising results, there remains a need for simplified, transferable, and operational workflows based on RGB drone imagery that can be readily adopted by non-expert users for routine monitoring of seaweed farming systems.</em></strong></p>
 <p>The main objective of this study is to develop a drone- and machine-learning-based workflow to estimate Kappaphycus biomass, before harvesting, at the cultivation-plot scale to optimise harvest. All data were collected during routine operations conducted by the NBS company in the Sainte-Marie lagoon, Madagascar. Drone-based biomass estimates were compared with in situ measurements of cultivation-line biomass recorded at harvest. A two-step machine-learning approach was developed. First, a Random Forest classifier was used to identify Kappaphycus within cultivation plots in drone imagery; second, a neural network was trained to predict biomass for each cultivation plot using data collected during drone flights, together with annual biomass data from multiple cultivation cycles. A strategy was implemented to reduce computation time. Finally, a user-friendly, open-access interface was developed to integrate the workflow and enable biomass simulations.</p>
 <p><strong><em>—- Simon’s version of paragraph 4 —–<br>
 The objective of this study is to develop an operational drone-based approach for estimating Kappaphycus biomass at the cultivation-plot scale prior to harvest. Using RGB imagery acquired during routine farming operations in the Sainte-Marie lagoon (Madagascar), we investigate the capacity of drone-derived information to predict biomass and support precision monitoring. In addition, we aim to translate this approach into a standalone, open-source, and user-friendly application designed to be directly accessible to aquaculture professionals.</em></strong></p>
@@ -266,11 +308,11 @@ Figure&nbsp;1: Study area location. (A) Madagascar with Sainte Marie indicated b
 </div>
 </div>
 </section>
-<section id="data-collection" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="data-collection"><span class="header-section-number">2.2</span> Data collection</h2>
+<section id="data-collection-pre-processing" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-collection-pre-processing"><span class="header-section-number">2.2</span> Data collection &amp; pre-processing</h2>
 <section id="freshweight-of-harvested-seaweed" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="freshweight-of-harvested-seaweed"><span class="header-section-number">2.2.1</span> Freshweight of harvested seaweed</h3>
-<p>Between the 1st and the 5th of December 2025, we conducted a field campaign to collect in situ data on the harvested biomass of <em>Kappaphycus alvarezii</em> cultures within the study area. The planning of harvesting have been established a few days before the harvesting period, allowing to select and identify <strong>X</strong> cultivation plot that will be harvested in the upcomming days. The harvesting process was conducted by the farmers of the Nosy Boraha Seaweed Company, following their usual practices. Each plot was harvested by detaching cultivation lines of the entire cultivation plot (<a href="#fig-data-collection" class="quarto-xref">Figure&nbsp;2</a> A). The harvested lines where then places on flat boats to be transported to the shore, where all the line of a single plot were weighted using a standard scale (<a href="#fig-data-collection" class="quarto-xref">Figure&nbsp;2</a> B &amp; C). Therefore a dataset of freshweight of the harvested biomass per plot was obtained, which will be used as reference data for the calibration and validation of the algorithm.</p>
+<p>Between the 1st and the 5th of December 2025, we conducted a field campaign to collect in situ data on the harvested biomass of <em>Kappaphycus alvarezii</em> cultures within the study area. The planning of harvesting have been established a few days before the harvesting period, allowing to select and identify <strong>X</strong> cultivation plot that will be harvested in the upcoming days. The harvesting process was conducted by the farmers of the Nosy Boraha Seaweed Company, following their usual practices. Each plot was harvested by detaching cultivation lines of the entire cultivation plot (<a href="#fig-data-collection" class="quarto-xref">Figure&nbsp;2</a> A). The harvested lines where then places on flat boats to be transported to the shore, where all the line of a single plot were weighted using a standard scale (<a href="#fig-data-collection" class="quarto-xref">Figure&nbsp;2</a> B &amp; C). Therefore a dataset of freshweight of the harvested biomass per plot was obtained, which will be used as reference data for the calibration and validation of the algorithm.</p>
 <div id="cell-fig-data-collection" class="cell">
 <div class="cell-output-display">
 <div id="fig-data-collection" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -290,6 +332,31 @@ Figure&nbsp;2: Data collection during harvesting. (A) Harvesters handling cultur
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="drone-surveys"><span class="header-section-number">2.2.2</span> Drone surveys</h3>
 <p>Seaweed harvesting in the lagoon is systematically synchronized with low tide, as reduced water levels facilitate access to the cultivation lines. During the survey period (1–5 December 2025), low tides occurred between 04:25 and 07:54 local time, with sunrise around 05:00. Unmanned aerial vehicle (UAV) surveys were conducted prior to the onset of daily harvesting activities, targeting cultivation plots scheduled for harvest on the same day. Early-morning flights were necessary both to coordinate with harvesting operations and to optimize imaging conditions. At this latitude (~ 16°S), solar elevation increases rapidly after sunrise, enhancing sun glint on the water surface and degrading image quality over the cultivation structures. Conducting flights shortly after sunrise, combined with the use of a polarizing filter on the UAV camera, minimized sun glint and enabled the acquisition of high-quality imagery of the cultivation lines. Drone surveys were performed using a DJI Mavic 3 Enterprise, equipped with a 4/3 CMOS sensor and a 24 mm equivalent lens. The UAV was flown at an altitude 50 m above ground level, resulting in a ground sampling distance of around 1.5 cm. Flight plans were designed to cover the entire area of each targeted cultivation plot with 80% of front overlap and 70% side overlap. Imagery from each flight was processed using a structure-from-motion photogrammetry workflow implemented in Agisoft Metashape (v2.1.1) to generate orthomosaics. The same processing pipeline was consistently applied across all datasets. Initially, tie points were automatically identified both within individual images and across overlapping image pairs to construct a sparse point cloud. This preliminary cloud was subsequently filtered based on reprojection error to eliminate low-quality or noisy points. A dense point cloud was then generated using multi-view stereo reconstruction. From this dense representation, a continuous surface was interpolated to produce a digital surface model (DSM), which served as the geometric basis for the orthorectification and final orthomosaic generation.</p>
 </section>
+<section id="spatial-heterogeneity-of-the-algae-production" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="spatial-heterogeneity-of-the-algae-production"><span class="header-section-number">2.2.3</span> Spatial heterogeneity of the algae production</h3>
+<p>Because the production of algae was not homogeneous across the lagoon, being able to identify cultivation plot that are more productive then others can help to better predict the production of each individual plot. The total production of each individual plot of the year 2025 have been retrieved from the Nosy Boraha seaweed company. it gathers for each single cultivation plot, the total freshweight harvested along the year. Each cultivation plot is associated with a unique identifier, which allowed production records to be matched to their corresponding spatial location using the lagoon cadaster.<br>
+For each plot ID, the average and standard deviation of the daily algal production, in kilogram.day<sup>-1</sup>.line<sup>-1</sup> was assessed.</p>
+</section>
+</section>
+<section id="random-forest-classification" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="random-forest-classification"><span class="header-section-number">2.3</span> Random Forest classification</h2>
+<p>Seaweed cultivation lines were identified from drone imagery using a Random Forest classifier. This ensemble learning method, originally introduced by <span class="citation" data-cites="Breiman2001RandomForests">Breiman (<a href="#ref-Breiman2001RandomForests" role="doc-biblioref">2001</a>)</span> combines multiple decision trees built through bootstrap aggregation (bagging) to improve predictive performance and robustness. Random Forest has been widely applied in ecological remote sensing, including ecosystem mapping and aquaculture monitoring <span class="citation" data-cites="Oiry2021MPBWaterQuality roman2026pixels nurdin2023precision">(<a href="#ref-nurdin2023precision" role="doc-biblioref">Nurdin et al., 2023</a>; <a href="#ref-Oiry2021MPBWaterQuality" role="doc-biblioref">Oiry and Barillé, 2021</a>; <a href="#ref-roman2026pixels" role="doc-biblioref">Román et al., 2026</a>)</span>. The approach relies on supervised classification, where the model is trained using labeled samples to learn relationships between predictor variables and target classes. At each iteration, a decision tree is constructed from a bootstrap sample of the training dataset, while a random subset of predictor variables is considered at each split. This dual randomization reduces overfitting and allows the model to effectively handle non-linear relationships and collinearity among predictors. Final pixel-wise classification is obtained through majority voting across all trees, whereby each tree contributes a class prediction and the most frequent class is assigned to the pixel.</p>
+<p>This classification represents the first step of the MadaKapPy workflow, enabling the identification of seaweed pixels used to estimate the area covered within each cultivation plot.</p>
+<section id="model-building" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="model-building"><span class="header-section-number">2.3.1</span> Model building</h3>
+<p>The training dataset was generated through manual photo-interpretation of drone imagery by three independent operators. Homogeneous areas were delineated and assigned to one of three classes: (i) seaweed cultivation (including both green and brown morphotypes), (ii) bottom substrate (comprising bare sediment and coral reef), and (iii) bottom vegetation (macrophytes naturally occurring within the lagoon). This multi-operator approach was adopted to improve the robustness and consistency of the training dataset while reducing potential bias associated with individual operators.</p>
+</section>
+<section id="model-validation" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="model-validation"><span class="header-section-number">2.3.2</span> Model validation</h3>
+<p>???</p>
+</section>
+</section>
+<section id="neural-network-from-area-to-biomass" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="neural-network-from-area-to-biomass"><span class="header-section-number">2.4</span> Neural Network, From area to Biomass</h2>
+<p>Estimating in situ seaweed biomass from drone imagery cannot rely on a simple univariate relationship. First, the relationship between surface area and biomass is inherently non-linear, as biomass scales with volume rather than area. Second, for a given surface coverage, variations in vertical growth (i.e., canopy thickness) can lead to substantial differences in biomass while remaining indistinguishable in nadir imagery. Third, biomass production may vary independently of areal extent due to factors such as epiphyte presence on cultivation lines, which can reduce overall productivity without necessarily affecting the observed surface coverage.</p>
+<p>To account for these sources of variability, a multivariate modeling approach was adopted based on a neural network framework. Biomass was estimated as a function of several complementary predictors:</p>
+<p><span class="math display">\[Estimated_{Biomass} = f(Area_{Seaweed}, Density_{Plot}, Average_{Production} )\]</span></p>
+<p>where <span class="math inline">\(Estimated_{Biomass}\)</span> represents the predicted in situ biomass of the cultivation plot, Area_{Seaweed}​ is the surface area (m²) of seaweed identified within the plot using the Random Forest classifier, Density_{Plot}​ is a metric describing the packing density of seaweed within the plot (%), and Average_{Production}​ corresponds to the mean annual productivity (tons) of the plot for the year 2025.</p>
 </section>
 </section>
 <section id="bibliography" class="level1 unnumbered" data-number="3">
@@ -303,6 +370,9 @@ Alevizos, E., Nurdin, N., Aris, A., Barillé, L., 2024. Proximal sensing for cha
 </div>
 <div id="ref-barille2025variability" class="csl-entry" role="listitem">
 Barillé, L., Paterson, I.L., Oiry, S., Aris, A., Cook-Cottier, E.J., Nurdin, N., 2025. Variability of kappaphycus alvarezii cultivation in south-sulawesi (indonesia) related to the monsoon shift: Water quality, growth and colour quantification. Aquaculture Reports 40, 102557. <a href="https://doi.org/10.1016/j.aqrep.2024.102557">https://doi.org/10.1016/j.aqrep.2024.102557</a>
+</div>
+<div id="ref-Breiman2001RandomForests" class="csl-entry" role="listitem">
+Breiman, L., 2001. Random forests. Machine Learning 45, 5–32.
 </div>
 <div id="ref-FAO2024SOFIA" class="csl-entry" role="listitem">
 FAO, 2024. The state of world fisheries and aquaculture 2024: Blue transformation in action. Food; Agriculture Organization of the United Nations, Rome. <a href="https://doi.org/10.4060/cd0683en">https://doi.org/10.4060/cd0683en</a>
@@ -320,7 +390,7 @@ Innocentini, M.M., Rodrigues, E.F., Mathion, J.K., Caritá, E.C., Simão, L., Ma
 Joyce, K.E., Fickas, K.C., Kalamandeen, M., 2023. The unique value proposition for using drones to map coastal ecosystems. Cambridge Prisms: Coastal Futures 1, e6. <a href="https://doi.org/10.1017/cft.2022.7">https://doi.org/10.1017/cft.2022.7</a>
 </div>
 <div id="ref-langford2021monitoring" class="csl-entry" role="listitem">
-Langford, A., Waldron, S., Saleh, H., others, 2021. Monitoring the COVID-19-affected indonesian seaweed industry using remote sensing data. Marine Policy 127, 104431. <a href="https://doi.org/10.1016/j.marpol.2021.104431">https://doi.org/10.1016/j.marpol.2021.104431</a>
+<span class="nocase">Langford, A., Waldron, S., Saleh, H., others</span>, 2021. Monitoring the COVID-19-affected indonesian seaweed industry using remote sensing data. Marine Policy 127, 104431. <a href="https://doi.org/10.1016/j.marpol.2021.104431">https://doi.org/10.1016/j.marpol.2021.104431</a>
 </div>
 <div id="ref-msuya2022seaweed" class="csl-entry" role="listitem">
 Msuya, F.E., Bolton, J., Pascal, F., Narrain, K., Nyonje, B., Cottier-Cook, E.J., 2022. Seaweed farming in africa: Current status and future potential. Journal of Applied Phycology 34, 985–1005. <a href="https://doi.org/10.1007/s10811-021-02676-w">https://doi.org/10.1007/s10811-021-02676-w</a>
@@ -330,6 +400,9 @@ Nurdin, N., Alevizos, E., Syamsuddin, R., Asis, H., Zainuddin, E.N., Aris, A., O
 </div>
 <div id="ref-nurdin2025seasionality" class="csl-entry" role="listitem">
 Nurdin, N., Aris, A., AS, M.A., 2025. Seasionality of kappaphycus alvarezii production trends in south sulawesi using UAV monitoring. Remote Sensing Applications: Society and Environment 101659. <a href="https://doi.org/10.1016/j.rsase.2025.101659">https://doi.org/10.1016/j.rsase.2025.101659</a>
+</div>
+<div id="ref-Oiry2021MPBWaterQuality" class="csl-entry" role="listitem">
+Oiry, S., Barillé, L., 2021. Using sentinel-2 satellite imagery to develop microphytobenthos-based water quality indices in estuaries. Ecological Indicators 121, 107184. <a href="https://doi.org/10.1016/j.ecolind.2020.107184">https://doi.org/10.1016/j.ecolind.2020.107184</a>
 </div>
 <div id="ref-oiry2024discriminating" class="csl-entry" role="listitem">
 Oiry, S., Davies, B.F.R., Sousa, A.I., Rosa, P., Zoffoli, M.L., Brunier, G., Gernez, P., Barillé, L., 2024. Discriminating seagrasses from green macroalgae in european intertidal areas using high-resolution multispectral drone imagery. Remote Sensing 16, 4383. <a href="https://doi.org/10.3390/rs16234383">https://doi.org/10.3390/rs16234383</a>
@@ -357,7 +430,7 @@ Zhang, J., Langford, Z., Waldron, S., 2023. The global carrageenan industry, in:
     Mahandrisoa Randriamaroson, Ravo and , Anthony and Barillé, Laurent},
   title = {MadaKapPy: {A} Tool for in Situ Biomass Estimation of
     Kappaphycus Cultures},
-  date = {2026-04-28},
+  date = {2026-05-05},
   langid = {en},
   abstract = {To be Written}
 }
@@ -418,13 +491,14 @@ kappaphycus cultures [WWW Document]. Remote Sensing of Environment.
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
