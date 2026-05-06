@@ -796,4 +796,8 @@ Observed biomass was log-transformed before model fitting to reduce skewness and
 knitr::include_graphics("Figures/workflow/Workflow.png")
 ```
 
+## MadaKapPy standalone application
+
+The full workflow was implemented in a standalone desktop application developed in Python to enable routine use without command-line interaction (@fig-workflow - Blue Polygon). The application provides a graphical user interface built with Flet and was packaged as a self-contained Windows executable together with the required Python dependencies, geospatial libraries, trained classification and biomass models, scaler files, and auxiliary lookup tables. Within the interface, users specify the input orthomosaic, area-of-interest shapefile, model directory, and output location, after which Random Forest classification and biomass estimation are executed sequentially through a single workflow. To support operational use, the application includes automated management of resource paths, progress reporting during computation, preview maps for visual inspection of classification outputs, and run-history logging to retain model settings and output file locations. This implementation was intended to make the processing chain reproducible and accessible to end users while preserving the underlying analytical workflow described above.
+
 # Bibliography

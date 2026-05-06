@@ -362,6 +362,7 @@
   <li><a href="#model-validation" id="toc-model-validation" class="nav-link" data-scroll-target="#model-validation"><span class="header-section-number">2.3.2</span> Model validation</a></li>
   </ul></li>
   <li><a href="#neural-network-from-area-to-biomass" id="toc-neural-network-from-area-to-biomass" class="nav-link" data-scroll-target="#neural-network-from-area-to-biomass"><span class="header-section-number">2.4</span> Neural Network, From area to Biomass</a></li>
+  <li><a href="#madakappy-standalone-application" id="toc-madakappy-standalone-application" class="nav-link" data-scroll-target="#madakappy-standalone-application"><span class="header-section-number">2.5</span> MadaKapPy standalone application</a></li>
   </ul></li>
   <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography"><span class="header-section-number">3</span> Bibliography</a></li>
   </ul>
@@ -1117,6 +1118,10 @@ Figure&nbsp;3: Schematic representation of the workflow implemented for the deve
 </div>
 </div>
 </div></div>
+</section>
+<section id="madakappy-standalone-application" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="madakappy-standalone-application"><span class="header-section-number">2.5</span> MadaKapPy standalone application</h2>
+<p>The full workflow was implemented in a standalone desktop application developed in Python to enable routine use without command-line interaction (<a href="#fig-workflow" class="quarto-xref">Figure&nbsp;3</a> - Blue Polygon). The application provides a graphical user interface built with Flet and was packaged as a self-contained Windows executable together with the required Python dependencies, geospatial libraries, trained classification and biomass models, scaler files, and auxiliary lookup tables. Within the interface, users specify the input orthomosaic, area-of-interest shapefile, model directory, and output location, after which Random Forest classification and biomass estimation are executed sequentially through a single workflow. To support operational use, the application includes automated management of resource paths, progress reporting during computation, preview maps for visual inspection of classification outputs, and run-history logging to retain model settings and output file locations. This implementation was intended to make the processing chain reproducible and accessible to end users while preserving the underlying analytical workflow described above.</p>
 </section>
 </section>
 <section id="bibliography" class="level1 unnumbered" data-number="3">
