@@ -92,10 +92,10 @@ In 2022, global production of red macroalgae was estimated at approximately 20.3
 
 In Eastern Africa, the cultivation method uses off-bottom and long-line systems with a relatively short cultivation cycle ranging from 35 to 45 days, which is one of the main reasons for its economic attractiveness to small-scale farmers [@msuya2022seaweed; @urbina2026mapping]. The NBS company, which has developed an innovative community-based aquaculture model, coordinates the management of off-bottom cultivation plots (each plot is 40x12.5 m, with 100 cultivation lines) operated by approximately 120 farmers. Five technicians conduct weekly visual inspections to assess harvest readiness across more than 700 cultivation plots, covering a farming area of nearly 300 ha. At the end of the cultivation cycle, biomass can vary substantially among plots, typically ranging from 2 to 3 tons FW per plot. Given the scale of production, visual errors in plot-level biomass assessment can propagate into substantial uncertainty in total harvest estimates. To address this challenge, the company seeks to optimise harvesting through precision farm-management techniques [@vadassery2024integration]. In this context, drones (Unoccupied Aerial Vehicle, UAV) offer a promising solution, as they can acquire highly detailed data at low altitudes that can be processed with machine-learning algorithms to produce high-precision maps [@Joyce_Fickas_Kalamandeen_2023; @oiry2025mapping].
 
-The use of drones has already been demonstrated as an effective approach for mapping Kappaphycus cultivation in regions such as Brazil, Indonesia, and Madagascar [@innocentini2024analysis; @nurdin2025seasionality; @urbina2026mapping]. Their ultra-high spatial resolution, far exceeding that of satellite imagery, together with their operational flexibility for on-demand data acquisition, enables the mapping of areas in ways that satellites cannot achieve [@langford2021monitoring; @setyawidati2017situ]. While drone-based multispectral sensors allow for detailed characterization of target reflectance and can enhance the discrimination of vegetation types, their use typically involves complex processing workflows, large data volumes, and substantial computational requirements. These constraints limit their accessibility and operational deployment, particularly for non-expert users and private companies seeking simple, robust, and cost-effective monitoring solutions. At very high spatial resolution, RGB imagery can nevertheless provide sufficient information to discriminate targets of interest within complex environments [@roman2026pixels]. In Madagascar, @urbina2026mapping showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. However, despite these promising results, there remains a need for simplified, transferable, and operational workflows based on RGB drone imagery that can be readily adopted by non-expert users for routine monitoring of seaweed farming systems.\
-\***\*** The objective of this study is to develop an operational drone-based approach for estimating Kappaphycus biomass at the cultivation-plot scale prior to harvest. Using RGB imagery acquired during routine farming operations in the Sainte-Marie lagoon (Madagascar), we investigate the capacity of drone-derived information to predict biomass and support precision monitoring. In addition, we aim to translate this approach into a standalone, open-source, and user-friendly application designed to be directly accessible to aquaculture professionals.
+The use of drones has already been demonstrated as an effective approach for mapping Kappaphycus cultivation in regions such as Brazil, Indonesia, and Madagascar [@innocentini2024analysis; @nurdin2025seasionality; @urbina2026mapping]. Their ultra-high spatial resolution, far exceeding that of satellite imagery, together with their operational flexibility for on-demand data acquisition, enables the mapping of areas in ways that satellites cannot achieve [@langford2021monitoring; @setyawidati2017situ]. While drone-based multispectral sensors allow for detailed characterisation of target reflectance and can enhance the discrimination of vegetation types, their use typically involves complex processing workflows, large data volumes, and substantial computational requirements. These constraints limit their accessibility and operational deployment, particularly for non-expert users and private companies seeking simple, robust, and cost-effective monitoring solutions. At very high spatial resolution, RGB imagery can nevertheless provide sufficient information to discriminate targets of interest within complex environments [@roman2026pixels]. In Madagascar, @urbina2026mapping showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. However, despite these promising results, there remains a need for simplified, transferable, and operational workflows based on RGB drone imagery that can be readily adopted by non-expert users for routine monitoring of seaweed farming systems.\
+\***\*** The objective of this study is to develop an operational drone-based approach for estimating Kappaphycus biomass at the cultivation-plot scale prior to harvest. Using RGB imagery acquired during routine farming operations in the Sainte-Marie lagoon (Madagascar), we investigate the capacity of drone-derived information to predict biomass and support precision monitoring. In addition, we aim to translate this approach into a standalone, open-source, user-friendly application directly accessible to aquaculture professionals.
 
-# Materiel & Methods
+# Materiels & Methods
 
 ## Study site
 
@@ -120,9 +120,9 @@ total_volume <- rast("Data/Depth/Depth_S2_20250802.tif")%>%
 
 ```
 
-Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (@fig-study-area-map A & B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from \<1 to 5 m at low tide (@fig-study-area-map C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is approximately `r round(total_volume / 1e6 ,1)` million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.
+Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (@fig-study-area-map A & B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from \<1 to 5 m in channels at low tide (@fig-study-area-map C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is approximately `r round(total_volume / 1e6 ,1)` million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.
 
-Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of Kappaphycus alvarezii (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (@fig-study-area-map D-F). Individual cultivation lines are approximately 10 m in length and are arranged into plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. While this activity provides an important alternative source of income in a context of declining fish stocks, it also contributes to increasing spatial competition with traditional fishing practices within this confined coastal system.
+Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of Kappaphycus alvarezii (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (@fig-study-area-map D-F). Individual cultivation lines are approximately 10 m long and are arranged in plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. The Nosy Boraha Seaweed company (NBS) is coordinating the management of 726 cultivation plots in the lagoon. While this activity provides an important alternative source of income amid declining fish stocks, it also contributes to increased spatial competition with traditional fishing practices within this confined coastal system.
 
 More broadly, the lagoon is now included within the newly established AMTP Sorkay (Marine and Terrestrial Protected Area), a large-scale conservation initiative (\~265,000 ha) aimed at preserving the island’s marine biodiversity and promoting sustainable resource management through community-based governance.
 
@@ -193,8 +193,8 @@ if DRONE_RASTER is None:
 PICTURE_DIR = PROJECT_ROOT / "Data" / "Pictures"
 PICTURE_NAMES = {
     "D": "DJI_20251205051926_0211_V.jpg",
-    "E": "NADIR_plot.jpg",
-    "F": "Kappa2.jpg",
+    "E": "NADIR_plot_cropped.jpg",
+    "F": "Kappa2_edited.png",
 }
 PICTURE_FILES = {label: PICTURE_DIR / name for label, name in PICTURE_NAMES.items()}
 missing_pictures = [str(path) for path in PICTURE_FILES.values() if not path.exists()]
@@ -281,7 +281,7 @@ def add_rgb_raster(ax, raster_path, extent=None, zorder=0):
     ax.set_axis_off()
 
 
-def add_red_box(ax, bounds, linewidth=2.2):
+def add_red_box(ax, bounds, linewidth=2.2, color="#e31a1c"):
     xmin, ymin, xmax, ymax = bounds
     ax.add_patch(
         mpatches.Rectangle(
@@ -289,7 +289,7 @@ def add_red_box(ax, bounds, linewidth=2.2):
             xmax - xmin,
             ymax - ymin,
             fill=False,
-            edgecolor="#e31a1c",
+            edgecolor=color,
             linewidth=linewidth,
             zorder=8,
         )
@@ -529,7 +529,7 @@ add_panel_border(ax_madagascar, color="#ffffff", linewidth=0.8)
 
 ax_sainte_marie = ax_madagascar.inset_axes([0.56, 0.045, 0.40, 0.40])
 add_basemap(ax_sainte_marie, sainte_marie_extent, zoom=11, source=REFERENCE_TILE_SOURCE)
-add_red_box(ax_sainte_marie, study_area_box, linewidth=1.5)
+add_red_box(ax_sainte_marie, study_area_box, linewidth=1.6, color="#111111")
 ax_sainte_marie.add_patch(
     mpatches.Rectangle(
         (0, 0),
@@ -537,8 +537,8 @@ ax_sainte_marie.add_patch(
         1,
         transform=ax_sainte_marie.transAxes,
         fill=False,
-        edgecolor="black",
-        linewidth=1.3,
+        edgecolor="#e31a1c",
+        linewidth=1.6,
         zorder=20,
     )
 )
@@ -553,23 +553,38 @@ add_basemap(
 add_bathymetry_overlay(ax_study_area, DEPTH_RASTER, study_area_native)
 cadaster_native.plot(
     ax=ax_study_area,
-    facecolor=(0, 0, 0, 0.16),
-    edgecolor=(0, 0, 0, 0.60),
-    linewidth=0.18,
+    facecolor=(0.04, 0.04, 0.04, 0.45),
+    edgecolor="none",
+    linewidth=0.0,
     alpha=1.0,
     zorder=9,
 )
+cadaster_native.boundary.plot(
+    ax=ax_study_area,
+    color="white",
+    linewidth=0.52,
+    alpha=0.95,
+    zorder=9.4,
+)
+cadaster_native.boundary.plot(
+    ax=ax_study_area,
+    color="#111111",
+    linewidth=0.26,
+    alpha=1.0,
+    zorder=9.5,
+)
 zoom_studysite_native.plot(
     ax=ax_study_area,
-    facecolor=(1.0, 0.84, 0.31, 0.14),
+    facecolor=(1.0, 0.84, 0.31, 0.22),
     edgecolor="none",
     zorder=10.5,
 )
-zoom_studysite_native.boundary.plot(ax=ax_study_area, color="black", linewidth=1.8, zorder=11)
+zoom_studysite_native.boundary.plot(ax=ax_study_area, color="white", linewidth=2.8, zorder=11)
+zoom_studysite_native.boundary.plot(ax=ax_study_area, color="black", linewidth=1.9, zorder=11.5)
 zoom_studysite_native.boundary.plot(
     ax=ax_study_area,
     color="#ffd54f",
-    linewidth=1.0,
+    linewidth=1.15,
     zorder=12,
 )
 study_area_native.boundary.plot(ax=ax_study_area, color="#e31a1c", linewidth=1.5, zorder=10)
@@ -578,26 +593,28 @@ ax_study_area.set_ylim(study_extent[1], study_extent[3])
 ax_study_area.set_aspect("equal", adjustable="box")
 ax_study_area.set_axis_off()
 
-ax_zoom_inset = ax_study_area.inset_axes([0.05, 0.62, 0.26, 0.26])
+ax_zoom_inset = ax_study_area.inset_axes([0.04, 0.57, 0.31, 0.31])
 add_rgb_raster(ax_zoom_inset, DRONE_RASTER, extent=zoom_extent_drone)
 zoom_studysite_drone.plot(
     ax=ax_zoom_inset,
-    facecolor=(1.0, 0.84, 0.31, 0.10),
+    facecolor=(1.0, 0.84, 0.31, 0.18),
     edgecolor="none",
     zorder=8,
 )
-zoom_studysite_drone.boundary.plot(ax=ax_zoom_inset, color="black", linewidth=1.6, zorder=9)
+zoom_studysite_drone.boundary.plot(ax=ax_zoom_inset, color="white", linewidth=2.1, zorder=9)
+zoom_studysite_drone.boundary.plot(ax=ax_zoom_inset, color="black", linewidth=1.45, zorder=9.5)
 zoom_studysite_drone.boundary.plot(
     ax=ax_zoom_inset,
     color="#ffd54f",
-    linewidth=0.9,
+    linewidth=1.05,
     zorder=10,
 )
 ax_zoom_inset.set_xlim(zoom_extent_drone[0], zoom_extent_drone[2])
 ax_zoom_inset.set_ylim(zoom_extent_drone[1], zoom_extent_drone[3])
 ax_zoom_inset.set_aspect("equal", adjustable="box")
 ax_zoom_inset.set_axis_off()
-add_panel_border(ax_zoom_inset, color="#ffffff", linewidth=1.0)
+add_panel_border(ax_zoom_inset, color="#ffffff", linewidth=2.2)
+add_panel_border(ax_zoom_inset, color="#111111", linewidth=0.9)
 
 add_panel_label(ax_study_area, "B")
 add_scale_bar(ax_study_area, 500, "500 m", x_fraction=0.55)
@@ -624,7 +641,7 @@ plt.close(fig)
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Study area location. (A) Madagascar with Sainte Marie indicated by a red square, and a Sainte Marie Island inset showing the study area with a red square; (B) Northernmost part of the lagoon showing a Sentinel-2 derived depth map (image date: 2025-08-02), culture-plot cadaster of the Nosy Boraha Seaweed company at the 1st of December 2025, study-area boundary, and a drone-image inset on the `zoom_studysite` polygon; (C) Field picture of the study area showing cottonii culture inside of the lagoon; (D) nadir field photograph of a cultivation plot; (E) additional field photograph of the cultivation system."
+#| fig-cap: "Study area location. (A) Madagascar with Sainte Marie indicated by a red square, and a Sainte Marie Island inset showing the study area with a red square; (B) Northernmost part of the lagoon showing a Sentinel-2 derived depth map (image date: 2025-08-02), culture-plot cadaster of the Nosy Boraha Seaweed company at the 1st of December 2025, study-area boundary, and a drone-image inset on some cultivation plots; (C) Field picture of the study area showing cottonii culture inside of the lagoon; (D) nadir field photograph of two cultivation plots; (E) Underwater view of the off-bottom cultivation lines."
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/study_area.png")
@@ -634,7 +651,7 @@ knitr::include_graphics("Figures/study_area.png")
 
 ### Freshweight of harvested seaweed
 
-Between the 1st and the 5th of December 2025, we conducted a field campaign to collect in situ data on the harvested biomass of *Kappaphycus alvarezii* cultures within the study area. The planning of harvesting have been established a few days before the harvesting period, allowing to select and identify **X** cultivation plot that will be harvested in the upcoming days. The harvesting process was conducted by the farmers of the Nosy Boraha Seaweed Company, following their usual practices. Each plot was harvested by detaching cultivation lines of the entire cultivation plot (@fig-data-collection A). The harvested lines where then places on flat boats to be transported to the shore, where all the line of a single plot were weighted using a standard scale (@fig-data-collection B & C). Therefore a dataset of freshweight of the harvested biomass per plot was obtained, which will be used as reference data for the calibration and validation of the algorithm.
+Between the 1st and the 5th of December 2025, A field campaign was conducted to collect in situ data on the harvested biomass of *Kappaphycus alvarezii* cultures within the study area. The planning of harvesting was established a few days before the harvesting period, allowing to select and identify 126 cultivation plots that will be harvested in the upcoming days. The harvesting process was operated by the farmers of the Nosy Boraha Seaweed Company, following their usual practices. Each plot was harvested by detaching the cultivation lines from the entire cultivation plot (@fig-data-collection A). The harvested lines were then placed on flat boats to be transported to the shore, where all the lines of a single plot were weighted using a standard scale (@fig-data-collection B & C). Therefore, a dataset of the fresh weight of harvested biomass per plot was obtained and used as reference data for the calibration and validation of the algorithm.
 
 ```{python}
 #| label: make-data-collection-figure
@@ -750,24 +767,23 @@ knitr::include_graphics("Figures/data_collection.png")
 
 ### Drone surveys
 
-Seaweed harvesting in the lagoon is systematically synchronized with low tide, as reduced water levels facilitate access to the cultivation lines. During the survey period (1–5 December 2025), low tides occurred between 04:25 and 07:54 local time, with sunrise around 05:00. Unmanned aerial vehicle (UAV) surveys were conducted prior to the onset of daily harvesting activities, targeting cultivation plots scheduled for harvest on the same day (@fig-workflow - Green Polygon). Early-morning flights were necessary both to coordinate with harvesting operations and to optimize imaging conditions. At this latitude (\~ 16°S), solar elevation increases rapidly after sunrise, enhancing sun glint on the water surface and degrading image quality over the cultivation structures. Conducting flights shortly after sunrise, combined with the use of a polarizing filter on the UAV camera, minimized sun glint and enabled the acquisition of high-quality imagery of the cultivation lines. Drone surveys were performed using a DJI Mavic 3 Enterprise, equipped with a 4/3 CMOS sensor and a 24 mm equivalent lens. The UAV was flown at an altitude 50 m above ground level, resulting in a ground sampling distance of around 1.5 cm. Flight plans were designed to cover the entire area of each targeted cultivation plot with 80% of front overlap and 70% side overlap. Imagery from each flight was processed using a structure-from-motion photogrammetry workflow implemented in Agisoft Metashape (v2.1.1) to generate orthomosaics. The same processing pipeline was consistently applied across all datasets. Initially, tie points were automatically identified both within individual images and across overlapping image pairs to construct a sparse point cloud. This preliminary cloud was subsequently filtered based on reprojection error to eliminate low-quality or noisy points. A dense point cloud was then generated using multi-view stereo reconstruction. From this dense representation, a continuous surface was interpolated to produce a digital surface model (DSM), which served as the geometric basis for the orthorectification and final orthomosaic generation.
+Seaweed harvesting in the lagoon is systematically synchronised with low tide, as reduced water levels facilitate access to the cultivation lines. During the survey period (1–5 December 2025), low tides occurred between 04:25 and 07:54 local time, with sunrise around 05:00; water levels were less than 1m during flights. Unmanned aerial vehicle (UAV) surveys were conducted prior to the onset of daily harvesting activities, targeting cultivation plots scheduled for harvest that day (@fig-workflow - Green sector). Early-morning flights were necessary both to coordinate with harvesting operations and to optimise imaging conditions. At this latitude (\~ 16°S), solar elevation increases rapidly after sunrise, enhancing sun glint on the water surface and degrading image quality over the cultivation structures. Conducting flights shortly after sunrise, combined with the use of a polarising filter on the UAV camera, minimised sun glint and enabled the acquisition of high-quality imagery of the cultivation lines. Drone surveys were performed using a DJI Mavic 3 Enterprise, equipped with a 4/3 CMOS sensor and a 24 mm equivalent lens. The UAV was flown at an altitude of 50 m above ground level, resulting in a ground sampling distance of around 1.5 cm. Flight plans were designed to cover the entire area of each targeted cultivation plot with 80% of front overlap and 70% side overlap. Imagery from each flight was processed using a structure-from-motion photogrammetry workflow implemented in Agisoft Metashape (v2.1.1) to generate orthomosaics. The same processing pipeline was consistently applied across all datasets. Initially, tie points were automatically identified both within individual images and across overlapping image pairs to construct a sparse point cloud. This preliminary cloud was subsequently filtered based on reprojection error to eliminate low-quality or noisy points. A dense point cloud was then generated using multi-view stereo reconstruction. From this dense representation, a continuous surface was interpolated to produce a digital surface model (DSM), which served as the geometric basis for orthorectification and the generation of the final orthomosaic.
 
 ### Spatial heterogeneity of the algae production
 
-Because the production of algae was not homogeneous across the lagoon, being able to identify cultivation plot that are more productive then others can help to better predict the production of each individual plot. The total production of each individual plot of the year 2025 have been retrieved from the Nosy Boraha seaweed company. it gathers for each single cultivation plot, the total freshweight harvested along the year. Each cultivation plot is associated with a unique identifier, which allowed production records to be matched to their corresponding spatial location using the lagoon cadaster.\
-For each plot ID, the average and standard deviation of the daily algal production, in kilogram.day^-1^.line^-1^ was assessed.
+Because the production of seaweed was not homogeneous across the lagoon, being able to identify cultivation plots that are more productive than others can help to better predict the production of each individual plot. The production of each individual plot of the year 2025 was retrieved from the Nosy Boraha seaweed company. The dataset records the total freshweight harvested per plot along the year. Each cultivation plot is associated with a unique identifier, which allowed production records to be matched to their corresponding spatial location using the seaweed-farming cadaster.
 
 ## Random Forest classification
 
-Seaweed cultivation lines were identified from drone imagery using a Random Forest classifier. This ensemble learning method, originally introduced by @Breiman2001RandomForests combines multiple decision trees built through bootstrap aggregation (bagging) to improve predictive performance and robustness. Random Forest has been widely applied in ecological remote sensing, including ecosystem mapping and aquaculture monitoring [@Oiry2021MPBWaterQuality; @roman2026pixels; @nurdin2023precision]. The approach relies on supervised classification, where the model is trained using labeled samples to learn relationships between predictor variables and target classes. At each iteration, a decision tree is constructed from a bootstrap sample of the training dataset, while a random subset of predictor variables is considered at each split. This dual randomization reduces overfitting and allows the model to effectively handle non-linear relationships and collinearity among predictors. Final pixel-wise classification is obtained through majority voting across all trees, whereby each tree contributes a class prediction and the most frequent class is assigned to the pixel.
+Seaweed cultivation lines were identified from drone imagery using a Random Forest classifier. This ensemble learning method, originally introduced by @Breiman2001RandomForests combines multiple decision trees built through bootstrap aggregation (bagging) to improve predictive performance and robustness. Random Forest has been widely applied in ecological remote sensing, including ecosystem mapping and aquaculture monitoring [@Oiry2021MPBWaterQuality; @roman2026pixels; @nurdin2023precision]. The approach relies on supervised classification, where the model is trained using labeled samples to learn relationships between predictor variables and target classes. At each iteration, a decision tree is constructed from a bootstrap sample of the training dataset, while a random subset of predictor variables is considered at each split. This dual randomisation reduces overfitting and allows the model to effectively handle non-linear relationships and collinearity among predictors. Final pixel-wise classification is obtained through majority voting across all trees, whereby each tree contributes a class prediction and the most frequent class is assigned to the pixel.
 
-For model construction, training data were derived at the pixel level from polygons manually assigned to the target classes and overlaid on the drone orthomosaic (@fig-workflow - Orange Polygon). All valid pixels intersecting each polygon were extracted as individual training samples. Band values were scaled to a common 0-1 range according to image bit depth before model fitting in order to reduce effect of brightness changes between flights. Class labels were taken directly from the polygon attribute table. To limit the effect of class imbalance, the number of pixels per class was limited by down-sampling all classes to the size of the least represented class; when applied, sampling was performed without replacement using a fixed random seed. Model tuning was conducted by randomized search over 20 hyperparameter combinations, including the number of trees (200-600), maximum tree depth (10, 20, 30, or unrestricted), minimum number of samples per terminal node (1, 2, or 4). Candidate models were evaluated using stratified cross-validation with up to five folds, with the exact number of folds constrained by the size of the least represented class, and balanced accuracy was used as the optimization criterion. The final classifier corresponded to the hyperparameter set that produced the highest cross-validated balanced accuracy, and internal model performance was summarized using a cross-validated confusion matrix. The retained Random Forest model comprised 500 trees, a maximum tree depth of 20,and a minimum of four samples per terminal node.
+For model construction, training data were derived at the pixel level from polygons manually assigned to the target classes and overlaid on the drone orthomosaic (@fig-workflow - Orange sector). All valid pixels intersecting each polygon were extracted as individual training samples. Band values were scaled to a common 0-1 range according to image bit depth before model fitting to reduce the effect of brightness changes between flights. Class labels were taken directly from the polygon attribute table. To limit the effect of class imbalance, the number of pixels per class was limited by down-sampling all classes to the size of the least represented class; when applied, sampling was performed without replacement using a fixed random seed. Model tuning was conducted by randomised search over 20 hyperparameter combinations, including the number of trees (200-600), maximum tree depth (10, 20, 30, or unrestricted), minimum number of samples per terminal node (1, 2, or 4). Candidate models were evaluated using stratified cross-validation with up to five folds, with the exact number of folds constrained by the size of the least represented class, and balanced accuracy was used as the optimisation criterion. The final classifier corresponded to the hyperparameter set that produced the highest cross-validated balanced accuracy, and internal model performance was summarised using a cross-validated confusion matrix. The retained Random Forest model comprised 500 trees, a maximum tree depth of 20,and a minimum of four samples per terminal node.
 
-This classification represents the first step of the MadaKapPy workflow, enabling the identification of seaweed pixels used to estimate the area covered within each cultivation plot.
+This classification represents the first step of the MadaKapPy workflow, enabling the identification of seaweed pixels used to estimate the area covered within each cultivation plot (@fig-workflow - Blue sector).
 
 ### Model building
 
-The training dataset was generated through manual photo-interpretation of drone imagery by three independent operators. Homogeneous areas were delineated and assigned to one of three classes: (i) seaweed cultivation (including both green and brown morphotypes), (ii) bottom substrate (comprising bare sediment and coral reef), and (iii) bottom vegetation (macrophytes naturally occurring within the lagoon). This multi-operator approach was adopted to improve the robustness and consistency of the training dataset while reducing potential bias associated with individual operators.
+The training dataset was generated through manual photo-interpretation of drone imagery by three independent operators. Homogeneous areas were delineated and assigned to one of three classes: (i) seaweed cultivation (including both green and brown *kappaphycus* morphotypes), (ii) bottom substrate (comprising bare sediment and coral reef), and (iii) bottom vegetation (macrophytes naturally occurring within the lagoon). This multi-operator approach was adopted to improve the robustness and consistency of the training dataset while reducing potential bias associated with individual operators.
 
 ### Model validation
 
@@ -775,15 +791,15 @@ The training dataset was generated through manual photo-interpretation of drone 
 
 ## Neural Network, From area to Biomass
 
-Estimating in situ seaweed biomass from drone imagery cannot rely on a simple univariate relationship. First, the relationship between surface area and biomass is inherently non-linear, as biomass scales with volume rather than area. Second, for a given surface coverage, variations in vertical growth (i.e., canopy thickness) can lead to substantial differences in biomass while remaining indistinguishable in nadir imagery. Third, biomass production may vary independently of areal extent due to factors such as epiphyte presence on cultivation lines, which can reduce overall productivity without necessarily affecting the observed surface coverage.
+Estimating in situ seaweed biomass from drone imagery cannot rely on a simple univariate relationship. First, the relationship between surface area and biomass is inherently non-linear, as biomass scales with volume rather than area. Second, for a given surface coverage, variations in vertical growth (i.e., canopy thickness) can lead to substantial differences in biomass while remaining indistinguishable in nadir imagery. Third, biomass production may vary independently of areal extent due to factors nutrient availability or hydrodynamic.
 
-To account for these sources of variability, a multivariate modeling approach was adopted based on a neural network framework (@fig-workflow - Yellow Polygon). Biomass was estimated as a function of several complementary predictors:
+To account for these sources of variability, a multivariate modeling approach was adopted based on a neural network framework (@fig-workflow - Yellow sector). Biomass was estimated as a function of several complementary predictors:
 
 $$Estimated_{Biomass} = f(Area_{Seaweed}, Density_{Plot}, Average_{Production} )$$
 
-$Estimated_{Biomass}$ was predicted using a plot-level feed-forward neural network trained from harvest records and drone-derived descriptors. The training dataset was assembled by matching observed harvest biomass to cultivation plots using farm and module identifiers. For each plot, the area occupied by *Kappaphycus* classes ($Area_{Seaweed}$) was calculated from the classified imagery. Percent cover ($Density_{Plot}$) was then derived as the proportion of the cadastral plot area occupied by these classes. To represent plot-specific production history, daily growth was calculated from harvested weight after normalization by culture duration and number of cultivation lines; these values were then summarized for each plot by their average ($Average_{Production}$).
+$Estimated_{Biomass}$ was predicted using a plot-level feed-forward neural network trained from harvest records and drone-derived descriptors. The training dataset was assembled by matching observed harvest biomass to cultivation plots using farm and module identifiers. For each plot, the area occupied by *Kappaphycus* classes ($Area_{Seaweed}$) was calculated from the classified imagery. Percent cover ($Density_{Plot}$) was then derived as the proportion of the cultivation plot area occupied by these classes. To represent plot-specific production history, daily growth was calculated from harvested weight after normalisation by culture duration and number of cultivation lines; these values were then summarised for each plot by their average ($Average_{Production}$).
 
-Observed biomass was log-transformed before model fitting to reduce skewness and stabilize variance, and all predictors were standardized using the mean and standard deviation of the training set. The network consisted of an input layer followed by two fully connected hidden layers with 32 and 16 units, respectively, using rectified linear unit activation functions, with a dropout layer (rate = 0.2) inserted between the hidden layers. Model training used the Adam optimizer (learning rate = 0.001) and mean squared error loss for 3000 epochs with a batch size of 16 and no shuffling of the training data. Predictions were subsequently back-transformed by exponentiation to return biomass estimates on the original scale.
+Observed biomass was log-transformed before model fitting to reduce skewness and stabilise variance, and all predictors were standardized using the mean and standard deviation of the training set. The network consisted of an input layer followed by two fully connected hidden layers with 32 and 16 units, respectively, using rectified linear unit activation functions, with a dropout layer (rate = 0.2) inserted between the hidden layers. Model training used the Adam optimiser (learning rate = 0.001) and mean squared error loss for 3000 epochs with a batch size of 16 and no shuffling of the training data. Predictions were subsequently back-transformed by exponentiation to return biomass estimates on the original scale.
 
 ```{r}
 #| label: fig-workflow
@@ -798,6 +814,282 @@ knitr::include_graphics("Figures/workflow/Workflow.png")
 
 ## MadaKapPy standalone application
 
-The full workflow was implemented in a standalone desktop application developed in Python to enable routine use without command-line interaction (@fig-workflow - Blue Polygon). The application provides a graphical user interface built with Flet and was packaged as a self-contained Windows executable together with the required Python dependencies, geospatial libraries, trained classification and biomass models, scaler files, and auxiliary lookup tables. Within the interface, users specify the input orthomosaic, area-of-interest shapefile, model directory, and output location, after which Random Forest classification and biomass estimation are executed sequentially through a single workflow. To support operational use, the application includes automated management of resource paths, progress reporting during computation, preview maps for visual inspection of classification outputs, and run-history logging to retain model settings and output file locations. This implementation was intended to make the processing chain reproducible and accessible to end users while preserving the underlying analytical workflow described above.
+The full workflow was implemented in a standalone desktop application developed in Python to enable routine use without command-line interaction (@fig-workflow - Blue sector). The application provides a graphical user interface built with Flet and was packaged as a self-contained Windows executable together with the required Python dependencies, geospatial libraries, trained classification and biomass models, scaler files, and auxiliary lookup tables. Within the interface, users specify the input orthomosaic, area-of-interest shapefile, model directory, and output location, after which Random Forest classification and biomass estimation are executed sequentially through a single workflow. To support operational use, the application includes automated management of resource paths, progress reporting during computation, preview maps for visual inspection of classification outputs, and run-history logging to retain model settings and output file locations. This implementation was intended to make the processing chain reproducible and accessible to end users while preserving the underlying analytical workflow described above.
+
+# Results
+
+## Spatio-temporal variability of seaweed production
+
+```{python}
+#| label: make-harvested-biomass-distribution
+#| eval: false
+#| echo: false
+#| warning: false
+#| message: false
+#| python.reticulate: false
+#| fig-width: 8.4
+#| fig-height: 4.3
+
+from pathlib import Path
+
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from scipy.interpolate import BSpline
+from scipy.stats import gaussian_kde
+
+PROJECT_ROOT = Path.cwd()
+HARVEST_DATA_CANDIDATES = [
+    PROJECT_ROOT / "Data" / "NBS - Recolte 2025.xlsx",
+    PROJECT_ROOT / "Data" / "NBS - Récolte 2025.xlsx",
+]
+HARVEST_DATA = next((path for path in HARVEST_DATA_CANDIDATES if path.exists()), None)
+if HARVEST_DATA is None:
+    raise FileNotFoundError(
+        "Harvest dataset not found. Checked: "
+        + ", ".join(str(path) for path in HARVEST_DATA_CANDIDATES)
+    )
+
+FIGURE_DIR = PROJECT_ROOT / "Figures"
+FIGURE_DIR.mkdir(exist_ok=True)
+OUT_PNG = FIGURE_DIR / "harvested_biomass_distribution_temporal_variability.png"
+
+harvest_df = pd.read_excel(HARVEST_DATA, sheet_name="Copie base donnée")
+harvest_df = harvest_df.assign(
+    Harvested_Weight=pd.to_numeric(harvest_df["Harvested_Weight"], errors="coerce"),
+    CultureDuration_days=pd.to_numeric(
+        harvest_df["CultureDuration_days"], errors="coerce"
+    ),
+    CultureDuration_weeks=pd.to_numeric(
+        harvest_df["CultureDuration_weeks"], errors="coerce"
+    ),
+    LinesCount=pd.to_numeric(harvest_df["LinesCount"], errors="coerce"),
+    HarvestingDate=pd.to_datetime(harvest_df["HarvestingDate"], errors="coerce"),
+)
+
+filtered_df = (
+    harvest_df.loc[
+        (harvest_df["CultureDuration_weeks"] >= 5)
+        & (harvest_df["LinesCount"] == 100)
+        & harvest_df["Harvested_Weight"].notna()
+        & (harvest_df["Harvested_Weight"] >= 0),
+        ["Harvested_Weight", "HarvestingDate"],
+    ]
+    .copy()
+)
+filtered_df = filtered_df.loc[filtered_df["HarvestingDate"].notna()].copy()
+filtered_df["harvested_biomass_kg"] = filtered_df["Harvested_Weight"].astype(float)
+filtered_df["harvest_month"] = (
+    filtered_df["HarvestingDate"].dt.to_period("M").dt.to_timestamp()
+)
+
+harvested_biomass_kg = filtered_df["harvested_biomass_kg"].to_numpy(dtype=float)
+if harvested_biomass_kg.size == 0:
+    raise ValueError("No harvested biomass values remain after applying the filters.")
+
+filtered_df["culture_duration_days"] = harvest_df.loc[
+    filtered_df.index, "CultureDuration_days"
+].astype(float)
+
+temporal_df = filtered_df.loc[
+    (filtered_df["harvested_biomass_kg"] >= 1000)
+    & filtered_df["culture_duration_days"].notna()
+    & (filtered_df["culture_duration_days"] > 0)
+].copy()
+if temporal_df.empty:
+    raise ValueError("No temporal-series values remain after excluding biomass below 1000 kg.")
+temporal_df["growth_rate_kg_day"] = (
+    temporal_df["harvested_biomass_kg"] / temporal_df["culture_duration_days"]
+)
+temporal_df["harvest_date"] = pd.to_datetime(temporal_df["HarvestingDate"])
+
+
+def fit_penalized_spline_gam(x, y, x_pred, degree=3, n_segments=6, penalty=25.0):
+    x = np.asarray(x, dtype=float)
+    y = np.asarray(y, dtype=float)
+    x_pred = np.asarray(x_pred, dtype=float)
+    x_min_local = float(np.min(x))
+    x_max_local = float(np.max(x))
+
+    internal_knots = np.linspace(x_min_local, x_max_local, n_segments + 1)[1:-1]
+    knot_vector = np.concatenate(
+        [
+            np.repeat(x_min_local, degree + 1),
+            internal_knots,
+            np.repeat(x_max_local, degree + 1),
+        ]
+    )
+    n_basis = len(knot_vector) - degree - 1
+    identity = np.eye(n_basis)
+    basis_functions = [
+        BSpline(knot_vector, identity[i], degree, extrapolate=True)
+        for i in range(n_basis)
+    ]
+
+    design_matrix = np.column_stack([basis(x) for basis in basis_functions])
+    prediction_matrix = np.column_stack([basis(x_pred) for basis in basis_functions])
+    difference_matrix = np.diff(np.eye(n_basis), n=2, axis=0)
+    penalty_matrix = penalty * (difference_matrix.T @ difference_matrix)
+
+    coefficients = np.linalg.solve(
+        design_matrix.T @ design_matrix + penalty_matrix,
+        design_matrix.T @ y,
+    )
+    return prediction_matrix @ coefficients
+
+data_range = np.ptp(harvested_biomass_kg)
+q25, q75 = np.percentile(harvested_biomass_kg, [25, 75])
+iqr = q75 - q25
+fd_bin_width = 2 * iqr / (harvested_biomass_kg.size ** (1 / 3))
+if not np.isfinite(fd_bin_width) or fd_bin_width <= 0:
+    fd_bin_width = max(data_range / 24, 1)
+
+fd_bins = int(np.ceil(data_range / fd_bin_width))
+n_bins = int(np.clip(fd_bins, 18, 36))
+
+x_min = 0
+x_max = max(100, np.ceil(harvested_biomass_kg.max() / 250) * 250)
+bin_edges = np.linspace(x_min, x_max, n_bins + 1)
+bin_width = bin_edges[1] - bin_edges[0]
+
+plt.rcParams.update(
+    {
+        "font.family": "DejaVu Sans",
+        "font.size": 10,
+        "axes.labelsize": 11,
+        "xtick.labelsize": 9,
+        "ytick.labelsize": 9,
+    }
+)
+
+fig, (ax_hist, ax_box) = plt.subplots(
+    1,
+    2,
+    figsize=(8.4, 4.3),
+    facecolor="white",
+    gridspec_kw={"width_ratios": [1.0, 1.18]},
+)
+
+counts, _, _ = ax_hist.hist(
+    harvested_biomass_kg,
+    bins=bin_edges,
+    color="#b9c1c9",
+    edgecolor="#4d4d4d",
+    linewidth=0.8,
+)
+
+if harvested_biomass_kg.size > 1 and np.nanstd(harvested_biomass_kg) > 0:
+    kde = gaussian_kde(harvested_biomass_kg)
+    x_kde = np.linspace(x_min, x_max, 400)
+    y_kde = kde(x_kde) * harvested_biomass_kg.size * bin_width
+    ax_hist.plot(x_kde, y_kde, color="#6b7280", linewidth=1.4, alpha=0.95)
+
+ax_hist.set_xlabel("Harvested biomass (kg)", color="#222222")
+ax_hist.set_ylabel("Frequency", color="#222222")
+ax_hist.set_xlim(x_min, x_max)
+ax_hist.margins(x=0)
+ax_hist.set_ylim(0, max(counts) * 1.08)
+
+x_tick_step = 500 if x_max <= 4000 else 1000
+ax_hist.set_xticks(np.arange(x_min, x_max + x_tick_step, x_tick_step))
+
+ax_box.set_xlabel("Harvesting date", color="#222222")
+ax_box.set_ylabel(r"Growth rate (kg day$^{-1}$)", color="#222222")
+growth_max = float(np.nanmax(temporal_df["growth_rate_kg_day"]))
+growth_min = float(np.nanmin(temporal_df["growth_rate_kg_day"]))
+growth_tick_step = 10 if growth_max <= 120 else 20
+growth_ymin = max(0, np.floor(growth_min / growth_tick_step) * growth_tick_step)
+growth_ymax = np.ceil(growth_max / growth_tick_step) * growth_tick_step
+ax_box.set_ylim(growth_ymin, growth_ymax)
+ax_box.set_yticks(np.arange(growth_ymin, growth_ymax + growth_tick_step, growth_tick_step))
+ax_box.margins(x=0.01)
+
+x_points = mdates.date2num(temporal_df["harvest_date"])
+y_points = temporal_df["growth_rate_kg_day"].to_numpy(dtype=float)
+ax_box.scatter(
+    temporal_df["harvest_date"],
+    y_points,
+    s=10,
+    facecolor="#9da8b3",
+    edgecolor="none",
+    alpha=0.28,
+    zorder=4,
+)
+
+x_pred = np.linspace(x_points.min(), x_points.max(), 400)
+y_gam = fit_penalized_spline_gam(
+    x_points,
+    y_points,
+    x_pred,
+    degree=3,
+    n_segments=6,
+    penalty=25.0,
+)
+ax_box.plot(
+    mdates.num2date(x_pred),
+    y_gam,
+    color="#8a6a50",
+    linewidth=2.0,
+    zorder=6,
+)
+date_min = temporal_df["harvest_date"].min()
+date_max = temporal_df["harvest_date"].max()
+ax_box.set_xlim(date_min - pd.Timedelta(days=4), date_max + pd.Timedelta(days=4))
+ax_box.xaxis.set_major_locator(mdates.MonthLocator())
+ax_box.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
+
+for ax in (ax_hist, ax_box):
+    ax.grid(axis="y", color="#ebebeb", linewidth=0.6)
+    ax.set_axisbelow(True)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    for spine in ("left", "bottom"):
+        ax.spines[spine].set_color("#333333")
+        ax.spines[spine].set_linewidth(0.9)
+    ax.tick_params(axis="both", colors="#333333", length=4, width=0.8)
+
+ax_hist.text(
+    0.0,
+    1.02,
+    "A",
+    transform=ax_hist.transAxes,
+    ha="left",
+    va="bottom",
+    fontsize=11,
+    fontweight="bold",
+    color="#222222",
+)
+ax_box.text(
+    0.0,
+    1.02,
+    "B",
+    transform=ax_box.transAxes,
+    ha="left",
+    va="bottom",
+    fontsize=11,
+    fontweight="bold",
+    color="#222222",
+)
+
+fig.tight_layout()
+fig.savefig(OUT_PNG, dpi=300, bbox_inches="tight", facecolor="white")
+plt.close(fig)
+```
+
+```{r}
+#| label: fig-harvested-biomass-distribution
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "Harvested biomass of cultivation modules in 2025. (A) Frequency distribution of harvested biomass. (B) Growth rate, computed as harvested biomass divided by cultivation duration (days) along the year 2025. Individual points represent harvested plots and the smooth curve shows a GAM temporal trend."
+#| out-width: "100%"
+
+knitr::include_graphics("Figures/harvested_biomass_distribution_temporal_variability.png")
+```
+
+## Random Forest Classification
+
+## Biomass estimation
 
 # Bibliography
