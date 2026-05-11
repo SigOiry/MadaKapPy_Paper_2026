@@ -821,6 +821,271 @@ The full workflow was implemented in a standalone desktop application developed 
 ## Spatio-temporal variability of seaweed production
 
 ```{python}
+#| label: make-plot-productivity-map
+#| eval: false
+#| echo: false
+#| warning: false
+#| message: false
+#| python.reticulate: false
+#| fig-width: 7.2
+#| fig-height: 6.6
+
+from pathlib import Path
+
+import contextily as ctx
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from matplotlib.colors import Normalize
+from matplotlib.cm import ScalarMappable
+from matplotlib.patches import Rectangle
+import matplotlib.patheffects as pe
+from matplotlib.ticker import FormatStrFormatter
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+
+PROJECT_ROOT = Path.cwd()
+HARVEST_DATA_CANDIDATES = [
+    PROJECT_ROOT / "Data" / "Biomass_estimations" / "Harvested_measurment" / "NBS - Récolte 2025.xlsx",
+    PROJECT_ROOT / "Data" / "NBS - Recolte 2025.xlsx",
+    PROJECT_ROOT / "Data" / "NBS - Récolte 2025.xlsx",
+]
+HARVEST_DATA = next((path for path in HARVEST_DATA_CANDIDATES if path.exists()), None)
+if HARVEST_DATA is None:
+    raise FileNotFoundError(
+        "Harvest dataset not found. Checked: "
+        + ", ".join(str(path) for path in HARVEST_DATA_CANDIDATES)
+    )
+
+CADASTER_DATA_CANDIDATES = [
+    PROJECT_ROOT / "Data" / "SHP" / "NBS_cadastre_Dec_2025.shp",
+    PROJECT_ROOT / "Data" / "shp" / "Cadaster_NBS_Dec2025.shp",
+]
+CADASTER_DATA = next((path for path in CADASTER_DATA_CANDIDATES if path.exists()), None)
+if CADASTER_DATA is None:
+    raise FileNotFoundError(
+        "Cadaster shapefile not found. Checked: "
+        + ", ".join(str(path) for path in CADASTER_DATA_CANDIDATES)
+    )
+
+EXTENT_MASK_CANDIDATES = [
+    PROJECT_ROOT / "Data" / "shp" / "extent_mask.shp",
+]
+EXTENT_MASK = next((path for path in EXTENT_MASK_CANDIDATES if path.exists()), None)
+if EXTENT_MASK is None:
+    raise FileNotFoundError(
+        "Extent mask shapefile not found. Checked: "
+        + ", ".join(str(path) for path in EXTENT_MASK_CANDIDATES)
+    )
+
+FIGURE_DIR = PROJECT_ROOT / "Figures"
+FIGURE_DIR.mkdir(exist_ok=True)
+OUT_PNG = FIGURE_DIR / "plot_productivity_map_2025.png"
+
+prod_df = pd.read_excel(HARVEST_DATA, sheet_name="Copie base donnée")
+prod_df = prod_df.assign(
+    FarmID=pd.to_numeric(prod_df["FarmID"], errors="coerce"),
+    ModuleNumber=pd.to_numeric(prod_df["ModuleNumber"], errors="coerce"),
+    Harvested_Weight=pd.to_numeric(prod_df["Harvested_Weight"], errors="coerce"),
+    CultureDuration_days=pd.to_numeric(prod_df["CultureDuration_days"], errors="coerce"),
+    LinesCount=pd.to_numeric(prod_df["LinesCount"], errors="coerce"),
+)
+prod_df = (
+    prod_df.loc[
+        prod_df["CultureMode"].eq("Cordes")
+        & prod_df["FarmID"].notna()
+        & prod_df["ModuleNumber"].notna()
+        & prod_df["Harvested_Weight"].notna()
+        & prod_df["CultureDuration_days"].notna()
+        & (prod_df["CultureDuration_days"] > 0)
+        & prod_df["LinesCount"].notna()
+        & (prod_df["LinesCount"] > 0)
+    ]
+    .copy()
+)
+prod_df["FarmID"] = prod_df["FarmID"].astype(int).astype(str).str.zfill(3)
+prod_df["ModuleNumber"] = prod_df["ModuleNumber"].astype(int)
+prod_df["Module_ID"] = prod_df["FarmID"] + "_" + prod_df["ModuleNumber"].astype(str)
+prod_df["Net_Production"] = prod_df["Harvested_Weight"] - 700.0
+prod_df["Growth_per_day"] = (
+    prod_df["Net_Production"] / prod_df["CultureDuration_days"] / prod_df["LinesCount"]
+)
+
+cadaster_gdf = (
+    gpd.read_file(CADASTER_DATA)
+    .loc[:, ["ID", "geometry"]]
+    .rename(columns={"ID": "Module_ID"})
+    .copy()
+)
+cadaster_extent_gdf = cadaster_gdf.to_crs(3857)
+
+summary_gdf = (
+    cadaster_gdf.merge(
+        prod_df.groupby("Module_ID", as_index=False)["Growth_per_day"].mean(),
+        on="Module_ID",
+        how="inner",
+    )
+    .rename(columns={"Growth_per_day": "Average_Growth_per_day"})
+    .pipe(gpd.GeoDataFrame, geometry="geometry", crs=cadaster_gdf.crs)
+)
+if summary_gdf.empty:
+    raise ValueError("No plot productivity values could be matched to the cadaster.")
+
+extent_mask_gdf = gpd.read_file(EXTENT_MASK).to_crs(3857)
+plot_gdf = summary_gdf.to_crs(3857)
+xmin, ymin, xmax, ymax = extent_mask_gdf.total_bounds
+extent_width = xmax - xmin
+extent_height = ymax - ymin
+
+cmap = plt.get_cmap("cividis")
+norm = Normalize(
+    vmin=float(plot_gdf["Average_Growth_per_day"].min()),
+    vmax=float(plot_gdf["Average_Growth_per_day"].max()),
+)
+
+fig_width = 6.6
+fig_height = fig_width * (extent_height / extent_width)
+fig, ax = plt.subplots(figsize=(fig_width, fig_height), facecolor="white")
+ax.set_facecolor("#f4f7f9")
+
+ax.set_xlim(xmin, xmax)
+ax.set_ylim(ymin, ymax)
+
+try:
+    ctx.add_basemap(
+        ax,
+        source=ctx.providers.Esri.WorldImagery,
+        attribution=False,
+        zoom="auto",
+        reset_extent=False,
+    )
+except Exception:
+    pass
+
+plot_gdf.plot(
+    ax=ax,
+    column="Average_Growth_per_day",
+    cmap=cmap,
+    linewidth=0.14,
+    edgecolor=(0.10, 0.13, 0.17, 0.22),
+    alpha=0.97,
+    legend=False,
+    zorder=3,
+)
+
+ax.set_xticks([])
+ax.set_yticks([])
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+# North arrow
+north_arrow = ax.annotate(
+    "N",
+    xy=(0.94, 0.90),
+    xytext=(0.94, 0.79),
+    xycoords="axes fraction",
+    textcoords="axes fraction",
+    ha="center",
+    va="center",
+    fontsize=13,
+    fontweight="bold",
+    color="white",
+    arrowprops=dict(arrowstyle="-|>", color="white", lw=1.8, shrinkA=0, shrinkB=0),
+)
+north_arrow.set_path_effects([pe.withStroke(linewidth=2.2, foreground=(0, 0, 0, 0.25))])
+
+# Simple 200 m scale bar
+scale_length_m = 200
+bar_x0 = xmin + 0.08 * extent_width
+bar_y0 = ymin + 0.145 * extent_height
+ax.plot(
+    [bar_x0, bar_x0 + scale_length_m],
+    [bar_y0, bar_y0],
+    color="white",
+    linewidth=3.4,
+    solid_capstyle="butt",
+    zorder=4,
+    path_effects=[pe.withStroke(linewidth=4.6, foreground=(0, 0, 0, 0.20))],
+)
+ax.plot(
+    [bar_x0, bar_x0],
+    [bar_y0 - 12, bar_y0 + 12],
+    color="white",
+    linewidth=1.6,
+    zorder=4,
+    path_effects=[pe.withStroke(linewidth=2.8, foreground=(0, 0, 0, 0.20))],
+)
+ax.plot(
+    [bar_x0 + scale_length_m, bar_x0 + scale_length_m],
+    [bar_y0 - 12, bar_y0 + 12],
+    color="white",
+    linewidth=1.6,
+    zorder=4,
+    path_effects=[pe.withStroke(linewidth=2.8, foreground=(0, 0, 0, 0.20))],
+)
+scale_text = ax.text(
+    bar_x0 + scale_length_m / 2,
+    bar_y0 + 32,
+    "200 m",
+    ha="center",
+    va="bottom",
+    fontsize=11,
+    color="white",
+    fontweight="bold",
+    zorder=4,
+)
+scale_text.set_path_effects([pe.withStroke(linewidth=2.2, foreground=(0, 0, 0, 0.25))])
+
+# Compact inset colorbar inside the map frame.
+legend_bg = Rectangle(
+    (0.63, 0.135),
+    0.29,
+    0.054,
+    transform=ax.transAxes,
+    facecolor=(1, 1, 1, 0.50),
+    edgecolor="none",
+    zorder=2,
+)
+ax.add_patch(legend_bg)
+
+cax = inset_axes(
+    ax,
+    width="23%",
+    height="2.8%",
+    loc="lower left",
+    bbox_to_anchor=(0.655, 0.151, 1, 1),
+    bbox_transform=ax.transAxes,
+    borderpad=0,
+)
+colorbar = fig.colorbar(
+    ScalarMappable(norm=norm, cmap=cmap),
+    cax=cax,
+    orientation="horizontal",
+)
+colorbar.outline.set_visible(False)
+colorbar.ax.tick_params(labelsize=8.4, length=2.6, width=0.7, pad=1.4)
+colorbar.set_ticks(np.linspace(norm.vmin, norm.vmax, 5))
+colorbar.ax.xaxis.set_major_formatter(FormatStrFormatter("%.2f"))
+cax.patch.set_facecolor((1, 1, 1, 0.0))
+cax.patch.set_edgecolor("none")
+
+fig.subplots_adjust(left=0.0, right=1.0, top=1.0, bottom=0.0)
+fig.savefig(OUT_PNG, dpi=400, bbox_inches="tight", pad_inches=0.0, facecolor="white")
+plt.close(fig)
+```
+
+```{r}
+#| label: fig-plot-productivity-map
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "Spatial variability in the productivity of seaweed modules in 2025. Polygon colors show the mean daily net production of each module."
+#| out-width: "100%"
+
+knitr::include_graphics("Figures/plot_productivity_map_2025.png")
+```
+
+```{python}
 #| label: make-harvested-biomass-distribution
 #| eval: false
 #| echo: false
@@ -832,11 +1097,13 @@ The full workflow was implemented in a standalone desktop application developed 
 
 from pathlib import Path
 
+import geopandas as gpd
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
-from scipy.interpolate import BSpline
+from pygam import LinearGAM, s
 from scipy.stats import gaussian_kde
 
 PROJECT_ROOT = Path.cwd()
@@ -851,12 +1118,52 @@ if HARVEST_DATA is None:
         + ", ".join(str(path) for path in HARVEST_DATA_CANDIDATES)
     )
 
+CADASTER_DIR = PROJECT_ROOT / "Data" / "shp"
+CADASTER_DATA_CANDIDATES = [
+    CADASTER_DIR / "sample_cadaster_temporal_analysis.shp",
+]
+
 FIGURE_DIR = PROJECT_ROOT / "Figures"
 FIGURE_DIR.mkdir(exist_ok=True)
 OUT_PNG = FIGURE_DIR / "harvested_biomass_distribution_temporal_variability.png"
 
+
+def load_position_lookup():
+    candidate_paths = [path for path in CADASTER_DATA_CANDIDATES if path.exists()]
+    if not candidate_paths:
+        candidate_paths = sorted(CADASTER_DIR.glob("*.shp"))
+
+    for path in candidate_paths:
+        cadaster_gdf = gpd.read_file(path)
+        if {"Farm_ID", "Module_ID", "position"}.issubset(cadaster_gdf.columns):
+            lookup_df = (
+                cadaster_gdf.rename(
+                    columns={"Farm_ID": "FarmID", "Module_ID": "ModuleNumber"}
+                )
+                .loc[:, ["ModuleNumber", "FarmID", "position"]]
+                .assign(
+                    ModuleNumber=lambda d: pd.to_numeric(
+                        d["ModuleNumber"], errors="coerce"
+                    ),
+                    FarmID=lambda d: pd.to_numeric(d["FarmID"], errors="coerce"),
+                    position=lambda d: d["position"].astype(str).str.strip().str.title(),
+                )
+                .loc[lambda d: d["position"].isin(["Back", "Front"])]
+                .drop_duplicates(subset=["ModuleNumber", "FarmID"])
+                .copy()
+            )
+            if not lookup_df.empty:
+                return lookup_df
+
+    raise FileNotFoundError(
+        "No cadaster shapefile with Farm_ID, Module_ID, and position fields was found."
+    )
+
+
 harvest_df = pd.read_excel(HARVEST_DATA, sheet_name="Copie base donnée")
 harvest_df = harvest_df.assign(
+    FarmID=pd.to_numeric(harvest_df["FarmID"], errors="coerce"),
+    ModuleNumber=pd.to_numeric(harvest_df["ModuleNumber"], errors="coerce"),
     Harvested_Weight=pd.to_numeric(harvest_df["Harvested_Weight"], errors="coerce"),
     CultureDuration_days=pd.to_numeric(
         harvest_df["CultureDuration_days"], errors="coerce"
@@ -867,6 +1174,7 @@ harvest_df = harvest_df.assign(
     LinesCount=pd.to_numeric(harvest_df["LinesCount"], errors="coerce"),
     HarvestingDate=pd.to_datetime(harvest_df["HarvestingDate"], errors="coerce"),
 )
+position_lookup = load_position_lookup()
 
 filtered_df = (
     harvest_df.loc[
@@ -880,63 +1188,61 @@ filtered_df = (
 )
 filtered_df = filtered_df.loc[filtered_df["HarvestingDate"].notna()].copy()
 filtered_df["harvested_biomass_kg"] = filtered_df["Harvested_Weight"].astype(float)
-filtered_df["harvest_month"] = (
-    filtered_df["HarvestingDate"].dt.to_period("M").dt.to_timestamp()
-)
 
 harvested_biomass_kg = filtered_df["harvested_biomass_kg"].to_numpy(dtype=float)
 if harvested_biomass_kg.size == 0:
     raise ValueError("No harvested biomass values remain after applying the filters.")
 
-filtered_df["culture_duration_days"] = harvest_df.loc[
-    filtered_df.index, "CultureDuration_days"
-].astype(float)
-
-temporal_df = filtered_df.loc[
-    (filtered_df["harvested_biomass_kg"] >= 1000)
-    & filtered_df["culture_duration_days"].notna()
-    & (filtered_df["culture_duration_days"] > 0)
-].copy()
+temporal_df = (
+    harvest_df.loc[
+        :,
+        [
+            "FarmID",
+            "ModuleNumber",
+            "LinesCount",
+            "CultureMode",
+            "HarvestingDate",
+            "CultureDuration_days",
+            "Harvested_Weight",
+        ],
+    ]
+    .loc[
+        lambda d: (d["Harvested_Weight"] > 1000)
+        & (d["LinesCount"] == 100)
+        & (d["CultureDuration_days"] > 40)
+    ]
+    .merge(position_lookup, on=["ModuleNumber", "FarmID"], how="left")
+    .loc[lambda d: d["position"].notna()]
+    .copy()
+)
 if temporal_df.empty:
-    raise ValueError("No temporal-series values remain after excluding biomass below 1000 kg.")
-temporal_df["growth_rate_kg_day"] = (
-    temporal_df["harvested_biomass_kg"] / temporal_df["culture_duration_days"]
+    raise ValueError(
+        "No temporal-series values remain after filtering and joining module positions."
+    )
+temporal_df["DGR"] = (
+    np.log(temporal_df["Harvested_Weight"] / 700.0)
+    / temporal_df["CultureDuration_days"]
+    * 100.0
 )
 temporal_df["harvest_date"] = pd.to_datetime(temporal_df["HarvestingDate"])
+temporal_df = temporal_df.sort_values("harvest_date").copy()
 
 
-def fit_penalized_spline_gam(x, y, x_pred, degree=3, n_segments=6, penalty=25.0):
-    x = np.asarray(x, dtype=float)
+def fit_linear_gam(x, y, x_pred, n_splines=8, lam_grid=None):
+    x = np.asarray(x, dtype=float).reshape(-1, 1)
     y = np.asarray(y, dtype=float)
-    x_pred = np.asarray(x_pred, dtype=float)
-    x_min_local = float(np.min(x))
-    x_max_local = float(np.max(x))
+    x_pred = np.asarray(x_pred, dtype=float).reshape(-1, 1)
 
-    internal_knots = np.linspace(x_min_local, x_max_local, n_segments + 1)[1:-1]
-    knot_vector = np.concatenate(
-        [
-            np.repeat(x_min_local, degree + 1),
-            internal_knots,
-            np.repeat(x_max_local, degree + 1),
-        ]
-    )
-    n_basis = len(knot_vector) - degree - 1
-    identity = np.eye(n_basis)
-    basis_functions = [
-        BSpline(knot_vector, identity[i], degree, extrapolate=True)
-        for i in range(n_basis)
-    ]
+    if lam_grid is None:
+        lam_grid = np.logspace(-3, 3, 15)
 
-    design_matrix = np.column_stack([basis(x) for basis in basis_functions])
-    prediction_matrix = np.column_stack([basis(x_pred) for basis in basis_functions])
-    difference_matrix = np.diff(np.eye(n_basis), n=2, axis=0)
-    penalty_matrix = penalty * (difference_matrix.T @ difference_matrix)
+    gam = LinearGAM(s(0, n_splines=n_splines, spline_order=3))
+    gam.gridsearch(x, y, lam=lam_grid, progress=False)
 
-    coefficients = np.linalg.solve(
-        design_matrix.T @ design_matrix + penalty_matrix,
-        design_matrix.T @ y,
-    )
-    return prediction_matrix @ coefficients
+    y_pred = gam.predict(x_pred)
+    ci = gam.confidence_intervals(x_pred, width=0.95)
+    return gam, y_pred, ci[:, 0], ci[:, 1]
+
 
 data_range = np.ptp(harvested_biomass_kg)
 q25, q75 = np.percentile(harvested_biomass_kg, [25, 75])
@@ -956,26 +1262,27 @@ bin_width = bin_edges[1] - bin_edges[0]
 plt.rcParams.update(
     {
         "font.family": "DejaVu Sans",
-        "font.size": 10,
-        "axes.labelsize": 11,
+        "font.size": 9.5,
+        "axes.labelsize": 10.5,
         "xtick.labelsize": 9,
         "ytick.labelsize": 9,
+        "legend.fontsize": 9,
     }
 )
 
-fig, (ax_hist, ax_box) = plt.subplots(
+fig, (ax_hist, ax_time) = plt.subplots(
     1,
     2,
     figsize=(8.4, 4.3),
     facecolor="white",
-    gridspec_kw={"width_ratios": [1.0, 1.18]},
+    gridspec_kw={"width_ratios": [1.0, 1.25]},
 )
 
 counts, _, _ = ax_hist.hist(
     harvested_biomass_kg,
     bins=bin_edges,
-    color="#b9c1c9",
-    edgecolor="#4d4d4d",
+    color="#ccd4dd",
+    edgecolor="#4b5563",
     linewidth=0.8,
 )
 
@@ -983,10 +1290,18 @@ if harvested_biomass_kg.size > 1 and np.nanstd(harvested_biomass_kg) > 0:
     kde = gaussian_kde(harvested_biomass_kg)
     x_kde = np.linspace(x_min, x_max, 400)
     y_kde = kde(x_kde) * harvested_biomass_kg.size * bin_width
-    ax_hist.plot(x_kde, y_kde, color="#6b7280", linewidth=1.4, alpha=0.95)
+    ax_hist.plot(x_kde, y_kde, color="#5f6b7a", linewidth=1.6, alpha=0.95)
 
-ax_hist.set_xlabel("Harvested biomass (kg)", color="#222222")
-ax_hist.set_ylabel("Frequency", color="#222222")
+ax_hist.axvline(
+    np.nanmedian(harvested_biomass_kg),
+    color="#475569",
+    linewidth=1.0,
+    linestyle=(0, (4, 3)),
+    alpha=0.9,
+)
+
+ax_hist.set_xlabel("Harvested biomass (kg)", color="#1f2933")
+ax_hist.set_ylabel("Frequency", color="#1f2933")
 ax_hist.set_xlim(x_min, x_max)
 ax_hist.margins(x=0)
 ax_hist.set_ylim(0, max(counts) * 1.08)
@@ -994,60 +1309,92 @@ ax_hist.set_ylim(0, max(counts) * 1.08)
 x_tick_step = 500 if x_max <= 4000 else 1000
 ax_hist.set_xticks(np.arange(x_min, x_max + x_tick_step, x_tick_step))
 
-ax_box.set_xlabel("Harvesting date", color="#222222")
-ax_box.set_ylabel(r"Growth rate (kg day$^{-1}$)", color="#222222")
-growth_max = float(np.nanmax(temporal_df["growth_rate_kg_day"]))
-growth_min = float(np.nanmin(temporal_df["growth_rate_kg_day"]))
-growth_tick_step = 10 if growth_max <= 120 else 20
-growth_ymin = max(0, np.floor(growth_min / growth_tick_step) * growth_tick_step)
-growth_ymax = np.ceil(growth_max / growth_tick_step) * growth_tick_step
-ax_box.set_ylim(growth_ymin, growth_ymax)
-ax_box.set_yticks(np.arange(growth_ymin, growth_ymax + growth_tick_step, growth_tick_step))
-ax_box.margins(x=0.01)
+position_colors = {
+    "Back": "#bc6c25",
+    "Front": "#2a7f9e",
+}
+position_labels = {
+    "Back": "Est",
+    "Front": "West",
+}
+ax_time.set_xlabel("Harvesting date", color="#1f2933")
+ax_time.set_ylabel(r"Daily growth rate (% d$^{-1}$)", color="#1f2933")
+dgr_min = float(np.nanmin(temporal_df["DGR"]))
+dgr_max = float(np.nanmax(temporal_df["DGR"]))
+ax_time.set_ylim(max(0, np.floor((dgr_min - 0.2) * 2) / 2), np.ceil((dgr_max + 0.2) * 2) / 2)
+ax_time.yaxis.set_major_locator(mticker.MultipleLocator(0.5))
+ax_time.margins(x=0.01)
 
-x_points = mdates.date2num(temporal_df["harvest_date"])
-y_points = temporal_df["growth_rate_kg_day"].to_numpy(dtype=float)
-ax_box.scatter(
-    temporal_df["harvest_date"],
-    y_points,
-    s=10,
-    facecolor="#9da8b3",
-    edgecolor="none",
-    alpha=0.28,
-    zorder=4,
-)
+for position, group_df in temporal_df.groupby("position", sort=False):
+    group_df = group_df.sort_values("harvest_date").copy()
+    x_points = mdates.date2num(group_df["harvest_date"])
+    y_points = group_df["DGR"].to_numpy(dtype=float)
+    x_pred = np.linspace(x_points.min(), x_points.max(), 300)
+    _, y_smooth, y_lower, y_upper = fit_linear_gam(
+        x_points,
+        y_points,
+        x_pred,
+        n_splines=8,
+        lam_grid=np.logspace(-3, 3, 15),
+    )
+    color = position_colors.get(position, "#4b5563")
 
-x_pred = np.linspace(x_points.min(), x_points.max(), 400)
-y_gam = fit_penalized_spline_gam(
-    x_points,
-    y_points,
-    x_pred,
-    degree=3,
-    n_segments=6,
-    penalty=25.0,
-)
-ax_box.plot(
-    mdates.num2date(x_pred),
-    y_gam,
-    color="#8a6a50",
-    linewidth=2.0,
-    zorder=6,
-)
+    ax_time.scatter(
+        group_df["harvest_date"],
+        y_points,
+        s=21,
+        facecolor=color,
+        edgecolor="white",
+        linewidth=0.35,
+        alpha=0.5,
+        zorder=4,
+        label="_nolegend_",
+    )
+    ax_time.fill_between(
+        mdates.num2date(x_pred),
+        y_lower,
+        y_upper,
+        color=color,
+        alpha=0.14,
+        linewidth=0,
+        zorder=2,
+    )
+    ax_time.plot(
+        mdates.num2date(x_pred),
+        y_smooth,
+        color=color,
+        linewidth=2.2,
+        label=position_labels.get(position, position),
+        zorder=6,
+    )
+
 date_min = temporal_df["harvest_date"].min()
 date_max = temporal_df["harvest_date"].max()
-ax_box.set_xlim(date_min - pd.Timedelta(days=4), date_max + pd.Timedelta(days=4))
-ax_box.xaxis.set_major_locator(mdates.MonthLocator())
-ax_box.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
+ax_time.set_xlim(date_min - pd.Timedelta(days=4), date_max + pd.Timedelta(days=4))
+ax_time.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
+ax_time.xaxis.set_minor_locator(mdates.MonthLocator())
+ax_time.xaxis.set_major_formatter(mdates.DateFormatter("%b"))
+ax_time.legend(
+    frameon=False,
+    loc="upper right",
+    ncol=2,
+    handlelength=1.8,
+    handletextpad=0.6,
+    columnspacing=1.2,
+    borderaxespad=0.2,
+)
 
-for ax in (ax_hist, ax_box):
-    ax.grid(axis="y", color="#ebebeb", linewidth=0.6)
+for ax in (ax_hist, ax_time):
+    ax.grid(axis="y", color="#e6eaef", linewidth=0.7)
     ax.set_axisbelow(True)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     for spine in ("left", "bottom"):
-        ax.spines[spine].set_color("#333333")
+        ax.spines[spine].set_color("#334155")
         ax.spines[spine].set_linewidth(0.9)
-    ax.tick_params(axis="both", colors="#333333", length=4, width=0.8)
+    ax.tick_params(axis="both", colors="#334155", length=4, width=0.8)
+
+ax_time.grid(axis="x", which="major", color="#f2f4f7", linewidth=0.45)
 
 ax_hist.text(
     0.0,
@@ -1058,18 +1405,18 @@ ax_hist.text(
     va="bottom",
     fontsize=11,
     fontweight="bold",
-    color="#222222",
+    color="#1f2933",
 )
-ax_box.text(
+ax_time.text(
     0.0,
     1.02,
     "B",
-    transform=ax_box.transAxes,
+    transform=ax_time.transAxes,
     ha="left",
     va="bottom",
     fontsize=11,
     fontweight="bold",
-    color="#222222",
+    color="#1f2933",
 )
 
 fig.tight_layout()
@@ -1082,10 +1429,10 @@ plt.close(fig)
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Harvested biomass of cultivation modules in 2025. (A) Frequency distribution of harvested biomass. (B) Growth rate, computed as harvested biomass divided by cultivation duration (days) along the year 2025. Individual points represent harvested plots and the smooth curve shows a GAM temporal trend."
+#| fig-cap: "Harvested biomass of cultivation modules in 2025. (A) Frequency distribution of harvested biomass. (B) Daily growth rate of harvested modules through 2025. Colors distinguish Est and West module positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals."
 #| out-width: "100%"
 
-knitr::include_graphics("Figures/harvested_biomass_distribution_temporal_variability.png")
+knitr::include_graphics("Figures/harvested_biomass_distribution_temporal_variability_low_k5.png")
 ```
 
 ## Random Forest Classification
