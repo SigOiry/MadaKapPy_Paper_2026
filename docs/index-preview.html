@@ -11,7 +11,7 @@
     <meta name="author" content="Ravo A. Mahandrisoa Randriamaroson">
     <meta name="author" content="Anthony">
     <meta name="author" content="Laurent Barillé">
-    <meta name="dcterms.date" content="2026-05-11">
+    <meta name="dcterms.date" content="2026-05-13">
     <meta name="keywords" content="To be Written">
 
     <title>MadaKapPy: A tool for in situ biomass estimation of kappaphycus cultures</title>
@@ -202,10 +202,10 @@
 <meta name="citation_author" content="Ravo A. Mahandrisoa Randriamaroson">
 <meta name="citation_author" content="Anthony ">
 <meta name="citation_author" content="Laurent Barillé">
-<meta name="citation_publication_date" content="2026-05-11">
-<meta name="citation_cover_date" content="2026-05-11">
+<meta name="citation_publication_date" content="2026-05-13">
+<meta name="citation_cover_date" content="2026-05-13">
 <meta name="citation_year" content="2026">
-<meta name="citation_online_date" content="2026-05-11">
+<meta name="citation_online_date" content="2026-05-13">
 <meta name="citation_language" content="en">
 <meta name="citation_journal_title" content="Remote Sensing of Environment">
 <meta name="citation_reference" content="citation_title=What can be learned from fishers’ perceptions for fishery management planning? Case study insights from sainte-marie, madagascar;,citation_author=Thaı̈s A Bernos;,citation_author=Clodio Travouck;,citation_author=Naly Ramasinoro;,citation_author=Dylan J Fraser;,citation_author=Barbara Mathevon;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_issue=11;,citation_volume=16;,citation_journal_title=Plos one;,citation_publisher=Public Library of Science San Francisco, CA USA;">
@@ -313,7 +313,7 @@
                 <div>
             <div class="quarto-title-meta-heading">Published</div>
             <div class="quarto-title-meta-contents">
-              <p class="date">May 11, 2026</p>
+              <p class="date">May 13, 2026</p>
             </div>
           </div>
           
@@ -1150,6 +1150,7 @@ Figure&nbsp;3: Schematic representation of the workflow implemented for the deve
 <h1 data-number="3"><span class="header-section-number">3</span> Results</h1>
 <section id="spatio-temporal-variability-of-seaweed-production" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="spatio-temporal-variability-of-seaweed-production"><span class="header-section-number">3.1</span> Spatio-temporal variability of seaweed production</h2>
+<p>Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (@fig-plot-productivity-map). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached approximately 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was visible both at the scale of individual module but also between module modules, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell" data-python.reticulate="false">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1394,352 +1395,600 @@ Figure&nbsp;3: Schematic representation of the workflow implemented for the deve
 <span id="cb24-241"><a href="#cb24-241" aria-hidden="true" tabindex="-1"></a>fig.savefig(OUT_PNG, dpi<span class="op">=</span><span class="dv">400</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>, pad_inches<span class="op">=</span><span class="fl">0.0</span>, facecolor<span class="op">=</span><span class="st">"white"</span>)</span>
 <span id="cb24-242"><a href="#cb24-242" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="cell-fig-plot-productivity-map" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/plot_productivity_map_2025.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scico)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(grid)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>project_root <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>()</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>harvest_data <span class="ot">&lt;-</span> <span class="st">"Data/NBS - Récolte 2025.xlsx"</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>cadaster_data <span class="ot">&lt;-</span> <span class="st">"Data/shp/Cadaster_NBS_Dec2025.shp"</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>extent_mask <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  project_root,</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Data"</span>,</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"shp"</span>,</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"extent_mask.shp"</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>background_raster <span class="ot">&lt;-</span> <span class="st">"Data/S2/T39KUB_20260509T070219_TCI_10m.jp2"</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>figure_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(project_root, <span class="st">"Figures"</span>)</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(figure_dir, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>out_png <span class="ot">&lt;-</span> <span class="fu">file.path</span>(figure_dir, <span class="st">"Map_Production/plot_productivity_map_2025.png"</span>)</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>out_png_svg <span class="ot">&lt;-</span> <span class="fu">file.path</span>(figure_dir, <span class="st">"Map_Production/plot_productivity_map_2025_2.svg"</span>)</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>prod_df <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>  harvest_data,</span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">sheet =</span> <span class="st">"Copie base donnée"</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">FarmID =</span> <span class="fu">as.numeric</span>(FarmID),</span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">ModuleNumber =</span> <span class="fu">as.numeric</span>(ModuleNumber),</span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">Harvested_Weight =</span> <span class="fu">as.numeric</span>(Harvested_Weight),</span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">CultureDuration_days =</span> <span class="fu">as.numeric</span>(CultureDuration_days),</span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">LinesCount =</span> <span class="fu">as.numeric</span>(LinesCount)</span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>    CultureMode <span class="sc">==</span> <span class="st">"Cordes"</span>,</span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(FarmID),</span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(ModuleNumber),</span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(Harvested_Weight),</span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(CultureDuration_days),</span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a>    CultureDuration_days <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(LinesCount),</span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a>    LinesCount <span class="sc">==</span> <span class="dv">100</span>,</span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a>    Harvested_Weight <span class="sc">&gt;</span> <span class="dv">1000</span></span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb25-56"><a href="#cb25-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb25-57"><a href="#cb25-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">FarmID =</span> <span class="fu">str_pad</span>(<span class="fu">as.integer</span>(FarmID), <span class="at">width =</span> <span class="dv">3</span>, <span class="at">pad =</span> <span class="st">"0"</span>),</span>
+<span id="cb25-58"><a href="#cb25-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">ModuleNumber =</span> <span class="fu">as.integer</span>(ModuleNumber),</span>
+<span id="cb25-59"><a href="#cb25-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">Module_ID =</span> <span class="fu">paste0</span>(FarmID, <span class="st">"_"</span>, ModuleNumber),</span>
+<span id="cb25-60"><a href="#cb25-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">Net_Production =</span> Harvested_Weight <span class="sc">-</span> <span class="dv">700</span>,</span>
+<span id="cb25-61"><a href="#cb25-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">DGR =</span> (<span class="fu">log</span>(Harvested_Weight <span class="sc">/</span> <span class="dv">700</span>)<span class="sc">/</span>CultureDuration_days)<span class="sc">*</span><span class="dv">100</span>,</span>
+<span id="cb25-62"><a href="#cb25-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">Growth_per_day =</span> Net_Production <span class="sc">/</span> CultureDuration_days <span class="sc">/</span> LinesCount</span>
+<span id="cb25-63"><a href="#cb25-63" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-64"><a href="#cb25-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-65"><a href="#cb25-65" aria-hidden="true" tabindex="-1"></a>cadaster_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(cadaster_data, <span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-66"><a href="#cb25-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ID, geometry) <span class="sc">%&gt;%</span></span>
+<span id="cb25-67"><a href="#cb25-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Module_ID =</span> ID)</span>
+<span id="cb25-68"><a href="#cb25-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-69"><a href="#cb25-69" aria-hidden="true" tabindex="-1"></a>summary_sf <span class="ot">&lt;-</span> cadaster_sf <span class="sc">%&gt;%</span></span>
+<span id="cb25-70"><a href="#cb25-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(</span>
+<span id="cb25-71"><a href="#cb25-71" aria-hidden="true" tabindex="-1"></a>    prod_df <span class="sc">%&gt;%</span></span>
+<span id="cb25-72"><a href="#cb25-72" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(Module_ID) <span class="sc">%&gt;%</span></span>
+<span id="cb25-73"><a href="#cb25-73" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(</span>
+<span id="cb25-74"><a href="#cb25-74" aria-hidden="true" tabindex="-1"></a>        <span class="at">Average_Growth_per_day =</span> <span class="fu">mean</span>(Growth_per_day, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb25-75"><a href="#cb25-75" aria-hidden="true" tabindex="-1"></a>        <span class="at">Average_DGR =</span> <span class="fu">mean</span>(DGR, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb25-76"><a href="#cb25-76" aria-hidden="true" tabindex="-1"></a>        <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb25-77"><a href="#cb25-77" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb25-78"><a href="#cb25-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> <span class="st">"Module_ID"</span></span>
+<span id="cb25-79"><a href="#cb25-79" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-80"><a href="#cb25-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-81"><a href="#cb25-81" aria-hidden="true" tabindex="-1"></a>background <span class="ot">&lt;-</span> <span class="fu">rast</span>(background_raster)</span>
+<span id="cb25-82"><a href="#cb25-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-83"><a href="#cb25-83" aria-hidden="true" tabindex="-1"></a>extent_mask_sf <span class="ot">&lt;-</span> <span class="fu">st_read</span>(extent_mask, <span class="at">quiet =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-84"><a href="#cb25-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">crs</span>(background))</span>
+<span id="cb25-85"><a href="#cb25-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-86"><a href="#cb25-86" aria-hidden="true" tabindex="-1"></a>plot_sf <span class="ot">&lt;-</span> summary_sf <span class="sc">%&gt;%</span></span>
+<span id="cb25-87"><a href="#cb25-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="fu">crs</span>(background))</span>
+<span id="cb25-88"><a href="#cb25-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-89"><a href="#cb25-89" aria-hidden="true" tabindex="-1"></a>bbox <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(extent_mask_sf)</span>
+<span id="cb25-90"><a href="#cb25-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-91"><a href="#cb25-91" aria-hidden="true" tabindex="-1"></a>xmin <span class="ot">&lt;-</span> bbox[[<span class="st">"xmin"</span>]]</span>
+<span id="cb25-92"><a href="#cb25-92" aria-hidden="true" tabindex="-1"></a>xmax <span class="ot">&lt;-</span> bbox[[<span class="st">"xmax"</span>]]</span>
+<span id="cb25-93"><a href="#cb25-93" aria-hidden="true" tabindex="-1"></a>ymin <span class="ot">&lt;-</span> bbox[[<span class="st">"ymin"</span>]]</span>
+<span id="cb25-94"><a href="#cb25-94" aria-hidden="true" tabindex="-1"></a>ymax <span class="ot">&lt;-</span> bbox[[<span class="st">"ymax"</span>]]</span>
+<span id="cb25-95"><a href="#cb25-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-96"><a href="#cb25-96" aria-hidden="true" tabindex="-1"></a>background <span class="ot">&lt;-</span> <span class="fu">crop</span>(</span>
+<span id="cb25-97"><a href="#cb25-97" aria-hidden="true" tabindex="-1"></a>  background,</span>
+<span id="cb25-98"><a href="#cb25-98" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ext</span>(xmin, xmax, ymin, ymax)</span>
+<span id="cb25-99"><a href="#cb25-99" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-100"><a href="#cb25-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-101"><a href="#cb25-101" aria-hidden="true" tabindex="-1"></a>extent_width <span class="ot">&lt;-</span> xmax <span class="sc">-</span> xmin</span>
+<span id="cb25-102"><a href="#cb25-102" aria-hidden="true" tabindex="-1"></a>extent_height <span class="ot">&lt;-</span> ymax <span class="sc">-</span> ymin</span>
+<span id="cb25-103"><a href="#cb25-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-104"><a href="#cb25-104" aria-hidden="true" tabindex="-1"></a>fig_width <span class="ot">&lt;-</span> <span class="fl">6.6</span></span>
+<span id="cb25-105"><a href="#cb25-105" aria-hidden="true" tabindex="-1"></a>fig_height <span class="ot">&lt;-</span> fig_width <span class="sc">*</span> (extent_height <span class="sc">/</span> extent_width)</span>
+<span id="cb25-106"><a href="#cb25-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-107"><a href="#cb25-107" aria-hidden="true" tabindex="-1"></a>scale_length_m <span class="ot">&lt;-</span> <span class="dv">400</span></span>
+<span id="cb25-108"><a href="#cb25-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-109"><a href="#cb25-109" aria-hidden="true" tabindex="-1"></a>bar_x0 <span class="ot">&lt;-</span> xmin <span class="sc">+</span> <span class="fl">0.08</span> <span class="sc">*</span> extent_width</span>
+<span id="cb25-110"><a href="#cb25-110" aria-hidden="true" tabindex="-1"></a>bar_y0 <span class="ot">&lt;-</span> ymin <span class="sc">+</span> <span class="fl">0.145</span> <span class="sc">*</span> extent_height</span>
+<span id="cb25-111"><a href="#cb25-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-112"><a href="#cb25-112" aria-hidden="true" tabindex="-1"></a>arrow_x <span class="ot">&lt;-</span> xmin <span class="sc">+</span> <span class="fl">0.94</span> <span class="sc">*</span> extent_width</span>
+<span id="cb25-113"><a href="#cb25-113" aria-hidden="true" tabindex="-1"></a>arrow_y0 <span class="ot">&lt;-</span> ymin <span class="sc">+</span> <span class="fl">0.79</span> <span class="sc">*</span> extent_height</span>
+<span id="cb25-114"><a href="#cb25-114" aria-hidden="true" tabindex="-1"></a>arrow_y1 <span class="ot">&lt;-</span> ymin <span class="sc">+</span> <span class="fl">0.90</span> <span class="sc">*</span> extent_height</span>
+<span id="cb25-115"><a href="#cb25-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-116"><a href="#cb25-116" aria-hidden="true" tabindex="-1"></a>legend_min <span class="ot">&lt;-</span> <span class="fu">min</span>(plot_sf<span class="sc">$</span>Average_DGR, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-117"><a href="#cb25-117" aria-hidden="true" tabindex="-1"></a>legend_max <span class="ot">&lt;-</span> <span class="fu">max</span>(plot_sf<span class="sc">$</span>Average_DGR, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-118"><a href="#cb25-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-119"><a href="#cb25-119" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb25-120"><a href="#cb25-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster_rgb</span>(</span>
+<span id="cb25-121"><a href="#cb25-121" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> background,</span>
+<span id="cb25-122"><a href="#cb25-122" aria-hidden="true" tabindex="-1"></a>    <span class="at">r =</span> <span class="dv">1</span>,</span>
+<span id="cb25-123"><a href="#cb25-123" aria-hidden="true" tabindex="-1"></a>    <span class="at">g =</span> <span class="dv">2</span>,</span>
+<span id="cb25-124"><a href="#cb25-124" aria-hidden="true" tabindex="-1"></a>    <span class="at">b =</span> <span class="dv">3</span>,</span>
+<span id="cb25-125"><a href="#cb25-125" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_col_value =</span> <span class="dv">255</span></span>
+<span id="cb25-126"><a href="#cb25-126" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-127"><a href="#cb25-127" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(</span>
+<span id="cb25-128"><a href="#cb25-128" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> plot_sf,</span>
+<span id="cb25-129"><a href="#cb25-129" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> Average_DGR),</span>
+<span id="cb25-130"><a href="#cb25-130" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.14</span>,</span>
+<span id="cb25-131"><a href="#cb25-131" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="fu">alpha</span>(<span class="st">"#1a212b"</span>, <span class="fl">0.22</span>),</span>
+<span id="cb25-132"><a href="#cb25-132" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.97</span></span>
+<span id="cb25-133"><a href="#cb25-133" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-134"><a href="#cb25-134" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_scico</span>(</span>
+<span id="cb25-135"><a href="#cb25-135" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">"batlow"</span>,</span>
+<span id="cb25-136"><a href="#cb25-136" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(legend_min, legend_max),</span>
+<span id="cb25-137"><a href="#cb25-137" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">3</span>),</span>
+<span id="cb25-138"><a href="#cb25-138" aria-hidden="true" tabindex="-1"></a>    <span class="at">trans =</span> <span class="st">"exp"</span>,</span>
+<span id="cb25-139"><a href="#cb25-139" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">accuracy =</span> <span class="fl">0.01</span>),</span>
+<span id="cb25-140"><a href="#cb25-140" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="cn">NULL</span>,</span>
+<span id="cb25-141"><a href="#cb25-141" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="fu">guide_colorbar</span>(</span>
+<span id="cb25-142"><a href="#cb25-142" aria-hidden="true" tabindex="-1"></a>      <span class="at">direction =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb25-143"><a href="#cb25-143" aria-hidden="true" tabindex="-1"></a>      <span class="at">barwidth =</span> <span class="fu">unit</span>(<span class="fl">3.4</span>, <span class="st">"cm"</span>),</span>
+<span id="cb25-144"><a href="#cb25-144" aria-hidden="true" tabindex="-1"></a>      <span class="at">barheight =</span> <span class="fu">unit</span>(<span class="fl">0.18</span>, <span class="st">"cm"</span>),</span>
+<span id="cb25-145"><a href="#cb25-145" aria-hidden="true" tabindex="-1"></a>      <span class="at">ticks =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb25-146"><a href="#cb25-146" aria-hidden="true" tabindex="-1"></a>      <span class="at">frame.colour =</span> <span class="cn">NA</span>,</span>
+<span id="cb25-147"><a href="#cb25-147" aria-hidden="true" tabindex="-1"></a>      <span class="at">label.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb25-148"><a href="#cb25-148" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-149"><a href="#cb25-149" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-150"><a href="#cb25-150" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(</span>
+<span id="cb25-151"><a href="#cb25-151" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(xmin, xmax),</span>
+<span id="cb25-152"><a href="#cb25-152" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylim =</span> <span class="fu">c</span>(ymin, ymax),</span>
+<span id="cb25-153"><a href="#cb25-153" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="cn">FALSE</span></span>
+<span id="cb25-154"><a href="#cb25-154" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-155"><a href="#cb25-155" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb25-156"><a href="#cb25-156" aria-hidden="true" tabindex="-1"></a>    <span class="st">"segment"</span>,</span>
+<span id="cb25-157"><a href="#cb25-157" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> arrow_x,</span>
+<span id="cb25-158"><a href="#cb25-158" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> arrow_x,</span>
+<span id="cb25-159"><a href="#cb25-159" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> arrow_y0,</span>
+<span id="cb25-160"><a href="#cb25-160" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> arrow_y1,</span>
+<span id="cb25-161"><a href="#cb25-161" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.7</span>,</span>
+<span id="cb25-162"><a href="#cb25-162" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb25-163"><a href="#cb25-163" aria-hidden="true" tabindex="-1"></a>    <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.22</span>, <span class="st">"cm"</span>), <span class="at">type =</span> <span class="st">"closed"</span>)</span>
+<span id="cb25-164"><a href="#cb25-164" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-165"><a href="#cb25-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb25-166"><a href="#cb25-166" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
+<span id="cb25-167"><a href="#cb25-167" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> arrow_x,</span>
+<span id="cb25-168"><a href="#cb25-168" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> arrow_y1 <span class="sc">+</span> <span class="fl">0.025</span> <span class="sc">*</span> extent_height,</span>
+<span id="cb25-169"><a href="#cb25-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"N"</span>,</span>
+<span id="cb25-170"><a href="#cb25-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb25-171"><a href="#cb25-171" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb25-172"><a href="#cb25-172" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">4.2</span></span>
+<span id="cb25-173"><a href="#cb25-173" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-174"><a href="#cb25-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb25-175"><a href="#cb25-175" aria-hidden="true" tabindex="-1"></a>    <span class="st">"segment"</span>,</span>
+<span id="cb25-176"><a href="#cb25-176" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> bar_x0,</span>
+<span id="cb25-177"><a href="#cb25-177" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> bar_x0 <span class="sc">+</span> scale_length_m,</span>
+<span id="cb25-178"><a href="#cb25-178" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> bar_y0,</span>
+<span id="cb25-179"><a href="#cb25-179" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> bar_y0,</span>
+<span id="cb25-180"><a href="#cb25-180" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb25-181"><a href="#cb25-181" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">1.35</span>,</span>
+<span id="cb25-182"><a href="#cb25-182" aria-hidden="true" tabindex="-1"></a>    <span class="at">lineend =</span> <span class="st">"butt"</span></span>
+<span id="cb25-183"><a href="#cb25-183" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-184"><a href="#cb25-184" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb25-185"><a href="#cb25-185" aria-hidden="true" tabindex="-1"></a>    <span class="st">"segment"</span>,</span>
+<span id="cb25-186"><a href="#cb25-186" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> bar_x0,</span>
+<span id="cb25-187"><a href="#cb25-187" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> bar_x0,</span>
+<span id="cb25-188"><a href="#cb25-188" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> bar_y0 <span class="sc">-</span> <span class="dv">12</span>,</span>
+<span id="cb25-189"><a href="#cb25-189" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> bar_y0 <span class="sc">+</span> <span class="dv">12</span>,</span>
+<span id="cb25-190"><a href="#cb25-190" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb25-191"><a href="#cb25-191" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.55</span></span>
+<span id="cb25-192"><a href="#cb25-192" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-193"><a href="#cb25-193" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb25-194"><a href="#cb25-194" aria-hidden="true" tabindex="-1"></a>    <span class="st">"segment"</span>,</span>
+<span id="cb25-195"><a href="#cb25-195" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> bar_x0 <span class="sc">+</span> scale_length_m,</span>
+<span id="cb25-196"><a href="#cb25-196" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> bar_x0 <span class="sc">+</span> scale_length_m,</span>
+<span id="cb25-197"><a href="#cb25-197" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> bar_y0 <span class="sc">-</span> <span class="dv">12</span>,</span>
+<span id="cb25-198"><a href="#cb25-198" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> bar_y0 <span class="sc">+</span> <span class="dv">12</span>,</span>
+<span id="cb25-199"><a href="#cb25-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb25-200"><a href="#cb25-200" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.55</span></span>
+<span id="cb25-201"><a href="#cb25-201" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-202"><a href="#cb25-202" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb25-203"><a href="#cb25-203" aria-hidden="true" tabindex="-1"></a>    <span class="st">"text"</span>,</span>
+<span id="cb25-204"><a href="#cb25-204" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> bar_x0 <span class="sc">+</span> scale_length_m <span class="sc">/</span> <span class="dv">2</span>,</span>
+<span id="cb25-205"><a href="#cb25-205" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> bar_y0 <span class="sc">+</span> <span class="dv">32</span>,</span>
+<span id="cb25-206"><a href="#cb25-206" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">"200 m"</span>,</span>
+<span id="cb25-207"><a href="#cb25-207" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb25-208"><a href="#cb25-208" aria-hidden="true" tabindex="-1"></a>    <span class="at">fontface =</span> <span class="st">"bold"</span>,</span>
+<span id="cb25-209"><a href="#cb25-209" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.5</span>,</span>
+<span id="cb25-210"><a href="#cb25-210" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="dv">0</span></span>
+<span id="cb25-211"><a href="#cb25-211" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-212"><a href="#cb25-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb25-213"><a href="#cb25-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb25-214"><a href="#cb25-214" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">colour =</span> <span class="cn">NA</span>),</span>
+<span id="cb25-215"><a href="#cb25-215" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#f4f7f9"</span>, <span class="at">colour =</span> <span class="cn">NA</span>),</span>
+<span id="cb25-216"><a href="#cb25-216" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="fl">0.78</span>, <span class="fl">0.16</span>),</span>
+<span id="cb25-217"><a href="#cb25-217" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.justification =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>),</span>
+<span id="cb25-218"><a href="#cb25-218" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.background =</span> <span class="fu">element_rect</span>(</span>
+<span id="cb25-219"><a href="#cb25-219" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> <span class="fu">alpha</span>(<span class="st">"white"</span>, <span class="fl">0.50</span>),</span>
+<span id="cb25-220"><a href="#cb25-220" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> <span class="cn">NA</span></span>
+<span id="cb25-221"><a href="#cb25-221" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb25-222"><a href="#cb25-222" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.margin =</span> <span class="fu">margin</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">3</span>, <span class="dv">5</span>),</span>
+<span id="cb25-223"><a href="#cb25-223" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),</span>
+<span id="cb25-224"><a href="#cb25-224" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb25-225"><a href="#cb25-225" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-226"><a href="#cb25-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-227"><a href="#cb25-227" aria-hidden="true" tabindex="-1"></a>p</span>
+<span id="cb25-228"><a href="#cb25-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-229"><a href="#cb25-229" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb25-230"><a href="#cb25-230" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> out_png,</span>
+<span id="cb25-231"><a href="#cb25-231" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> p,</span>
+<span id="cb25-232"><a href="#cb25-232" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> fig_width,</span>
+<span id="cb25-233"><a href="#cb25-233" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> fig_height,</span>
+<span id="cb25-234"><a href="#cb25-234" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">400</span>,</span>
+<span id="cb25-235"><a href="#cb25-235" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="st">"white"</span></span>
+<span id="cb25-236"><a href="#cb25-236" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-237"><a href="#cb25-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-238"><a href="#cb25-238" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb25-239"><a href="#cb25-239" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> out_png_svg,</span>
+<span id="cb25-240"><a href="#cb25-240" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> p,</span>
+<span id="cb25-241"><a href="#cb25-241" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> fig_width,</span>
+<span id="cb25-242"><a href="#cb25-242" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> fig_height,</span>
+<span id="cb25-243"><a href="#cb25-243" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">400</span>,</span>
+<span id="cb25-244"><a href="#cb25-244" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="cell-fig-plot-productivity-map" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Map_Production/plot_productivity_map_2025-02.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-plot-productivity-map" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-plot-productivity-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="Figures/plot_productivity_map_2025.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Spatial variability in the productivity of seaweed modules in 2025. Polygon colors show the mean daily net production of each module."><img src="Figures/plot_productivity_map_2025.png" class="img-fluid figure-img" style="width:100.0%"></a>
+<a href="Figures/Map_Production/plot_productivity_map_2025-02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Spatial variability in the productivity of seaweed modules in 2025. Each polygons represent a 40*10m cultivation plot."><img src="Figures/Map_Production/plot_productivity_map_2025-02.png" class="img-fluid figure-img" style="width:100.0%"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-productivity-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Spatial variability in the productivity of seaweed modules in 2025. Polygon colors show the mean daily net production of each module.
+Figure&nbsp;4: Spatial variability in the productivity of seaweed modules in 2025. Each polygons represent a 40*10m cultivation plot.
 </figcaption>
 </figure>
 </div>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell" data-python.reticulate="false">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.dates <span class="im">as</span> mdates</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.ticker <span class="im">as</span> mticker</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LinearGAM, s</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> gaussian_kde</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> Path.cwd()</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>HARVEST_DATA_CANDIDATES <span class="op">=</span> [</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    PROJECT_ROOT <span class="op">/</span> <span class="st">"Data"</span> <span class="op">/</span> <span class="st">"NBS - Recolte 2025.xlsx"</span>,</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    PROJECT_ROOT <span class="op">/</span> <span class="st">"Data"</span> <span class="op">/</span> <span class="st">"NBS - Récolte 2025.xlsx"</span>,</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>HARVEST_DATA <span class="op">=</span> <span class="bu">next</span>((path <span class="cf">for</span> path <span class="kw">in</span> HARVEST_DATA_CANDIDATES <span class="cf">if</span> path.exists()), <span class="va">None</span>)</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> HARVEST_DATA <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Harvest dataset not found. Checked: "</span></span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="st">", "</span>.join(<span class="bu">str</span>(path) <span class="cf">for</span> path <span class="kw">in</span> HARVEST_DATA_CANDIDATES)</span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>CADASTER_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"Data"</span> <span class="op">/</span> <span class="st">"shp"</span></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>CADASTER_DATA_CANDIDATES <span class="op">=</span> [</span>
-<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    CADASTER_DIR <span class="op">/</span> <span class="st">"sample_cadaster_temporal_analysis.shp"</span>,</span>
-<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>FIGURE_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"Figures"</span></span>
-<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>FIGURE_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>OUT_PNG <span class="op">=</span> FIGURE_DIR <span class="op">/</span> <span class="st">"harvested_biomass_distribution_temporal_variability.png"</span></span>
-<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_position_lookup():</span>
-<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>    candidate_paths <span class="op">=</span> [path <span class="cf">for</span> path <span class="kw">in</span> CADASTER_DATA_CANDIDATES <span class="cf">if</span> path.exists()]</span>
-<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> candidate_paths:</span>
-<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>        candidate_paths <span class="op">=</span> <span class="bu">sorted</span>(CADASTER_DIR.glob(<span class="st">"*.shp"</span>))</span>
-<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> path <span class="kw">in</span> candidate_paths:</span>
-<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>        cadaster_gdf <span class="op">=</span> gpd.read_file(path)</span>
-<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> {<span class="st">"Farm_ID"</span>, <span class="st">"Module_ID"</span>, <span class="st">"position"</span>}.issubset(cadaster_gdf.columns):</span>
-<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>            lookup_df <span class="op">=</span> (</span>
-<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a>                cadaster_gdf.rename(</span>
-<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>                    columns<span class="op">=</span>{<span class="st">"Farm_ID"</span>: <span class="st">"FarmID"</span>, <span class="st">"Module_ID"</span>: <span class="st">"ModuleNumber"</span>}</span>
-<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>                .loc[:, [<span class="st">"ModuleNumber"</span>, <span class="st">"FarmID"</span>, <span class="st">"position"</span>]]</span>
-<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>                .assign(</span>
-<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>                    ModuleNumber<span class="op">=</span><span class="kw">lambda</span> d: pd.to_numeric(</span>
-<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>                        d[<span class="st">"ModuleNumber"</span>], errors<span class="op">=</span><span class="st">"coerce"</span></span>
-<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>                    ),</span>
-<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>                    FarmID<span class="op">=</span><span class="kw">lambda</span> d: pd.to_numeric(d[<span class="st">"FarmID"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
-<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>                    position<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"position"</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.strip().<span class="bu">str</span>.title(),</span>
-<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>                )</span>
-<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>                .loc[<span class="kw">lambda</span> d: d[<span class="st">"position"</span>].isin([<span class="st">"Back"</span>, <span class="st">"Front"</span>])]</span>
-<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>                .drop_duplicates(subset<span class="op">=</span>[<span class="st">"ModuleNumber"</span>, <span class="st">"FarmID"</span>])</span>
-<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>                .copy()</span>
-<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> lookup_df.empty:</span>
-<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> lookup_df</span>
-<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
-<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a>        <span class="st">"No cadaster shapefile with Farm_ID, Module_ID, and position fields was found."</span></span>
-<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>harvest_df <span class="op">=</span> pd.read_excel(HARVEST_DATA, sheet_name<span class="op">=</span><span class="st">"Copie base donnée"</span>)</span>
-<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a>harvest_df <span class="op">=</span> harvest_df.assign(</span>
-<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>    FarmID<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"FarmID"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
-<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a>    ModuleNumber<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"ModuleNumber"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
-<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a>    Harvested_Weight<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"Harvested_Weight"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
-<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>    CultureDuration_days<span class="op">=</span>pd.to_numeric(</span>
-<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a>        harvest_df[<span class="st">"CultureDuration_days"</span>], errors<span class="op">=</span><span class="st">"coerce"</span></span>
-<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a>    CultureDuration_weeks<span class="op">=</span>pd.to_numeric(</span>
-<span id="cb26-75"><a href="#cb26-75" aria-hidden="true" tabindex="-1"></a>        harvest_df[<span class="st">"CultureDuration_weeks"</span>], errors<span class="op">=</span><span class="st">"coerce"</span></span>
-<span id="cb26-76"><a href="#cb26-76" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb26-77"><a href="#cb26-77" aria-hidden="true" tabindex="-1"></a>    LinesCount<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"LinesCount"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
-<span id="cb26-78"><a href="#cb26-78" aria-hidden="true" tabindex="-1"></a>    HarvestingDate<span class="op">=</span>pd.to_datetime(harvest_df[<span class="st">"HarvestingDate"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
-<span id="cb26-79"><a href="#cb26-79" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-80"><a href="#cb26-80" aria-hidden="true" tabindex="-1"></a>position_lookup <span class="op">=</span> load_position_lookup()</span>
-<span id="cb26-81"><a href="#cb26-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-82"><a href="#cb26-82" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> (</span>
-<span id="cb26-83"><a href="#cb26-83" aria-hidden="true" tabindex="-1"></a>    harvest_df.loc[</span>
-<span id="cb26-84"><a href="#cb26-84" aria-hidden="true" tabindex="-1"></a>        (harvest_df[<span class="st">"CultureDuration_weeks"</span>] <span class="op">&gt;=</span> <span class="dv">5</span>)</span>
-<span id="cb26-85"><a href="#cb26-85" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (harvest_df[<span class="st">"LinesCount"</span>] <span class="op">==</span> <span class="dv">100</span>)</span>
-<span id="cb26-86"><a href="#cb26-86" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> harvest_df[<span class="st">"Harvested_Weight"</span>].notna()</span>
-<span id="cb26-87"><a href="#cb26-87" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (harvest_df[<span class="st">"Harvested_Weight"</span>] <span class="op">&gt;=</span> <span class="dv">0</span>),</span>
-<span id="cb26-88"><a href="#cb26-88" aria-hidden="true" tabindex="-1"></a>        [<span class="st">"Harvested_Weight"</span>, <span class="st">"HarvestingDate"</span>],</span>
-<span id="cb26-89"><a href="#cb26-89" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb26-90"><a href="#cb26-90" aria-hidden="true" tabindex="-1"></a>    .copy()</span>
-<span id="cb26-91"><a href="#cb26-91" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-92"><a href="#cb26-92" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> filtered_df.loc[filtered_df[<span class="st">"HarvestingDate"</span>].notna()].copy()</span>
-<span id="cb26-93"><a href="#cb26-93" aria-hidden="true" tabindex="-1"></a>filtered_df[<span class="st">"harvested_biomass_kg"</span>] <span class="op">=</span> filtered_df[<span class="st">"Harvested_Weight"</span>].astype(<span class="bu">float</span>)</span>
-<span id="cb26-94"><a href="#cb26-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-95"><a href="#cb26-95" aria-hidden="true" tabindex="-1"></a>harvested_biomass_kg <span class="op">=</span> filtered_df[<span class="st">"harvested_biomass_kg"</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb26-96"><a href="#cb26-96" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> harvested_biomass_kg.size <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb26-97"><a href="#cb26-97" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"No harvested biomass values remain after applying the filters."</span>)</span>
-<span id="cb26-98"><a href="#cb26-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-99"><a href="#cb26-99" aria-hidden="true" tabindex="-1"></a>temporal_df <span class="op">=</span> (</span>
-<span id="cb26-100"><a href="#cb26-100" aria-hidden="true" tabindex="-1"></a>    harvest_df.loc[</span>
-<span id="cb26-101"><a href="#cb26-101" aria-hidden="true" tabindex="-1"></a>        :,</span>
-<span id="cb26-102"><a href="#cb26-102" aria-hidden="true" tabindex="-1"></a>        [</span>
-<span id="cb26-103"><a href="#cb26-103" aria-hidden="true" tabindex="-1"></a>            <span class="st">"FarmID"</span>,</span>
-<span id="cb26-104"><a href="#cb26-104" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ModuleNumber"</span>,</span>
-<span id="cb26-105"><a href="#cb26-105" aria-hidden="true" tabindex="-1"></a>            <span class="st">"LinesCount"</span>,</span>
-<span id="cb26-106"><a href="#cb26-106" aria-hidden="true" tabindex="-1"></a>            <span class="st">"CultureMode"</span>,</span>
-<span id="cb26-107"><a href="#cb26-107" aria-hidden="true" tabindex="-1"></a>            <span class="st">"HarvestingDate"</span>,</span>
-<span id="cb26-108"><a href="#cb26-108" aria-hidden="true" tabindex="-1"></a>            <span class="st">"CultureDuration_days"</span>,</span>
-<span id="cb26-109"><a href="#cb26-109" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Harvested_Weight"</span>,</span>
-<span id="cb26-110"><a href="#cb26-110" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb26-111"><a href="#cb26-111" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb26-112"><a href="#cb26-112" aria-hidden="true" tabindex="-1"></a>    .loc[</span>
-<span id="cb26-113"><a href="#cb26-113" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> d: (d[<span class="st">"Harvested_Weight"</span>] <span class="op">&gt;</span> <span class="dv">1000</span>)</span>
-<span id="cb26-114"><a href="#cb26-114" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (d[<span class="st">"LinesCount"</span>] <span class="op">==</span> <span class="dv">100</span>)</span>
-<span id="cb26-115"><a href="#cb26-115" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (d[<span class="st">"CultureDuration_days"</span>] <span class="op">&gt;</span> <span class="dv">40</span>)</span>
-<span id="cb26-116"><a href="#cb26-116" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb26-117"><a href="#cb26-117" aria-hidden="true" tabindex="-1"></a>    .merge(position_lookup, on<span class="op">=</span>[<span class="st">"ModuleNumber"</span>, <span class="st">"FarmID"</span>], how<span class="op">=</span><span class="st">"left"</span>)</span>
-<span id="cb26-118"><a href="#cb26-118" aria-hidden="true" tabindex="-1"></a>    .loc[<span class="kw">lambda</span> d: d[<span class="st">"position"</span>].notna()]</span>
-<span id="cb26-119"><a href="#cb26-119" aria-hidden="true" tabindex="-1"></a>    .copy()</span>
-<span id="cb26-120"><a href="#cb26-120" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-121"><a href="#cb26-121" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> temporal_df.empty:</span>
-<span id="cb26-122"><a href="#cb26-122" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(</span>
-<span id="cb26-123"><a href="#cb26-123" aria-hidden="true" tabindex="-1"></a>        <span class="st">"No temporal-series values remain after filtering and joining module positions."</span></span>
-<span id="cb26-124"><a href="#cb26-124" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-125"><a href="#cb26-125" aria-hidden="true" tabindex="-1"></a>temporal_df[<span class="st">"DGR"</span>] <span class="op">=</span> (</span>
-<span id="cb26-126"><a href="#cb26-126" aria-hidden="true" tabindex="-1"></a>    np.log(temporal_df[<span class="st">"Harvested_Weight"</span>] <span class="op">/</span> <span class="fl">700.0</span>)</span>
-<span id="cb26-127"><a href="#cb26-127" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> temporal_df[<span class="st">"CultureDuration_days"</span>]</span>
-<span id="cb26-128"><a href="#cb26-128" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span> <span class="fl">100.0</span></span>
-<span id="cb26-129"><a href="#cb26-129" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-130"><a href="#cb26-130" aria-hidden="true" tabindex="-1"></a>temporal_df[<span class="st">"harvest_date"</span>] <span class="op">=</span> pd.to_datetime(temporal_df[<span class="st">"HarvestingDate"</span>])</span>
-<span id="cb26-131"><a href="#cb26-131" aria-hidden="true" tabindex="-1"></a>temporal_df <span class="op">=</span> temporal_df.sort_values(<span class="st">"harvest_date"</span>).copy()</span>
-<span id="cb26-132"><a href="#cb26-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-133"><a href="#cb26-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-134"><a href="#cb26-134" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_linear_gam(x, y, x_pred, n_splines<span class="op">=</span><span class="dv">8</span>, lam_grid<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb26-135"><a href="#cb26-135" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.asarray(x, dtype<span class="op">=</span><span class="bu">float</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb26-136"><a href="#cb26-136" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> np.asarray(y, dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb26-137"><a href="#cb26-137" aria-hidden="true" tabindex="-1"></a>    x_pred <span class="op">=</span> np.asarray(x_pred, dtype<span class="op">=</span><span class="bu">float</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb26-138"><a href="#cb26-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-139"><a href="#cb26-139" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> lam_grid <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb26-140"><a href="#cb26-140" aria-hidden="true" tabindex="-1"></a>        lam_grid <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">15</span>)</span>
-<span id="cb26-141"><a href="#cb26-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-142"><a href="#cb26-142" aria-hidden="true" tabindex="-1"></a>    gam <span class="op">=</span> LinearGAM(s(<span class="dv">0</span>, n_splines<span class="op">=</span>n_splines, spline_order<span class="op">=</span><span class="dv">3</span>))</span>
-<span id="cb26-143"><a href="#cb26-143" aria-hidden="true" tabindex="-1"></a>    gam.gridsearch(x, y, lam<span class="op">=</span>lam_grid, progress<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb26-144"><a href="#cb26-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-145"><a href="#cb26-145" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> gam.predict(x_pred)</span>
-<span id="cb26-146"><a href="#cb26-146" aria-hidden="true" tabindex="-1"></a>    ci <span class="op">=</span> gam.confidence_intervals(x_pred, width<span class="op">=</span><span class="fl">0.95</span>)</span>
-<span id="cb26-147"><a href="#cb26-147" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gam, y_pred, ci[:, <span class="dv">0</span>], ci[:, <span class="dv">1</span>]</span>
-<span id="cb26-148"><a href="#cb26-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-149"><a href="#cb26-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-150"><a href="#cb26-150" aria-hidden="true" tabindex="-1"></a>data_range <span class="op">=</span> np.ptp(harvested_biomass_kg)</span>
-<span id="cb26-151"><a href="#cb26-151" aria-hidden="true" tabindex="-1"></a>q25, q75 <span class="op">=</span> np.percentile(harvested_biomass_kg, [<span class="dv">25</span>, <span class="dv">75</span>])</span>
-<span id="cb26-152"><a href="#cb26-152" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> q75 <span class="op">-</span> q25</span>
-<span id="cb26-153"><a href="#cb26-153" aria-hidden="true" tabindex="-1"></a>fd_bin_width <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> iqr <span class="op">/</span> (harvested_biomass_kg.size <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> <span class="dv">3</span>))</span>
-<span id="cb26-154"><a href="#cb26-154" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> np.isfinite(fd_bin_width) <span class="kw">or</span> fd_bin_width <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
-<span id="cb26-155"><a href="#cb26-155" aria-hidden="true" tabindex="-1"></a>    fd_bin_width <span class="op">=</span> <span class="bu">max</span>(data_range <span class="op">/</span> <span class="dv">24</span>, <span class="dv">1</span>)</span>
-<span id="cb26-156"><a href="#cb26-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-157"><a href="#cb26-157" aria-hidden="true" tabindex="-1"></a>fd_bins <span class="op">=</span> <span class="bu">int</span>(np.ceil(data_range <span class="op">/</span> fd_bin_width))</span>
-<span id="cb26-158"><a href="#cb26-158" aria-hidden="true" tabindex="-1"></a>n_bins <span class="op">=</span> <span class="bu">int</span>(np.clip(fd_bins, <span class="dv">18</span>, <span class="dv">36</span>))</span>
-<span id="cb26-159"><a href="#cb26-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-160"><a href="#cb26-160" aria-hidden="true" tabindex="-1"></a>x_min <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb26-161"><a href="#cb26-161" aria-hidden="true" tabindex="-1"></a>x_max <span class="op">=</span> <span class="bu">max</span>(<span class="dv">100</span>, np.ceil(harvested_biomass_kg.<span class="bu">max</span>() <span class="op">/</span> <span class="dv">250</span>) <span class="op">*</span> <span class="dv">250</span>)</span>
-<span id="cb26-162"><a href="#cb26-162" aria-hidden="true" tabindex="-1"></a>bin_edges <span class="op">=</span> np.linspace(x_min, x_max, n_bins <span class="op">+</span> <span class="dv">1</span>)</span>
-<span id="cb26-163"><a href="#cb26-163" aria-hidden="true" tabindex="-1"></a>bin_width <span class="op">=</span> bin_edges[<span class="dv">1</span>] <span class="op">-</span> bin_edges[<span class="dv">0</span>]</span>
-<span id="cb26-164"><a href="#cb26-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-165"><a href="#cb26-165" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update(</span>
-<span id="cb26-166"><a href="#cb26-166" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb26-167"><a href="#cb26-167" aria-hidden="true" tabindex="-1"></a>        <span class="st">"font.family"</span>: <span class="st">"DejaVu Sans"</span>,</span>
-<span id="cb26-168"><a href="#cb26-168" aria-hidden="true" tabindex="-1"></a>        <span class="st">"font.size"</span>: <span class="fl">9.5</span>,</span>
-<span id="cb26-169"><a href="#cb26-169" aria-hidden="true" tabindex="-1"></a>        <span class="st">"axes.labelsize"</span>: <span class="fl">10.5</span>,</span>
-<span id="cb26-170"><a href="#cb26-170" aria-hidden="true" tabindex="-1"></a>        <span class="st">"xtick.labelsize"</span>: <span class="dv">9</span>,</span>
-<span id="cb26-171"><a href="#cb26-171" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ytick.labelsize"</span>: <span class="dv">9</span>,</span>
-<span id="cb26-172"><a href="#cb26-172" aria-hidden="true" tabindex="-1"></a>        <span class="st">"legend.fontsize"</span>: <span class="dv">9</span>,</span>
-<span id="cb26-173"><a href="#cb26-173" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb26-174"><a href="#cb26-174" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-175"><a href="#cb26-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-176"><a href="#cb26-176" aria-hidden="true" tabindex="-1"></a>fig, (ax_hist, ax_time) <span class="op">=</span> plt.subplots(</span>
-<span id="cb26-177"><a href="#cb26-177" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,</span>
-<span id="cb26-178"><a href="#cb26-178" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>,</span>
-<span id="cb26-179"><a href="#cb26-179" aria-hidden="true" tabindex="-1"></a>    figsize<span class="op">=</span>(<span class="fl">8.4</span>, <span class="fl">4.3</span>),</span>
-<span id="cb26-180"><a href="#cb26-180" aria-hidden="true" tabindex="-1"></a>    facecolor<span class="op">=</span><span class="st">"white"</span>,</span>
-<span id="cb26-181"><a href="#cb26-181" aria-hidden="true" tabindex="-1"></a>    gridspec_kw<span class="op">=</span>{<span class="st">"width_ratios"</span>: [<span class="fl">1.0</span>, <span class="fl">1.25</span>]},</span>
-<span id="cb26-182"><a href="#cb26-182" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-183"><a href="#cb26-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-184"><a href="#cb26-184" aria-hidden="true" tabindex="-1"></a>counts, _, _ <span class="op">=</span> ax_hist.hist(</span>
-<span id="cb26-185"><a href="#cb26-185" aria-hidden="true" tabindex="-1"></a>    harvested_biomass_kg,</span>
-<span id="cb26-186"><a href="#cb26-186" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span>bin_edges,</span>
-<span id="cb26-187"><a href="#cb26-187" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#ccd4dd"</span>,</span>
-<span id="cb26-188"><a href="#cb26-188" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"#4b5563"</span>,</span>
-<span id="cb26-189"><a href="#cb26-189" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.8</span>,</span>
-<span id="cb26-190"><a href="#cb26-190" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-191"><a href="#cb26-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-192"><a href="#cb26-192" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> harvested_biomass_kg.size <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">and</span> np.nanstd(harvested_biomass_kg) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
-<span id="cb26-193"><a href="#cb26-193" aria-hidden="true" tabindex="-1"></a>    kde <span class="op">=</span> gaussian_kde(harvested_biomass_kg)</span>
-<span id="cb26-194"><a href="#cb26-194" aria-hidden="true" tabindex="-1"></a>    x_kde <span class="op">=</span> np.linspace(x_min, x_max, <span class="dv">400</span>)</span>
-<span id="cb26-195"><a href="#cb26-195" aria-hidden="true" tabindex="-1"></a>    y_kde <span class="op">=</span> kde(x_kde) <span class="op">*</span> harvested_biomass_kg.size <span class="op">*</span> bin_width</span>
-<span id="cb26-196"><a href="#cb26-196" aria-hidden="true" tabindex="-1"></a>    ax_hist.plot(x_kde, y_kde, color<span class="op">=</span><span class="st">"#5f6b7a"</span>, linewidth<span class="op">=</span><span class="fl">1.6</span>, alpha<span class="op">=</span><span class="fl">0.95</span>)</span>
-<span id="cb26-197"><a href="#cb26-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-198"><a href="#cb26-198" aria-hidden="true" tabindex="-1"></a>ax_hist.axvline(</span>
-<span id="cb26-199"><a href="#cb26-199" aria-hidden="true" tabindex="-1"></a>    np.nanmedian(harvested_biomass_kg),</span>
-<span id="cb26-200"><a href="#cb26-200" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#475569"</span>,</span>
-<span id="cb26-201"><a href="#cb26-201" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">1.0</span>,</span>
-<span id="cb26-202"><a href="#cb26-202" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span>(<span class="dv">0</span>, (<span class="dv">4</span>, <span class="dv">3</span>)),</span>
-<span id="cb26-203"><a href="#cb26-203" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.9</span>,</span>
-<span id="cb26-204"><a href="#cb26-204" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-205"><a href="#cb26-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-206"><a href="#cb26-206" aria-hidden="true" tabindex="-1"></a>ax_hist.set_xlabel(<span class="st">"Harvested biomass (kg)"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
-<span id="cb26-207"><a href="#cb26-207" aria-hidden="true" tabindex="-1"></a>ax_hist.set_ylabel(<span class="st">"Frequency"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
-<span id="cb26-208"><a href="#cb26-208" aria-hidden="true" tabindex="-1"></a>ax_hist.set_xlim(x_min, x_max)</span>
-<span id="cb26-209"><a href="#cb26-209" aria-hidden="true" tabindex="-1"></a>ax_hist.margins(x<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb26-210"><a href="#cb26-210" aria-hidden="true" tabindex="-1"></a>ax_hist.set_ylim(<span class="dv">0</span>, <span class="bu">max</span>(counts) <span class="op">*</span> <span class="fl">1.08</span>)</span>
-<span id="cb26-211"><a href="#cb26-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-212"><a href="#cb26-212" aria-hidden="true" tabindex="-1"></a>x_tick_step <span class="op">=</span> <span class="dv">500</span> <span class="cf">if</span> x_max <span class="op">&lt;=</span> <span class="dv">4000</span> <span class="cf">else</span> <span class="dv">1000</span></span>
-<span id="cb26-213"><a href="#cb26-213" aria-hidden="true" tabindex="-1"></a>ax_hist.set_xticks(np.arange(x_min, x_max <span class="op">+</span> x_tick_step, x_tick_step))</span>
-<span id="cb26-214"><a href="#cb26-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-215"><a href="#cb26-215" aria-hidden="true" tabindex="-1"></a>position_colors <span class="op">=</span> {</span>
-<span id="cb26-216"><a href="#cb26-216" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Back"</span>: <span class="st">"#bc6c25"</span>,</span>
-<span id="cb26-217"><a href="#cb26-217" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Front"</span>: <span class="st">"#2a7f9e"</span>,</span>
-<span id="cb26-218"><a href="#cb26-218" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-219"><a href="#cb26-219" aria-hidden="true" tabindex="-1"></a>position_labels <span class="op">=</span> {</span>
-<span id="cb26-220"><a href="#cb26-220" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Back"</span>: <span class="st">"Est"</span>,</span>
-<span id="cb26-221"><a href="#cb26-221" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Front"</span>: <span class="st">"West"</span>,</span>
-<span id="cb26-222"><a href="#cb26-222" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb26-223"><a href="#cb26-223" aria-hidden="true" tabindex="-1"></a>ax_time.set_xlabel(<span class="st">"Harvesting date"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
-<span id="cb26-224"><a href="#cb26-224" aria-hidden="true" tabindex="-1"></a>ax_time.set_ylabel(<span class="vs">r"Daily growth rate </span><span class="kw">(</span><span class="vs">% d</span><span class="dv">$^</span><span class="vs">{-1}</span><span class="dv">$</span><span class="kw">)</span><span class="vs">"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
-<span id="cb26-225"><a href="#cb26-225" aria-hidden="true" tabindex="-1"></a>dgr_min <span class="op">=</span> <span class="bu">float</span>(np.nanmin(temporal_df[<span class="st">"DGR"</span>]))</span>
-<span id="cb26-226"><a href="#cb26-226" aria-hidden="true" tabindex="-1"></a>dgr_max <span class="op">=</span> <span class="bu">float</span>(np.nanmax(temporal_df[<span class="st">"DGR"</span>]))</span>
-<span id="cb26-227"><a href="#cb26-227" aria-hidden="true" tabindex="-1"></a>ax_time.set_ylim(<span class="bu">max</span>(<span class="dv">0</span>, np.floor((dgr_min <span class="op">-</span> <span class="fl">0.2</span>) <span class="op">*</span> <span class="dv">2</span>) <span class="op">/</span> <span class="dv">2</span>), np.ceil((dgr_max <span class="op">+</span> <span class="fl">0.2</span>) <span class="op">*</span> <span class="dv">2</span>) <span class="op">/</span> <span class="dv">2</span>)</span>
-<span id="cb26-228"><a href="#cb26-228" aria-hidden="true" tabindex="-1"></a>ax_time.yaxis.set_major_locator(mticker.MultipleLocator(<span class="fl">0.5</span>))</span>
-<span id="cb26-229"><a href="#cb26-229" aria-hidden="true" tabindex="-1"></a>ax_time.margins(x<span class="op">=</span><span class="fl">0.01</span>)</span>
-<span id="cb26-230"><a href="#cb26-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-231"><a href="#cb26-231" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> position, group_df <span class="kw">in</span> temporal_df.groupby(<span class="st">"position"</span>, sort<span class="op">=</span><span class="va">False</span>):</span>
-<span id="cb26-232"><a href="#cb26-232" aria-hidden="true" tabindex="-1"></a>    group_df <span class="op">=</span> group_df.sort_values(<span class="st">"harvest_date"</span>).copy()</span>
-<span id="cb26-233"><a href="#cb26-233" aria-hidden="true" tabindex="-1"></a>    x_points <span class="op">=</span> mdates.date2num(group_df[<span class="st">"harvest_date"</span>])</span>
-<span id="cb26-234"><a href="#cb26-234" aria-hidden="true" tabindex="-1"></a>    y_points <span class="op">=</span> group_df[<span class="st">"DGR"</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb26-235"><a href="#cb26-235" aria-hidden="true" tabindex="-1"></a>    x_pred <span class="op">=</span> np.linspace(x_points.<span class="bu">min</span>(), x_points.<span class="bu">max</span>(), <span class="dv">300</span>)</span>
-<span id="cb26-236"><a href="#cb26-236" aria-hidden="true" tabindex="-1"></a>    _, y_smooth, y_lower, y_upper <span class="op">=</span> fit_linear_gam(</span>
-<span id="cb26-237"><a href="#cb26-237" aria-hidden="true" tabindex="-1"></a>        x_points,</span>
-<span id="cb26-238"><a href="#cb26-238" aria-hidden="true" tabindex="-1"></a>        y_points,</span>
-<span id="cb26-239"><a href="#cb26-239" aria-hidden="true" tabindex="-1"></a>        x_pred,</span>
-<span id="cb26-240"><a href="#cb26-240" aria-hidden="true" tabindex="-1"></a>        n_splines<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb26-241"><a href="#cb26-241" aria-hidden="true" tabindex="-1"></a>        lam_grid<span class="op">=</span>np.logspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">15</span>),</span>
-<span id="cb26-242"><a href="#cb26-242" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-243"><a href="#cb26-243" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> position_colors.get(position, <span class="st">"#4b5563"</span>)</span>
-<span id="cb26-244"><a href="#cb26-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-245"><a href="#cb26-245" aria-hidden="true" tabindex="-1"></a>    ax_time.scatter(</span>
-<span id="cb26-246"><a href="#cb26-246" aria-hidden="true" tabindex="-1"></a>        group_df[<span class="st">"harvest_date"</span>],</span>
-<span id="cb26-247"><a href="#cb26-247" aria-hidden="true" tabindex="-1"></a>        y_points,</span>
-<span id="cb26-248"><a href="#cb26-248" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">21</span>,</span>
-<span id="cb26-249"><a href="#cb26-249" aria-hidden="true" tabindex="-1"></a>        facecolor<span class="op">=</span>color,</span>
-<span id="cb26-250"><a href="#cb26-250" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"white"</span>,</span>
-<span id="cb26-251"><a href="#cb26-251" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="fl">0.35</span>,</span>
-<span id="cb26-252"><a href="#cb26-252" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb26-253"><a href="#cb26-253" aria-hidden="true" tabindex="-1"></a>        zorder<span class="op">=</span><span class="dv">4</span>,</span>
-<span id="cb26-254"><a href="#cb26-254" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"_nolegend_"</span>,</span>
-<span id="cb26-255"><a href="#cb26-255" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-256"><a href="#cb26-256" aria-hidden="true" tabindex="-1"></a>    ax_time.fill_between(</span>
-<span id="cb26-257"><a href="#cb26-257" aria-hidden="true" tabindex="-1"></a>        mdates.num2date(x_pred),</span>
-<span id="cb26-258"><a href="#cb26-258" aria-hidden="true" tabindex="-1"></a>        y_lower,</span>
-<span id="cb26-259"><a href="#cb26-259" aria-hidden="true" tabindex="-1"></a>        y_upper,</span>
-<span id="cb26-260"><a href="#cb26-260" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>color,</span>
-<span id="cb26-261"><a href="#cb26-261" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.14</span>,</span>
-<span id="cb26-262"><a href="#cb26-262" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb26-263"><a href="#cb26-263" aria-hidden="true" tabindex="-1"></a>        zorder<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb26-264"><a href="#cb26-264" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-265"><a href="#cb26-265" aria-hidden="true" tabindex="-1"></a>    ax_time.plot(</span>
-<span id="cb26-266"><a href="#cb26-266" aria-hidden="true" tabindex="-1"></a>        mdates.num2date(x_pred),</span>
-<span id="cb26-267"><a href="#cb26-267" aria-hidden="true" tabindex="-1"></a>        y_smooth,</span>
-<span id="cb26-268"><a href="#cb26-268" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>color,</span>
-<span id="cb26-269"><a href="#cb26-269" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="fl">2.2</span>,</span>
-<span id="cb26-270"><a href="#cb26-270" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span>position_labels.get(position, position),</span>
-<span id="cb26-271"><a href="#cb26-271" aria-hidden="true" tabindex="-1"></a>        zorder<span class="op">=</span><span class="dv">6</span>,</span>
-<span id="cb26-272"><a href="#cb26-272" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb26-273"><a href="#cb26-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-274"><a href="#cb26-274" aria-hidden="true" tabindex="-1"></a>date_min <span class="op">=</span> temporal_df[<span class="st">"harvest_date"</span>].<span class="bu">min</span>()</span>
-<span id="cb26-275"><a href="#cb26-275" aria-hidden="true" tabindex="-1"></a>date_max <span class="op">=</span> temporal_df[<span class="st">"harvest_date"</span>].<span class="bu">max</span>()</span>
-<span id="cb26-276"><a href="#cb26-276" aria-hidden="true" tabindex="-1"></a>ax_time.set_xlim(date_min <span class="op">-</span> pd.Timedelta(days<span class="op">=</span><span class="dv">4</span>), date_max <span class="op">+</span> pd.Timedelta(days<span class="op">=</span><span class="dv">4</span>))</span>
-<span id="cb26-277"><a href="#cb26-277" aria-hidden="true" tabindex="-1"></a>ax_time.xaxis.set_major_locator(mdates.MonthLocator(interval<span class="op">=</span><span class="dv">2</span>))</span>
-<span id="cb26-278"><a href="#cb26-278" aria-hidden="true" tabindex="-1"></a>ax_time.xaxis.set_minor_locator(mdates.MonthLocator())</span>
-<span id="cb26-279"><a href="#cb26-279" aria-hidden="true" tabindex="-1"></a>ax_time.xaxis.set_major_formatter(mdates.DateFormatter(<span class="st">"%b"</span>))</span>
-<span id="cb26-280"><a href="#cb26-280" aria-hidden="true" tabindex="-1"></a>ax_time.legend(</span>
-<span id="cb26-281"><a href="#cb26-281" aria-hidden="true" tabindex="-1"></a>    frameon<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb26-282"><a href="#cb26-282" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="st">"upper right"</span>,</span>
-<span id="cb26-283"><a href="#cb26-283" aria-hidden="true" tabindex="-1"></a>    ncol<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb26-284"><a href="#cb26-284" aria-hidden="true" tabindex="-1"></a>    handlelength<span class="op">=</span><span class="fl">1.8</span>,</span>
-<span id="cb26-285"><a href="#cb26-285" aria-hidden="true" tabindex="-1"></a>    handletextpad<span class="op">=</span><span class="fl">0.6</span>,</span>
-<span id="cb26-286"><a href="#cb26-286" aria-hidden="true" tabindex="-1"></a>    columnspacing<span class="op">=</span><span class="fl">1.2</span>,</span>
-<span id="cb26-287"><a href="#cb26-287" aria-hidden="true" tabindex="-1"></a>    borderaxespad<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb26-288"><a href="#cb26-288" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-289"><a href="#cb26-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-290"><a href="#cb26-290" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> (ax_hist, ax_time):</span>
-<span id="cb26-291"><a href="#cb26-291" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, color<span class="op">=</span><span class="st">"#e6eaef"</span>, linewidth<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb26-292"><a href="#cb26-292" aria-hidden="true" tabindex="-1"></a>    ax.set_axisbelow(<span class="va">True</span>)</span>
-<span id="cb26-293"><a href="#cb26-293" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">"top"</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb26-294"><a href="#cb26-294" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">"right"</span>].set_visible(<span class="va">False</span>)</span>
-<span id="cb26-295"><a href="#cb26-295" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> spine <span class="kw">in</span> (<span class="st">"left"</span>, <span class="st">"bottom"</span>):</span>
-<span id="cb26-296"><a href="#cb26-296" aria-hidden="true" tabindex="-1"></a>        ax.spines[spine].set_color(<span class="st">"#334155"</span>)</span>
-<span id="cb26-297"><a href="#cb26-297" aria-hidden="true" tabindex="-1"></a>        ax.spines[spine].set_linewidth(<span class="fl">0.9</span>)</span>
-<span id="cb26-298"><a href="#cb26-298" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">"both"</span>, colors<span class="op">=</span><span class="st">"#334155"</span>, length<span class="op">=</span><span class="dv">4</span>, width<span class="op">=</span><span class="fl">0.8</span>)</span>
-<span id="cb26-299"><a href="#cb26-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-300"><a href="#cb26-300" aria-hidden="true" tabindex="-1"></a>ax_time.grid(axis<span class="op">=</span><span class="st">"x"</span>, which<span class="op">=</span><span class="st">"major"</span>, color<span class="op">=</span><span class="st">"#f2f4f7"</span>, linewidth<span class="op">=</span><span class="fl">0.45</span>)</span>
-<span id="cb26-301"><a href="#cb26-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-302"><a href="#cb26-302" aria-hidden="true" tabindex="-1"></a>ax_hist.text(</span>
-<span id="cb26-303"><a href="#cb26-303" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.0</span>,</span>
-<span id="cb26-304"><a href="#cb26-304" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.02</span>,</span>
-<span id="cb26-305"><a href="#cb26-305" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A"</span>,</span>
-<span id="cb26-306"><a href="#cb26-306" aria-hidden="true" tabindex="-1"></a>    transform<span class="op">=</span>ax_hist.transAxes,</span>
-<span id="cb26-307"><a href="#cb26-307" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
-<span id="cb26-308"><a href="#cb26-308" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"bottom"</span>,</span>
-<span id="cb26-309"><a href="#cb26-309" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span>,</span>
-<span id="cb26-310"><a href="#cb26-310" aria-hidden="true" tabindex="-1"></a>    fontweight<span class="op">=</span><span class="st">"bold"</span>,</span>
-<span id="cb26-311"><a href="#cb26-311" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#1f2933"</span>,</span>
-<span id="cb26-312"><a href="#cb26-312" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-313"><a href="#cb26-313" aria-hidden="true" tabindex="-1"></a>ax_time.text(</span>
-<span id="cb26-314"><a href="#cb26-314" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.0</span>,</span>
-<span id="cb26-315"><a href="#cb26-315" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.02</span>,</span>
-<span id="cb26-316"><a href="#cb26-316" aria-hidden="true" tabindex="-1"></a>    <span class="st">"B"</span>,</span>
-<span id="cb26-317"><a href="#cb26-317" aria-hidden="true" tabindex="-1"></a>    transform<span class="op">=</span>ax_time.transAxes,</span>
-<span id="cb26-318"><a href="#cb26-318" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
-<span id="cb26-319"><a href="#cb26-319" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"bottom"</span>,</span>
-<span id="cb26-320"><a href="#cb26-320" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span>,</span>
-<span id="cb26-321"><a href="#cb26-321" aria-hidden="true" tabindex="-1"></a>    fontweight<span class="op">=</span><span class="st">"bold"</span>,</span>
-<span id="cb26-322"><a href="#cb26-322" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#1f2933"</span>,</span>
-<span id="cb26-323"><a href="#cb26-323" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-324"><a href="#cb26-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-325"><a href="#cb26-325" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
-<span id="cb26-326"><a href="#cb26-326" aria-hidden="true" tabindex="-1"></a>fig.savefig(OUT_PNG, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>, facecolor<span class="op">=</span><span class="st">"white"</span>)</span>
-<span id="cb26-327"><a href="#cb26-327" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cultivation plots were harvested at an average biomass of approximately 2900 kg (<a href="#fig-harvested-biomass-distribution" class="quarto-xref">Figure&nbsp;5</a> A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.</p>
+<p>Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (<a href="#fig-harvested-biomass-distribution" class="quarto-xref">Figure&nbsp;5</a> B). Plots located closest to the coral reef showed relatively stable DGR throughout the year, with an average value of 3.57 %.day⁻¹ in 2025. In these plots, DGR was slightly higher in autumn, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed stronger seasonal variability. Their maximum DGR was observed in spring, when values were comparable to those recorded near the coral reef. However, during summer, autumn, and winter, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching approximately 2.5 %.day⁻¹ in winter.</p>
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell" data-python.reticulate="false">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.dates <span class="im">as</span> mdates</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.ticker <span class="im">as</span> mticker</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LinearGAM, s</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> gaussian_kde</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> Path.cwd()</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>HARVEST_DATA_CANDIDATES <span class="op">=</span> [</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    PROJECT_ROOT <span class="op">/</span> <span class="st">"Data"</span> <span class="op">/</span> <span class="st">"NBS - Recolte 2025.xlsx"</span>,</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    PROJECT_ROOT <span class="op">/</span> <span class="st">"Data"</span> <span class="op">/</span> <span class="st">"NBS - Récolte 2025.xlsx"</span>,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>HARVEST_DATA <span class="op">=</span> <span class="bu">next</span>((path <span class="cf">for</span> path <span class="kw">in</span> HARVEST_DATA_CANDIDATES <span class="cf">if</span> path.exists()), <span class="va">None</span>)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> HARVEST_DATA <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Harvest dataset not found. Checked: "</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="st">", "</span>.join(<span class="bu">str</span>(path) <span class="cf">for</span> path <span class="kw">in</span> HARVEST_DATA_CANDIDATES)</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>CADASTER_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"Data"</span> <span class="op">/</span> <span class="st">"shp"</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>CADASTER_DATA_CANDIDATES <span class="op">=</span> [</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>    CADASTER_DIR <span class="op">/</span> <span class="st">"sample_cadaster_temporal_analysis.shp"</span>,</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>FIGURE_DIR <span class="op">=</span> PROJECT_ROOT <span class="op">/</span> <span class="st">"Figures"</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>FIGURE_DIR.mkdir(exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>OUT_PNG <span class="op">=</span> FIGURE_DIR <span class="op">/</span> <span class="st">"harvested_biomass_distribution_temporal_variability.png"</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_position_lookup():</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>    candidate_paths <span class="op">=</span> [path <span class="cf">for</span> path <span class="kw">in</span> CADASTER_DATA_CANDIDATES <span class="cf">if</span> path.exists()]</span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> candidate_paths:</span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>        candidate_paths <span class="op">=</span> <span class="bu">sorted</span>(CADASTER_DIR.glob(<span class="st">"*.shp"</span>))</span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> path <span class="kw">in</span> candidate_paths:</span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>        cadaster_gdf <span class="op">=</span> gpd.read_file(path)</span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> {<span class="st">"Farm_ID"</span>, <span class="st">"Module_ID"</span>, <span class="st">"position"</span>}.issubset(cadaster_gdf.columns):</span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a>            lookup_df <span class="op">=</span> (</span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>                cadaster_gdf.rename(</span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a>                    columns<span class="op">=</span>{<span class="st">"Farm_ID"</span>: <span class="st">"FarmID"</span>, <span class="st">"Module_ID"</span>: <span class="st">"ModuleNumber"</span>}</span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a>                .loc[:, [<span class="st">"ModuleNumber"</span>, <span class="st">"FarmID"</span>, <span class="st">"position"</span>]]</span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a>                .assign(</span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a>                    ModuleNumber<span class="op">=</span><span class="kw">lambda</span> d: pd.to_numeric(</span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a>                        d[<span class="st">"ModuleNumber"</span>], errors<span class="op">=</span><span class="st">"coerce"</span></span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a>                    ),</span>
+<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a>                    FarmID<span class="op">=</span><span class="kw">lambda</span> d: pd.to_numeric(d[<span class="st">"FarmID"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
+<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a>                    position<span class="op">=</span><span class="kw">lambda</span> d: d[<span class="st">"position"</span>].astype(<span class="bu">str</span>).<span class="bu">str</span>.strip().<span class="bu">str</span>.title(),</span>
+<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a>                )</span>
+<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a>                .loc[<span class="kw">lambda</span> d: d[<span class="st">"position"</span>].isin([<span class="st">"Back"</span>, <span class="st">"Front"</span>])]</span>
+<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a>                .drop_duplicates(subset<span class="op">=</span>[<span class="st">"ModuleNumber"</span>, <span class="st">"FarmID"</span>])</span>
+<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a>                .copy()</span>
+<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> lookup_df.empty:</span>
+<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> lookup_df</span>
+<span id="cb27-60"><a href="#cb27-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-61"><a href="#cb27-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(</span>
+<span id="cb27-62"><a href="#cb27-62" aria-hidden="true" tabindex="-1"></a>        <span class="st">"No cadaster shapefile with Farm_ID, Module_ID, and position fields was found."</span></span>
+<span id="cb27-63"><a href="#cb27-63" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-64"><a href="#cb27-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-65"><a href="#cb27-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-66"><a href="#cb27-66" aria-hidden="true" tabindex="-1"></a>harvest_df <span class="op">=</span> pd.read_excel(HARVEST_DATA, sheet_name<span class="op">=</span><span class="st">"Copie base donnée"</span>)</span>
+<span id="cb27-67"><a href="#cb27-67" aria-hidden="true" tabindex="-1"></a>harvest_df <span class="op">=</span> harvest_df.assign(</span>
+<span id="cb27-68"><a href="#cb27-68" aria-hidden="true" tabindex="-1"></a>    FarmID<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"FarmID"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
+<span id="cb27-69"><a href="#cb27-69" aria-hidden="true" tabindex="-1"></a>    ModuleNumber<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"ModuleNumber"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
+<span id="cb27-70"><a href="#cb27-70" aria-hidden="true" tabindex="-1"></a>    Harvested_Weight<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"Harvested_Weight"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
+<span id="cb27-71"><a href="#cb27-71" aria-hidden="true" tabindex="-1"></a>    CultureDuration_days<span class="op">=</span>pd.to_numeric(</span>
+<span id="cb27-72"><a href="#cb27-72" aria-hidden="true" tabindex="-1"></a>        harvest_df[<span class="st">"CultureDuration_days"</span>], errors<span class="op">=</span><span class="st">"coerce"</span></span>
+<span id="cb27-73"><a href="#cb27-73" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb27-74"><a href="#cb27-74" aria-hidden="true" tabindex="-1"></a>    CultureDuration_weeks<span class="op">=</span>pd.to_numeric(</span>
+<span id="cb27-75"><a href="#cb27-75" aria-hidden="true" tabindex="-1"></a>        harvest_df[<span class="st">"CultureDuration_weeks"</span>], errors<span class="op">=</span><span class="st">"coerce"</span></span>
+<span id="cb27-76"><a href="#cb27-76" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb27-77"><a href="#cb27-77" aria-hidden="true" tabindex="-1"></a>    LinesCount<span class="op">=</span>pd.to_numeric(harvest_df[<span class="st">"LinesCount"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
+<span id="cb27-78"><a href="#cb27-78" aria-hidden="true" tabindex="-1"></a>    HarvestingDate<span class="op">=</span>pd.to_datetime(harvest_df[<span class="st">"HarvestingDate"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>),</span>
+<span id="cb27-79"><a href="#cb27-79" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-80"><a href="#cb27-80" aria-hidden="true" tabindex="-1"></a>position_lookup <span class="op">=</span> load_position_lookup()</span>
+<span id="cb27-81"><a href="#cb27-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-82"><a href="#cb27-82" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> (</span>
+<span id="cb27-83"><a href="#cb27-83" aria-hidden="true" tabindex="-1"></a>    harvest_df.loc[</span>
+<span id="cb27-84"><a href="#cb27-84" aria-hidden="true" tabindex="-1"></a>        (harvest_df[<span class="st">"CultureDuration_weeks"</span>] <span class="op">&gt;=</span> <span class="dv">5</span>)</span>
+<span id="cb27-85"><a href="#cb27-85" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (harvest_df[<span class="st">"LinesCount"</span>] <span class="op">==</span> <span class="dv">100</span>)</span>
+<span id="cb27-86"><a href="#cb27-86" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> harvest_df[<span class="st">"Harvested_Weight"</span>].notna()</span>
+<span id="cb27-87"><a href="#cb27-87" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (harvest_df[<span class="st">"Harvested_Weight"</span>] <span class="op">&gt;=</span> <span class="dv">0</span>),</span>
+<span id="cb27-88"><a href="#cb27-88" aria-hidden="true" tabindex="-1"></a>        [<span class="st">"Harvested_Weight"</span>, <span class="st">"HarvestingDate"</span>],</span>
+<span id="cb27-89"><a href="#cb27-89" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb27-90"><a href="#cb27-90" aria-hidden="true" tabindex="-1"></a>    .copy()</span>
+<span id="cb27-91"><a href="#cb27-91" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-92"><a href="#cb27-92" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> filtered_df.loc[filtered_df[<span class="st">"HarvestingDate"</span>].notna()].copy()</span>
+<span id="cb27-93"><a href="#cb27-93" aria-hidden="true" tabindex="-1"></a>filtered_df[<span class="st">"harvested_biomass_kg"</span>] <span class="op">=</span> filtered_df[<span class="st">"Harvested_Weight"</span>].astype(<span class="bu">float</span>)</span>
+<span id="cb27-94"><a href="#cb27-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-95"><a href="#cb27-95" aria-hidden="true" tabindex="-1"></a>harvested_biomass_kg <span class="op">=</span> filtered_df[<span class="st">"harvested_biomass_kg"</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb27-96"><a href="#cb27-96" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> harvested_biomass_kg.size <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb27-97"><a href="#cb27-97" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"No harvested biomass values remain after applying the filters."</span>)</span>
+<span id="cb27-98"><a href="#cb27-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-99"><a href="#cb27-99" aria-hidden="true" tabindex="-1"></a>temporal_df <span class="op">=</span> (</span>
+<span id="cb27-100"><a href="#cb27-100" aria-hidden="true" tabindex="-1"></a>    harvest_df.loc[</span>
+<span id="cb27-101"><a href="#cb27-101" aria-hidden="true" tabindex="-1"></a>        :,</span>
+<span id="cb27-102"><a href="#cb27-102" aria-hidden="true" tabindex="-1"></a>        [</span>
+<span id="cb27-103"><a href="#cb27-103" aria-hidden="true" tabindex="-1"></a>            <span class="st">"FarmID"</span>,</span>
+<span id="cb27-104"><a href="#cb27-104" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ModuleNumber"</span>,</span>
+<span id="cb27-105"><a href="#cb27-105" aria-hidden="true" tabindex="-1"></a>            <span class="st">"LinesCount"</span>,</span>
+<span id="cb27-106"><a href="#cb27-106" aria-hidden="true" tabindex="-1"></a>            <span class="st">"CultureMode"</span>,</span>
+<span id="cb27-107"><a href="#cb27-107" aria-hidden="true" tabindex="-1"></a>            <span class="st">"HarvestingDate"</span>,</span>
+<span id="cb27-108"><a href="#cb27-108" aria-hidden="true" tabindex="-1"></a>            <span class="st">"CultureDuration_days"</span>,</span>
+<span id="cb27-109"><a href="#cb27-109" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Harvested_Weight"</span>,</span>
+<span id="cb27-110"><a href="#cb27-110" aria-hidden="true" tabindex="-1"></a>        ],</span>
+<span id="cb27-111"><a href="#cb27-111" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb27-112"><a href="#cb27-112" aria-hidden="true" tabindex="-1"></a>    .loc[</span>
+<span id="cb27-113"><a href="#cb27-113" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> d: (d[<span class="st">"Harvested_Weight"</span>] <span class="op">&gt;</span> <span class="dv">1000</span>)</span>
+<span id="cb27-114"><a href="#cb27-114" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (d[<span class="st">"LinesCount"</span>] <span class="op">==</span> <span class="dv">100</span>)</span>
+<span id="cb27-115"><a href="#cb27-115" aria-hidden="true" tabindex="-1"></a>        <span class="op">&amp;</span> (d[<span class="st">"CultureDuration_days"</span>] <span class="op">&gt;</span> <span class="dv">40</span>)</span>
+<span id="cb27-116"><a href="#cb27-116" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb27-117"><a href="#cb27-117" aria-hidden="true" tabindex="-1"></a>    .merge(position_lookup, on<span class="op">=</span>[<span class="st">"ModuleNumber"</span>, <span class="st">"FarmID"</span>], how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb27-118"><a href="#cb27-118" aria-hidden="true" tabindex="-1"></a>    .loc[<span class="kw">lambda</span> d: d[<span class="st">"position"</span>].notna()]</span>
+<span id="cb27-119"><a href="#cb27-119" aria-hidden="true" tabindex="-1"></a>    .copy()</span>
+<span id="cb27-120"><a href="#cb27-120" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-121"><a href="#cb27-121" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> temporal_df.empty:</span>
+<span id="cb27-122"><a href="#cb27-122" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(</span>
+<span id="cb27-123"><a href="#cb27-123" aria-hidden="true" tabindex="-1"></a>        <span class="st">"No temporal-series values remain after filtering and joining module positions."</span></span>
+<span id="cb27-124"><a href="#cb27-124" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-125"><a href="#cb27-125" aria-hidden="true" tabindex="-1"></a>temporal_df[<span class="st">"DGR"</span>] <span class="op">=</span> (</span>
+<span id="cb27-126"><a href="#cb27-126" aria-hidden="true" tabindex="-1"></a>    np.log(temporal_df[<span class="st">"Harvested_Weight"</span>] <span class="op">/</span> <span class="fl">700.0</span>)</span>
+<span id="cb27-127"><a href="#cb27-127" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> temporal_df[<span class="st">"CultureDuration_days"</span>]</span>
+<span id="cb27-128"><a href="#cb27-128" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span> <span class="fl">100.0</span></span>
+<span id="cb27-129"><a href="#cb27-129" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-130"><a href="#cb27-130" aria-hidden="true" tabindex="-1"></a>temporal_df[<span class="st">"harvest_date"</span>] <span class="op">=</span> pd.to_datetime(temporal_df[<span class="st">"HarvestingDate"</span>])</span>
+<span id="cb27-131"><a href="#cb27-131" aria-hidden="true" tabindex="-1"></a>temporal_df <span class="op">=</span> temporal_df.sort_values(<span class="st">"harvest_date"</span>).copy()</span>
+<span id="cb27-132"><a href="#cb27-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-133"><a href="#cb27-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-134"><a href="#cb27-134" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fit_linear_gam(x, y, x_pred, n_splines<span class="op">=</span><span class="dv">8</span>, lam_grid<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb27-135"><a href="#cb27-135" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.asarray(x, dtype<span class="op">=</span><span class="bu">float</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb27-136"><a href="#cb27-136" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> np.asarray(y, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb27-137"><a href="#cb27-137" aria-hidden="true" tabindex="-1"></a>    x_pred <span class="op">=</span> np.asarray(x_pred, dtype<span class="op">=</span><span class="bu">float</span>).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb27-138"><a href="#cb27-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-139"><a href="#cb27-139" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> lam_grid <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb27-140"><a href="#cb27-140" aria-hidden="true" tabindex="-1"></a>        lam_grid <span class="op">=</span> np.logspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">15</span>)</span>
+<span id="cb27-141"><a href="#cb27-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-142"><a href="#cb27-142" aria-hidden="true" tabindex="-1"></a>    gam <span class="op">=</span> LinearGAM(s(<span class="dv">0</span>, n_splines<span class="op">=</span>n_splines, spline_order<span class="op">=</span><span class="dv">3</span>))</span>
+<span id="cb27-143"><a href="#cb27-143" aria-hidden="true" tabindex="-1"></a>    gam.gridsearch(x, y, lam<span class="op">=</span>lam_grid, progress<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb27-144"><a href="#cb27-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-145"><a href="#cb27-145" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> gam.predict(x_pred)</span>
+<span id="cb27-146"><a href="#cb27-146" aria-hidden="true" tabindex="-1"></a>    ci <span class="op">=</span> gam.confidence_intervals(x_pred, width<span class="op">=</span><span class="fl">0.95</span>)</span>
+<span id="cb27-147"><a href="#cb27-147" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gam, y_pred, ci[:, <span class="dv">0</span>], ci[:, <span class="dv">1</span>]</span>
+<span id="cb27-148"><a href="#cb27-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-149"><a href="#cb27-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-150"><a href="#cb27-150" aria-hidden="true" tabindex="-1"></a>data_range <span class="op">=</span> np.ptp(harvested_biomass_kg)</span>
+<span id="cb27-151"><a href="#cb27-151" aria-hidden="true" tabindex="-1"></a>q25, q75 <span class="op">=</span> np.percentile(harvested_biomass_kg, [<span class="dv">25</span>, <span class="dv">75</span>])</span>
+<span id="cb27-152"><a href="#cb27-152" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> q75 <span class="op">-</span> q25</span>
+<span id="cb27-153"><a href="#cb27-153" aria-hidden="true" tabindex="-1"></a>fd_bin_width <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> iqr <span class="op">/</span> (harvested_biomass_kg.size <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> <span class="dv">3</span>))</span>
+<span id="cb27-154"><a href="#cb27-154" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> np.isfinite(fd_bin_width) <span class="kw">or</span> fd_bin_width <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb27-155"><a href="#cb27-155" aria-hidden="true" tabindex="-1"></a>    fd_bin_width <span class="op">=</span> <span class="bu">max</span>(data_range <span class="op">/</span> <span class="dv">24</span>, <span class="dv">1</span>)</span>
+<span id="cb27-156"><a href="#cb27-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-157"><a href="#cb27-157" aria-hidden="true" tabindex="-1"></a>fd_bins <span class="op">=</span> <span class="bu">int</span>(np.ceil(data_range <span class="op">/</span> fd_bin_width))</span>
+<span id="cb27-158"><a href="#cb27-158" aria-hidden="true" tabindex="-1"></a>n_bins <span class="op">=</span> <span class="bu">int</span>(np.clip(fd_bins, <span class="dv">18</span>, <span class="dv">36</span>))</span>
+<span id="cb27-159"><a href="#cb27-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-160"><a href="#cb27-160" aria-hidden="true" tabindex="-1"></a>x_min <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb27-161"><a href="#cb27-161" aria-hidden="true" tabindex="-1"></a>x_max <span class="op">=</span> <span class="bu">max</span>(<span class="dv">100</span>, np.ceil(harvested_biomass_kg.<span class="bu">max</span>() <span class="op">/</span> <span class="dv">250</span>) <span class="op">*</span> <span class="dv">250</span>)</span>
+<span id="cb27-162"><a href="#cb27-162" aria-hidden="true" tabindex="-1"></a>bin_edges <span class="op">=</span> np.linspace(x_min, x_max, n_bins <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb27-163"><a href="#cb27-163" aria-hidden="true" tabindex="-1"></a>bin_width <span class="op">=</span> bin_edges[<span class="dv">1</span>] <span class="op">-</span> bin_edges[<span class="dv">0</span>]</span>
+<span id="cb27-164"><a href="#cb27-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-165"><a href="#cb27-165" aria-hidden="true" tabindex="-1"></a>plt.rcParams.update(</span>
+<span id="cb27-166"><a href="#cb27-166" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb27-167"><a href="#cb27-167" aria-hidden="true" tabindex="-1"></a>        <span class="st">"font.family"</span>: <span class="st">"DejaVu Sans"</span>,</span>
+<span id="cb27-168"><a href="#cb27-168" aria-hidden="true" tabindex="-1"></a>        <span class="st">"font.size"</span>: <span class="fl">9.5</span>,</span>
+<span id="cb27-169"><a href="#cb27-169" aria-hidden="true" tabindex="-1"></a>        <span class="st">"axes.labelsize"</span>: <span class="fl">10.5</span>,</span>
+<span id="cb27-170"><a href="#cb27-170" aria-hidden="true" tabindex="-1"></a>        <span class="st">"xtick.labelsize"</span>: <span class="dv">9</span>,</span>
+<span id="cb27-171"><a href="#cb27-171" aria-hidden="true" tabindex="-1"></a>        <span class="st">"ytick.labelsize"</span>: <span class="dv">9</span>,</span>
+<span id="cb27-172"><a href="#cb27-172" aria-hidden="true" tabindex="-1"></a>        <span class="st">"legend.fontsize"</span>: <span class="dv">9</span>,</span>
+<span id="cb27-173"><a href="#cb27-173" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb27-174"><a href="#cb27-174" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-175"><a href="#cb27-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-176"><a href="#cb27-176" aria-hidden="true" tabindex="-1"></a>fig, (ax_hist, ax_time) <span class="op">=</span> plt.subplots(</span>
+<span id="cb27-177"><a href="#cb27-177" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>,</span>
+<span id="cb27-178"><a href="#cb27-178" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>,</span>
+<span id="cb27-179"><a href="#cb27-179" aria-hidden="true" tabindex="-1"></a>    figsize<span class="op">=</span>(<span class="fl">8.4</span>, <span class="fl">4.3</span>),</span>
+<span id="cb27-180"><a href="#cb27-180" aria-hidden="true" tabindex="-1"></a>    facecolor<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb27-181"><a href="#cb27-181" aria-hidden="true" tabindex="-1"></a>    gridspec_kw<span class="op">=</span>{<span class="st">"width_ratios"</span>: [<span class="fl">1.0</span>, <span class="fl">1.25</span>]},</span>
+<span id="cb27-182"><a href="#cb27-182" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-183"><a href="#cb27-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-184"><a href="#cb27-184" aria-hidden="true" tabindex="-1"></a>counts, _, _ <span class="op">=</span> ax_hist.hist(</span>
+<span id="cb27-185"><a href="#cb27-185" aria-hidden="true" tabindex="-1"></a>    harvested_biomass_kg,</span>
+<span id="cb27-186"><a href="#cb27-186" aria-hidden="true" tabindex="-1"></a>    bins<span class="op">=</span>bin_edges,</span>
+<span id="cb27-187"><a href="#cb27-187" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#ccd4dd"</span>,</span>
+<span id="cb27-188"><a href="#cb27-188" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"#4b5563"</span>,</span>
+<span id="cb27-189"><a href="#cb27-189" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.8</span>,</span>
+<span id="cb27-190"><a href="#cb27-190" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-191"><a href="#cb27-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-192"><a href="#cb27-192" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> harvested_biomass_kg.size <span class="op">&gt;</span> <span class="dv">1</span> <span class="kw">and</span> np.nanstd(harvested_biomass_kg) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb27-193"><a href="#cb27-193" aria-hidden="true" tabindex="-1"></a>    kde <span class="op">=</span> gaussian_kde(harvested_biomass_kg)</span>
+<span id="cb27-194"><a href="#cb27-194" aria-hidden="true" tabindex="-1"></a>    x_kde <span class="op">=</span> np.linspace(x_min, x_max, <span class="dv">400</span>)</span>
+<span id="cb27-195"><a href="#cb27-195" aria-hidden="true" tabindex="-1"></a>    y_kde <span class="op">=</span> kde(x_kde) <span class="op">*</span> harvested_biomass_kg.size <span class="op">*</span> bin_width</span>
+<span id="cb27-196"><a href="#cb27-196" aria-hidden="true" tabindex="-1"></a>    ax_hist.plot(x_kde, y_kde, color<span class="op">=</span><span class="st">"#5f6b7a"</span>, linewidth<span class="op">=</span><span class="fl">1.6</span>, alpha<span class="op">=</span><span class="fl">0.95</span>)</span>
+<span id="cb27-197"><a href="#cb27-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-198"><a href="#cb27-198" aria-hidden="true" tabindex="-1"></a>ax_hist.axvline(</span>
+<span id="cb27-199"><a href="#cb27-199" aria-hidden="true" tabindex="-1"></a>    np.nanmedian(harvested_biomass_kg),</span>
+<span id="cb27-200"><a href="#cb27-200" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#475569"</span>,</span>
+<span id="cb27-201"><a href="#cb27-201" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb27-202"><a href="#cb27-202" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span>(<span class="dv">0</span>, (<span class="dv">4</span>, <span class="dv">3</span>)),</span>
+<span id="cb27-203"><a href="#cb27-203" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb27-204"><a href="#cb27-204" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-205"><a href="#cb27-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-206"><a href="#cb27-206" aria-hidden="true" tabindex="-1"></a>ax_hist.set_xlabel(<span class="st">"Harvested biomass (kg)"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
+<span id="cb27-207"><a href="#cb27-207" aria-hidden="true" tabindex="-1"></a>ax_hist.set_ylabel(<span class="st">"Frequency"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
+<span id="cb27-208"><a href="#cb27-208" aria-hidden="true" tabindex="-1"></a>ax_hist.set_xlim(x_min, x_max)</span>
+<span id="cb27-209"><a href="#cb27-209" aria-hidden="true" tabindex="-1"></a>ax_hist.margins(x<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb27-210"><a href="#cb27-210" aria-hidden="true" tabindex="-1"></a>ax_hist.set_ylim(<span class="dv">0</span>, <span class="bu">max</span>(counts) <span class="op">*</span> <span class="fl">1.08</span>)</span>
+<span id="cb27-211"><a href="#cb27-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-212"><a href="#cb27-212" aria-hidden="true" tabindex="-1"></a>x_tick_step <span class="op">=</span> <span class="dv">500</span> <span class="cf">if</span> x_max <span class="op">&lt;=</span> <span class="dv">4000</span> <span class="cf">else</span> <span class="dv">1000</span></span>
+<span id="cb27-213"><a href="#cb27-213" aria-hidden="true" tabindex="-1"></a>ax_hist.set_xticks(np.arange(x_min, x_max <span class="op">+</span> x_tick_step, x_tick_step))</span>
+<span id="cb27-214"><a href="#cb27-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-215"><a href="#cb27-215" aria-hidden="true" tabindex="-1"></a>position_colors <span class="op">=</span> {</span>
+<span id="cb27-216"><a href="#cb27-216" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Back"</span>: <span class="st">"#bc6c25"</span>,</span>
+<span id="cb27-217"><a href="#cb27-217" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Front"</span>: <span class="st">"#2a7f9e"</span>,</span>
+<span id="cb27-218"><a href="#cb27-218" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-219"><a href="#cb27-219" aria-hidden="true" tabindex="-1"></a>position_labels <span class="op">=</span> {</span>
+<span id="cb27-220"><a href="#cb27-220" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Back"</span>: <span class="st">"Est"</span>,</span>
+<span id="cb27-221"><a href="#cb27-221" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Front"</span>: <span class="st">"West"</span>,</span>
+<span id="cb27-222"><a href="#cb27-222" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb27-223"><a href="#cb27-223" aria-hidden="true" tabindex="-1"></a>ax_time.set_xlabel(<span class="st">"Harvesting date"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
+<span id="cb27-224"><a href="#cb27-224" aria-hidden="true" tabindex="-1"></a>ax_time.set_ylabel(<span class="vs">r"Daily growth rate </span><span class="kw">(</span><span class="vs">% d</span><span class="dv">$^</span><span class="vs">{-1}</span><span class="dv">$</span><span class="kw">)</span><span class="vs">"</span>, color<span class="op">=</span><span class="st">"#1f2933"</span>)</span>
+<span id="cb27-225"><a href="#cb27-225" aria-hidden="true" tabindex="-1"></a>dgr_min <span class="op">=</span> <span class="bu">float</span>(np.nanmin(temporal_df[<span class="st">"DGR"</span>]))</span>
+<span id="cb27-226"><a href="#cb27-226" aria-hidden="true" tabindex="-1"></a>dgr_max <span class="op">=</span> <span class="bu">float</span>(np.nanmax(temporal_df[<span class="st">"DGR"</span>]))</span>
+<span id="cb27-227"><a href="#cb27-227" aria-hidden="true" tabindex="-1"></a>ax_time.set_ylim(<span class="bu">max</span>(<span class="dv">0</span>, np.floor((dgr_min <span class="op">-</span> <span class="fl">0.2</span>) <span class="op">*</span> <span class="dv">2</span>) <span class="op">/</span> <span class="dv">2</span>), np.ceil((dgr_max <span class="op">+</span> <span class="fl">0.2</span>) <span class="op">*</span> <span class="dv">2</span>) <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb27-228"><a href="#cb27-228" aria-hidden="true" tabindex="-1"></a>ax_time.yaxis.set_major_locator(mticker.MultipleLocator(<span class="fl">0.5</span>))</span>
+<span id="cb27-229"><a href="#cb27-229" aria-hidden="true" tabindex="-1"></a>ax_time.margins(x<span class="op">=</span><span class="fl">0.01</span>)</span>
+<span id="cb27-230"><a href="#cb27-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-231"><a href="#cb27-231" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> position, group_df <span class="kw">in</span> temporal_df.groupby(<span class="st">"position"</span>, sort<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb27-232"><a href="#cb27-232" aria-hidden="true" tabindex="-1"></a>    group_df <span class="op">=</span> group_df.sort_values(<span class="st">"harvest_date"</span>).copy()</span>
+<span id="cb27-233"><a href="#cb27-233" aria-hidden="true" tabindex="-1"></a>    x_points <span class="op">=</span> mdates.date2num(group_df[<span class="st">"harvest_date"</span>])</span>
+<span id="cb27-234"><a href="#cb27-234" aria-hidden="true" tabindex="-1"></a>    y_points <span class="op">=</span> group_df[<span class="st">"DGR"</span>].to_numpy(dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb27-235"><a href="#cb27-235" aria-hidden="true" tabindex="-1"></a>    x_pred <span class="op">=</span> np.linspace(x_points.<span class="bu">min</span>(), x_points.<span class="bu">max</span>(), <span class="dv">300</span>)</span>
+<span id="cb27-236"><a href="#cb27-236" aria-hidden="true" tabindex="-1"></a>    _, y_smooth, y_lower, y_upper <span class="op">=</span> fit_linear_gam(</span>
+<span id="cb27-237"><a href="#cb27-237" aria-hidden="true" tabindex="-1"></a>        x_points,</span>
+<span id="cb27-238"><a href="#cb27-238" aria-hidden="true" tabindex="-1"></a>        y_points,</span>
+<span id="cb27-239"><a href="#cb27-239" aria-hidden="true" tabindex="-1"></a>        x_pred,</span>
+<span id="cb27-240"><a href="#cb27-240" aria-hidden="true" tabindex="-1"></a>        n_splines<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb27-241"><a href="#cb27-241" aria-hidden="true" tabindex="-1"></a>        lam_grid<span class="op">=</span>np.logspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">15</span>),</span>
+<span id="cb27-242"><a href="#cb27-242" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-243"><a href="#cb27-243" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> position_colors.get(position, <span class="st">"#4b5563"</span>)</span>
+<span id="cb27-244"><a href="#cb27-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-245"><a href="#cb27-245" aria-hidden="true" tabindex="-1"></a>    ax_time.scatter(</span>
+<span id="cb27-246"><a href="#cb27-246" aria-hidden="true" tabindex="-1"></a>        group_df[<span class="st">"harvest_date"</span>],</span>
+<span id="cb27-247"><a href="#cb27-247" aria-hidden="true" tabindex="-1"></a>        y_points,</span>
+<span id="cb27-248"><a href="#cb27-248" aria-hidden="true" tabindex="-1"></a>        s<span class="op">=</span><span class="dv">21</span>,</span>
+<span id="cb27-249"><a href="#cb27-249" aria-hidden="true" tabindex="-1"></a>        facecolor<span class="op">=</span>color,</span>
+<span id="cb27-250"><a href="#cb27-250" aria-hidden="true" tabindex="-1"></a>        edgecolor<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb27-251"><a href="#cb27-251" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="fl">0.35</span>,</span>
+<span id="cb27-252"><a href="#cb27-252" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb27-253"><a href="#cb27-253" aria-hidden="true" tabindex="-1"></a>        zorder<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb27-254"><a href="#cb27-254" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span><span class="st">"_nolegend_"</span>,</span>
+<span id="cb27-255"><a href="#cb27-255" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-256"><a href="#cb27-256" aria-hidden="true" tabindex="-1"></a>    ax_time.fill_between(</span>
+<span id="cb27-257"><a href="#cb27-257" aria-hidden="true" tabindex="-1"></a>        mdates.num2date(x_pred),</span>
+<span id="cb27-258"><a href="#cb27-258" aria-hidden="true" tabindex="-1"></a>        y_lower,</span>
+<span id="cb27-259"><a href="#cb27-259" aria-hidden="true" tabindex="-1"></a>        y_upper,</span>
+<span id="cb27-260"><a href="#cb27-260" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>color,</span>
+<span id="cb27-261"><a href="#cb27-261" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.14</span>,</span>
+<span id="cb27-262"><a href="#cb27-262" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb27-263"><a href="#cb27-263" aria-hidden="true" tabindex="-1"></a>        zorder<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb27-264"><a href="#cb27-264" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-265"><a href="#cb27-265" aria-hidden="true" tabindex="-1"></a>    ax_time.plot(</span>
+<span id="cb27-266"><a href="#cb27-266" aria-hidden="true" tabindex="-1"></a>        mdates.num2date(x_pred),</span>
+<span id="cb27-267"><a href="#cb27-267" aria-hidden="true" tabindex="-1"></a>        y_smooth,</span>
+<span id="cb27-268"><a href="#cb27-268" aria-hidden="true" tabindex="-1"></a>        color<span class="op">=</span>color,</span>
+<span id="cb27-269"><a href="#cb27-269" aria-hidden="true" tabindex="-1"></a>        linewidth<span class="op">=</span><span class="fl">2.2</span>,</span>
+<span id="cb27-270"><a href="#cb27-270" aria-hidden="true" tabindex="-1"></a>        label<span class="op">=</span>position_labels.get(position, position),</span>
+<span id="cb27-271"><a href="#cb27-271" aria-hidden="true" tabindex="-1"></a>        zorder<span class="op">=</span><span class="dv">6</span>,</span>
+<span id="cb27-272"><a href="#cb27-272" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb27-273"><a href="#cb27-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-274"><a href="#cb27-274" aria-hidden="true" tabindex="-1"></a>date_min <span class="op">=</span> temporal_df[<span class="st">"harvest_date"</span>].<span class="bu">min</span>()</span>
+<span id="cb27-275"><a href="#cb27-275" aria-hidden="true" tabindex="-1"></a>date_max <span class="op">=</span> temporal_df[<span class="st">"harvest_date"</span>].<span class="bu">max</span>()</span>
+<span id="cb27-276"><a href="#cb27-276" aria-hidden="true" tabindex="-1"></a>ax_time.set_xlim(date_min <span class="op">-</span> pd.Timedelta(days<span class="op">=</span><span class="dv">4</span>), date_max <span class="op">+</span> pd.Timedelta(days<span class="op">=</span><span class="dv">4</span>))</span>
+<span id="cb27-277"><a href="#cb27-277" aria-hidden="true" tabindex="-1"></a>ax_time.xaxis.set_major_locator(mdates.MonthLocator(interval<span class="op">=</span><span class="dv">2</span>))</span>
+<span id="cb27-278"><a href="#cb27-278" aria-hidden="true" tabindex="-1"></a>ax_time.xaxis.set_minor_locator(mdates.MonthLocator())</span>
+<span id="cb27-279"><a href="#cb27-279" aria-hidden="true" tabindex="-1"></a>ax_time.xaxis.set_major_formatter(mdates.DateFormatter(<span class="st">"%b"</span>))</span>
+<span id="cb27-280"><a href="#cb27-280" aria-hidden="true" tabindex="-1"></a>ax_time.legend(</span>
+<span id="cb27-281"><a href="#cb27-281" aria-hidden="true" tabindex="-1"></a>    frameon<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb27-282"><a href="#cb27-282" aria-hidden="true" tabindex="-1"></a>    loc<span class="op">=</span><span class="st">"upper right"</span>,</span>
+<span id="cb27-283"><a href="#cb27-283" aria-hidden="true" tabindex="-1"></a>    ncol<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb27-284"><a href="#cb27-284" aria-hidden="true" tabindex="-1"></a>    handlelength<span class="op">=</span><span class="fl">1.8</span>,</span>
+<span id="cb27-285"><a href="#cb27-285" aria-hidden="true" tabindex="-1"></a>    handletextpad<span class="op">=</span><span class="fl">0.6</span>,</span>
+<span id="cb27-286"><a href="#cb27-286" aria-hidden="true" tabindex="-1"></a>    columnspacing<span class="op">=</span><span class="fl">1.2</span>,</span>
+<span id="cb27-287"><a href="#cb27-287" aria-hidden="true" tabindex="-1"></a>    borderaxespad<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb27-288"><a href="#cb27-288" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-289"><a href="#cb27-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-290"><a href="#cb27-290" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> (ax_hist, ax_time):</span>
+<span id="cb27-291"><a href="#cb27-291" aria-hidden="true" tabindex="-1"></a>    ax.grid(axis<span class="op">=</span><span class="st">"y"</span>, color<span class="op">=</span><span class="st">"#e6eaef"</span>, linewidth<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb27-292"><a href="#cb27-292" aria-hidden="true" tabindex="-1"></a>    ax.set_axisbelow(<span class="va">True</span>)</span>
+<span id="cb27-293"><a href="#cb27-293" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">"top"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb27-294"><a href="#cb27-294" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">"right"</span>].set_visible(<span class="va">False</span>)</span>
+<span id="cb27-295"><a href="#cb27-295" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> spine <span class="kw">in</span> (<span class="st">"left"</span>, <span class="st">"bottom"</span>):</span>
+<span id="cb27-296"><a href="#cb27-296" aria-hidden="true" tabindex="-1"></a>        ax.spines[spine].set_color(<span class="st">"#334155"</span>)</span>
+<span id="cb27-297"><a href="#cb27-297" aria-hidden="true" tabindex="-1"></a>        ax.spines[spine].set_linewidth(<span class="fl">0.9</span>)</span>
+<span id="cb27-298"><a href="#cb27-298" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">"both"</span>, colors<span class="op">=</span><span class="st">"#334155"</span>, length<span class="op">=</span><span class="dv">4</span>, width<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb27-299"><a href="#cb27-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-300"><a href="#cb27-300" aria-hidden="true" tabindex="-1"></a>ax_time.grid(axis<span class="op">=</span><span class="st">"x"</span>, which<span class="op">=</span><span class="st">"major"</span>, color<span class="op">=</span><span class="st">"#f2f4f7"</span>, linewidth<span class="op">=</span><span class="fl">0.45</span>)</span>
+<span id="cb27-301"><a href="#cb27-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-302"><a href="#cb27-302" aria-hidden="true" tabindex="-1"></a>ax_hist.text(</span>
+<span id="cb27-303"><a href="#cb27-303" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.0</span>,</span>
+<span id="cb27-304"><a href="#cb27-304" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.02</span>,</span>
+<span id="cb27-305"><a href="#cb27-305" aria-hidden="true" tabindex="-1"></a>    <span class="st">"A"</span>,</span>
+<span id="cb27-306"><a href="#cb27-306" aria-hidden="true" tabindex="-1"></a>    transform<span class="op">=</span>ax_hist.transAxes,</span>
+<span id="cb27-307"><a href="#cb27-307" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb27-308"><a href="#cb27-308" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"bottom"</span>,</span>
+<span id="cb27-309"><a href="#cb27-309" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span>,</span>
+<span id="cb27-310"><a href="#cb27-310" aria-hidden="true" tabindex="-1"></a>    fontweight<span class="op">=</span><span class="st">"bold"</span>,</span>
+<span id="cb27-311"><a href="#cb27-311" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#1f2933"</span>,</span>
+<span id="cb27-312"><a href="#cb27-312" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-313"><a href="#cb27-313" aria-hidden="true" tabindex="-1"></a>ax_time.text(</span>
+<span id="cb27-314"><a href="#cb27-314" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.0</span>,</span>
+<span id="cb27-315"><a href="#cb27-315" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1.02</span>,</span>
+<span id="cb27-316"><a href="#cb27-316" aria-hidden="true" tabindex="-1"></a>    <span class="st">"B"</span>,</span>
+<span id="cb27-317"><a href="#cb27-317" aria-hidden="true" tabindex="-1"></a>    transform<span class="op">=</span>ax_time.transAxes,</span>
+<span id="cb27-318"><a href="#cb27-318" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb27-319"><a href="#cb27-319" aria-hidden="true" tabindex="-1"></a>    va<span class="op">=</span><span class="st">"bottom"</span>,</span>
+<span id="cb27-320"><a href="#cb27-320" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span>,</span>
+<span id="cb27-321"><a href="#cb27-321" aria-hidden="true" tabindex="-1"></a>    fontweight<span class="op">=</span><span class="st">"bold"</span>,</span>
+<span id="cb27-322"><a href="#cb27-322" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"#1f2933"</span>,</span>
+<span id="cb27-323"><a href="#cb27-323" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-324"><a href="#cb27-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-325"><a href="#cb27-325" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb27-326"><a href="#cb27-326" aria-hidden="true" tabindex="-1"></a>fig.savefig(OUT_PNG, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>, facecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb27-327"><a href="#cb27-327" aria-hidden="true" tabindex="-1"></a>plt.close(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="cell-fig-harvested-biomass-distribution" class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/harvested_biomass_distribution_temporal_variability_low_k5.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div id="cell-fig-harvested-biomass-distribution" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/harvested_biomass_distribution_temporal_variability_low_k5.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-harvested-biomass-distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

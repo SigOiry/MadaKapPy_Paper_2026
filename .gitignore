@@ -7,3 +7,4 @@
 **/*.quarto_ipynb
 Data/drone/*
 Data/RF/*
+Data/S2/*

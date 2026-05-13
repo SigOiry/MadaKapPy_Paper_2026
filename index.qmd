@@ -820,6 +820,8 @@ The full workflow was implemented in a standalone desktop application developed 
 
 ## Spatio-temporal variability of seaweed production
 
+Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (\@fig-plot-productivity-map). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached approximately 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was visible both at the scale of individual module but also between module modules, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.
+
 ```{python}
 #| label: make-plot-productivity-map
 #| eval: false
@@ -1075,15 +1077,272 @@ plt.close(fig)
 ```
 
 ```{r}
+#| eval: false
+#| echo: false
+#| warning: false
+#| message: false
+
+library(here)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(sf)
+library(terra)
+library(tidyterra)
+library(ggplot2)
+library(scales)
+library(scico)
+library(grid)
+
+project_root <- here::here()
+
+harvest_data <- "Data/NBS - Récolte 2025.xlsx"
+
+cadaster_data <- "Data/shp/Cadaster_NBS_Dec2025.shp"
+
+extent_mask <- file.path(
+  project_root,
+  "Data",
+  "shp",
+  "extent_mask.shp"
+)
+
+background_raster <- "Data/S2/T39KUB_20260509T070219_TCI_10m.jp2"
+
+figure_dir <- file.path(project_root, "Figures")
+dir.create(figure_dir, showWarnings = FALSE, recursive = TRUE)
+
+out_png <- file.path(figure_dir, "Map_Production/plot_productivity_map_2025.png")
+out_png_svg <- file.path(figure_dir, "Map_Production/plot_productivity_map_2025_2.svg")
+
+prod_df <- read_excel(
+  harvest_data,
+  sheet = "Copie base donnée"
+) %>%
+  mutate(
+    FarmID = as.numeric(FarmID),
+    ModuleNumber = as.numeric(ModuleNumber),
+    Harvested_Weight = as.numeric(Harvested_Weight),
+    CultureDuration_days = as.numeric(CultureDuration_days),
+    LinesCount = as.numeric(LinesCount)
+  ) %>%
+  filter(
+    CultureMode == "Cordes",
+    !is.na(FarmID),
+    !is.na(ModuleNumber),
+    !is.na(Harvested_Weight),
+    !is.na(CultureDuration_days),
+    CultureDuration_days > 0,
+    !is.na(LinesCount),
+    LinesCount == 100,
+    Harvested_Weight > 1000
+  ) %>%
+  mutate(
+    FarmID = str_pad(as.integer(FarmID), width = 3, pad = "0"),
+    ModuleNumber = as.integer(ModuleNumber),
+    Module_ID = paste0(FarmID, "_", ModuleNumber),
+    Net_Production = Harvested_Weight - 700,
+    DGR = (log(Harvested_Weight / 700)/CultureDuration_days)*100,
+    Growth_per_day = Net_Production / CultureDuration_days / LinesCount
+  )
+
+cadaster_sf <- st_read(cadaster_data, quiet = TRUE) %>%
+  select(ID, geometry) %>%
+  rename(Module_ID = ID)
+
+summary_sf <- cadaster_sf %>%
+  inner_join(
+    prod_df %>%
+      group_by(Module_ID) %>%
+      summarise(
+        Average_Growth_per_day = mean(Growth_per_day, na.rm = TRUE),
+        Average_DGR = mean(DGR, na.rm = TRUE),
+        .groups = "drop"
+      ),
+    by = "Module_ID"
+  )
+
+background <- rast(background_raster)
+
+extent_mask_sf <- st_read(extent_mask, quiet = TRUE) %>%
+  st_transform(crs(background))
+
+plot_sf <- summary_sf %>%
+  st_transform(crs(background))
+
+bbox <- st_bbox(extent_mask_sf)
+
+xmin <- bbox[["xmin"]]
+xmax <- bbox[["xmax"]]
+ymin <- bbox[["ymin"]]
+ymax <- bbox[["ymax"]]
+
+background <- crop(
+  background,
+  ext(xmin, xmax, ymin, ymax)
+)
+
+extent_width <- xmax - xmin
+extent_height <- ymax - ymin
+
+fig_width <- 6.6
+fig_height <- fig_width * (extent_height / extent_width)
+
+scale_length_m <- 400
+
+bar_x0 <- xmin + 0.08 * extent_width
+bar_y0 <- ymin + 0.145 * extent_height
+
+arrow_x <- xmin + 0.94 * extent_width
+arrow_y0 <- ymin + 0.79 * extent_height
+arrow_y1 <- ymin + 0.90 * extent_height
+
+legend_min <- min(plot_sf$Average_DGR, na.rm = TRUE)
+legend_max <- max(plot_sf$Average_DGR, na.rm = TRUE)
+
+p <- ggplot() +
+  geom_spatraster_rgb(
+    data = background,
+    r = 1,
+    g = 2,
+    b = 3,
+    max_col_value = 255
+  ) +
+  geom_sf(
+    data = plot_sf,
+    aes(fill = Average_DGR),
+    linewidth = 0.14,
+    colour = alpha("#1a212b", 0.22),
+    alpha = 0.97
+  ) +
+  scale_fill_scico(
+    palette = "batlow",
+    limits = c(legend_min, legend_max),
+    breaks = pretty_breaks(n = 3),
+    trans = "exp",
+    labels = label_number(accuracy = 0.01),
+    name = NULL,
+    guide = guide_colorbar(
+      direction = "horizontal",
+      barwidth = unit(3.4, "cm"),
+      barheight = unit(0.18, "cm"),
+      ticks = TRUE,
+      frame.colour = NA,
+      label.position = "bottom"
+    )
+  ) +
+  coord_sf(
+    xlim = c(xmin, xmax),
+    ylim = c(ymin, ymax),
+    expand = FALSE
+  ) +
+  annotate(
+    "segment",
+    x = arrow_x,
+    xend = arrow_x,
+    y = arrow_y0,
+    yend = arrow_y1,
+    linewidth = 0.7,
+    colour = "white",
+    arrow = arrow(length = unit(0.22, "cm"), type = "closed")
+  ) +
+  annotate(
+    "text",
+    x = arrow_x,
+    y = arrow_y1 + 0.025 * extent_height,
+    label = "N",
+    colour = "white",
+    fontface = "bold",
+    size = 4.2
+  ) +
+  annotate(
+    "segment",
+    x = bar_x0,
+    xend = bar_x0 + scale_length_m,
+    y = bar_y0,
+    yend = bar_y0,
+    colour = "white",
+    linewidth = 1.35,
+    lineend = "butt"
+  ) +
+  annotate(
+    "segment",
+    x = bar_x0,
+    xend = bar_x0,
+    y = bar_y0 - 12,
+    yend = bar_y0 + 12,
+    colour = "white",
+    linewidth = 0.55
+  ) +
+  annotate(
+    "segment",
+    x = bar_x0 + scale_length_m,
+    xend = bar_x0 + scale_length_m,
+    y = bar_y0 - 12,
+    yend = bar_y0 + 12,
+    colour = "white",
+    linewidth = 0.55
+  ) +
+  annotate(
+    "text",
+    x = bar_x0 + scale_length_m / 2,
+    y = bar_y0 + 32,
+    label = "200 m",
+    colour = "white",
+    fontface = "bold",
+    size = 3.5,
+    vjust = 0
+  ) +
+  theme_void() +
+  theme(
+    plot.background = element_rect(fill = "white", colour = NA),
+    panel.background = element_rect(fill = "#f4f7f9", colour = NA),
+    legend.position = c(0.78, 0.16),
+    legend.justification = c(0.5, 0.5),
+    legend.background = element_rect(
+      fill = alpha("white", 0.50),
+      colour = NA
+    ),
+    legend.margin = margin(3, 5, 3, 5),
+    legend.text = element_text(size = 7),
+    plot.margin = margin(0, 0, 0, 0)
+  )
+
+p
+
+ggsave(
+  filename = out_png,
+  plot = p,
+  width = fig_width,
+  height = fig_height,
+  dpi = 400,
+  bg = "white"
+)
+
+ggsave(
+  filename = out_png_svg,
+  plot = p,
+  width = fig_width,
+  height = fig_height,
+  dpi = 400,
+)
+
+```
+
+```{r}
 #| label: fig-plot-productivity-map
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Spatial variability in the productivity of seaweed modules in 2025. Polygon colors show the mean daily net production of each module."
+#| fig-cap: "Spatial variability in the productivity of seaweed modules in 2025. Each polygons represent a 40*10m cultivation plot."
 #| out-width: "100%"
 
-knitr::include_graphics("Figures/plot_productivity_map_2025.png")
+knitr::include_graphics("Figures/Map_Production/plot_productivity_map_2025-02.png")
 ```
+
+Cultivation plots were harvested at an average biomass of approximately 2900 kg (@fig-harvested-biomass-distribution A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.
+
+Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (@fig-harvested-biomass-distribution B). Plots located closest to the coral reef showed relatively stable DGR throughout the year, with an average value of 3.57 %.day⁻¹ in 2025. In these plots, DGR was slightly higher in autumn, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed stronger seasonal variability. Their maximum DGR was observed in spring, when values were comparable to those recorded near the coral reef. However, during summer, autumn, and winter, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching approximately 2.5 %.day⁻¹ in winter.
 
 ```{python}
 #| label: make-harvested-biomass-distribution
