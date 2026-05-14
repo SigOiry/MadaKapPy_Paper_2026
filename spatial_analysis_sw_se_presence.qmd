@@ -1,5 +1,5 @@
 ---
-title: "SW and SE nearest-neighbour distance model using raw DGR values"
+title: "SW and SE nearest-neighbour GAM analysis using raw DGR values"
 format:
   html:
     toc: true
@@ -68,6 +68,8 @@ min_presence_group_n <- 10
 
 harvest_path <- "Data/NBS - Récolte 2025.xlsx"
 harvest_sheet <- "Copie base donnée"
+min_culture_days <- 28
+required_lines <- 100
 
 save_dpi <- 300
 plot_width <- 8.5
@@ -143,23 +145,27 @@ prepare_plot_geometry <- function(cadaster_path, id_col) {
   centroid_points <- st_point_on_surface(cadaster_sf)
   centroid_coords <- st_coordinates(centroid_points)
 
-  cadaster_sf <- cadaster_sf |>
+  cadaster_sf |>
     transmute(
       plot_id = as.character(.data[[id_col]]),
       x = centroid_coords[, "X"],
       y = centroid_coords[, "Y"]
+    ) |>
+    list(
+      data = _,
+      metadata = list(
+        original_crs = original_crs_label,
+        analysis_crs = transformed_crs_label
+      )
     )
-
-  list(
-    data = cadaster_sf,
-    metadata = list(
-      original_crs = original_crs_label,
-      analysis_crs = transformed_crs_label
-    )
-  )
 }
 
-prepare_raw_dgr <- function(harvest_path, harvest_sheet) {
+prepare_raw_dgr <- function(
+  harvest_path,
+  harvest_sheet,
+  min_culture_days,
+  required_lines
+) {
   readxl::read_excel(harvest_path, sheet = harvest_sheet) |>
     mutate(
       FarmID = as.numeric(FarmID),
@@ -174,9 +180,9 @@ prepare_raw_dgr <- function(harvest_path, harvest_sheet) {
       !is.na(ModuleNumber),
       !is.na(Harvested_Weight),
       !is.na(CultureDuration_days),
-      CultureDuration_days > 0,
+      CultureDuration_days >= min_culture_days,
       !is.na(LinesCount),
-      LinesCount == 100,
+      LinesCount == required_lines,
       Harvested_Weight > 1000
     ) |>
     mutate(
@@ -185,7 +191,7 @@ prepare_raw_dgr <- function(harvest_path, harvest_sheet) {
       Module_ID = paste0(FarmID, "_", ModuleNumber),
       DGR = (log(Harvested_Weight / 700) / CultureDuration_days) * 100
     ) |>
-    select(Module_ID, DGR)
+    select(Module_ID, FarmID, DGR)
 }
 
 build_sw_se_pairs <- function(plot_sf) {
@@ -212,6 +218,54 @@ build_sw_se_pairs <- function(plot_sf) {
       )
     ) |>
     filter(!is.na(direction), distance_m > 0)
+}
+
+compute_first_valid_threshold <- function(pair_tbl, raw_joined, thresholds, min_group_n) {
+  threshold_counts <- purrr::map_dfr(thresholds, function(threshold_m) {
+    threshold_summary <- pair_tbl |>
+      filter(distance_m <= threshold_m) |>
+      group_by(plot_id, direction) |>
+      summarise(
+        present = as.integer(dplyr::n() > 0),
+        .groups = "drop"
+      ) |>
+      pivot_wider(
+        names_from = direction,
+        values_from = present,
+        values_fill = 0,
+        names_prefix = "present_"
+      )
+
+    for (nm in c("present_SW", "present_SE")) {
+      if (!nm %in% names(threshold_summary)) {
+        threshold_summary[[nm]] <- 0L
+      }
+    }
+
+    dat <- raw_joined |>
+      left_join(
+        threshold_summary |>
+          select(plot_id, present_SW, present_SE),
+        by = "plot_id"
+      ) |>
+      mutate(
+        present_SW = ifelse(is.na(present_SW), 0L, present_SW),
+        present_SE = ifelse(is.na(present_SE), 0L, present_SE)
+      )
+
+    tibble(
+      distance_threshold_m = threshold_m,
+      sw0 = sum(dat$present_SW == 0),
+      sw1 = sum(dat$present_SW == 1),
+      se0 = sum(dat$present_SE == 0),
+      se1 = sum(dat$present_SE == 1)
+    )
+  })
+
+  threshold_counts |>
+    filter(pmin(sw0, sw1, se0, se1) >= min_group_n) |>
+    arrange(distance_threshold_m) |>
+    slice(1)
 }
 
 compute_presence_combo_data <- function(pair_tbl, raw_joined, threshold_m) {
@@ -254,25 +308,6 @@ compute_presence_combo_data <- function(pair_tbl, raw_joined, threshold_m) {
     )
 }
 
-compute_first_valid_threshold <- function(pair_tbl, raw_joined, thresholds, min_group_n) {
-  threshold_counts <- purrr::map_dfr(thresholds, function(threshold_m) {
-    dat <- compute_presence_combo_data(pair_tbl, raw_joined, threshold_m)
-
-    tibble(
-      distance_threshold_m = threshold_m,
-      sw0 = sum(dat$present_SW == 0),
-      sw1 = sum(dat$present_SW == 1),
-      se0 = sum(dat$present_SE == 0),
-      se1 = sum(dat$present_SE == 1)
-    )
-  })
-
-  threshold_counts |>
-    filter(pmin(sw0, sw1, se0, se1) >= min_group_n) |>
-    arrange(distance_threshold_m) |>
-    slice(1)
-}
-
 compute_closest_distances <- function(pair_tbl) {
   pair_tbl |>
     group_by(plot_id, direction) |>
@@ -287,8 +322,8 @@ compute_closest_distances <- function(pair_tbl) {
     )
 }
 
-extract_gam_parametric <- function(gam_fit) {
-  ptab <- summary(gam_fit)$p.table
+extract_parametric_table <- function(model_fit) {
+  ptab <- summary(model_fit)$p.table
   tibble(
     term = rownames(ptab),
     estimate = ptab[, "Estimate"],
@@ -300,26 +335,14 @@ extract_gam_parametric <- function(gam_fit) {
   )
 }
 
-fixed_effect_prediction <- function(newdata, coefficient_tbl, vcov_matrix) {
-  intercept <- coefficient_tbl$estimate[coefficient_tbl$term == "(Intercept)"]
-  beta_sw <- coefficient_tbl$estimate[coefficient_tbl$term == "log_closest_SW"]
-  beta_se <- coefficient_tbl$estimate[coefficient_tbl$term == "log_closest_SE"]
-
-  X <- cbind(
-    1,
-    newdata$log_closest_SW,
-    newdata$log_closest_SE
-  )
-
-  beta <- c(intercept, beta_sw, beta_se)
-  fit <- as.numeric(X %*% beta)
-  se <- sqrt(diag(X %*% vcov_matrix %*% t(X)))
-
+extract_smooth_table <- function(model_fit) {
+  stab <- summary(model_fit)$s.table
   tibble(
-    fit = fit,
-    se_fit = se,
-    lwr = fit - 1.96 * se,
-    upr = fit + 1.96 * se
+    term = rownames(stab),
+    edf = stab[, "edf"],
+    ref.df = stab[, "Ref.df"],
+    f_stat = stab[, "F"],
+    p.value = stab[, "p-value"]
   )
 }
 
@@ -327,36 +350,39 @@ write_interpretation <- function(
   output_file,
   first_valid_threshold,
   combo_summary,
-  coefficient_tbl,
-  model_summary_tbl,
+  se_model_summary,
+  swse_model_summary,
+  se_smooth_tbl,
+  swse_smooth_tbl,
   n_rows,
   n_modules
 ) {
-  intercept <- coefficient_tbl$estimate[coefficient_tbl$term == "(Intercept)"]
-  beta_sw <- coefficient_tbl$estimate[coefficient_tbl$term == "log_closest_SW"]
-  beta_se <- coefficient_tbl$estimate[coefficient_tbl$term == "log_closest_SE"]
-  sw_p <- coefficient_tbl$p.value[coefficient_tbl$term == "log_closest_SW"]
-  se_p <- coefficient_tbl$p.value[coefficient_tbl$term == "log_closest_SE"]
-
   combo_means <- combo_summary$mean_DGR
   names(combo_means) <- combo_summary$combo
 
   interpretation_lines <- c(
     "# Spatial analysis interpretation",
     "",
-    "## Question tested",
+    "## Data used",
     paste(
-      "The analysis was simplified to use raw DGR values instead of module-average DGR.",
-      "For each raw DGR record, the plot geometry of its module was used to compute the",
-      "distance to the closest cultivated neighbour toward the SW and toward the SE."
+      "This analysis uses raw DGR values, restricted to harvests with exactly",
+      sprintf("`%d` lines", required_lines),
+      "and at least",
+      sprintf("`%d` days", min_culture_days),
+      "of cultivation."
+    ),
+    sprintf(
+      "The final joined dataset contains %d raw DGR observations from %d modules.",
+      n_rows,
+      n_modules
     ),
     "",
-    "## Presence plot kept from the earlier test",
+    "## Presence plot retained",
     sprintf(
       paste(
-        "At %d m, the combination plot still shows the same overall pattern:",
+        "At %d m, the combination plot still shows the same broad pattern:",
         "the highest mean raw DGR occurs when neither SW nor SE neighbours are present (%.2f),",
-        "intermediate values occur for `SW only` (%.2f) and `SE only` (%.2f),",
+        "intermediate mean DGR occurs for `SW only` (%.2f) and `SE only` (%.2f),",
         "and the lowest mean raw DGR occurs when both SW and SE neighbours are present (%.2f)."
       ),
       first_valid_threshold,
@@ -366,64 +392,55 @@ write_interpretation <- function(
       combo_means["SW + SE"]
     ),
     "",
-    "## Final model using closest-neighbour distances",
-    sprintf(
-      paste(
-        "The final model was fitted on %d raw DGR observations from %d modules",
-        "that had both closest-neighbour distances defined."
-      ),
-      n_rows,
-      n_modules
+    "## GAM models fitted",
+    paste(
+      "Two GAMs were fitted with module-level random effects to account for repeated",
+      "raw measurements within the same module."
     ),
     paste(
-      "Because raw DGR contains repeated observations for the same module, the model",
-      "uses a module-level random effect and log-transformed neighbour distances."
+      "Model 1 tests the SE effect alone:",
+      "`DGR ~ s(log(SE_distance)) + random module effect`."
     ),
     sprintf(
-      "`DGR_hat = %.3f + %.3f * log(SW_distance_m) %.3f * log(SE_distance_m)`",
-      intercept,
-      beta_sw,
-      beta_se
+      "For Model 1, the smooth SE term had p = %.3g, adjusted R2 = %.3f, deviance explained = %.1f%%, and AIC = %.1f.",
+      se_smooth_tbl$p.value[se_smooth_tbl$term == "s(log_closest_SE)"],
+      se_model_summary$adj_r_squared[1],
+      100 * se_model_summary$deviance_explained[1],
+      se_model_summary$AIC[1]
+    ),
+    paste(
+      "Model 2 is the final joint model:",
+      "`DGR ~ s(log(SW_distance)) + s(log(SE_distance)) + random module effect`."
     ),
     sprintf(
-      paste(
-        "At the population level, the SW coefficient is positive (%.3f, p = %.3g),",
-        "meaning that larger distance to the closest SW neighbour is associated",
-        "with higher DGR."
-      ),
-      beta_sw,
-      sw_p
-    ),
-    sprintf(
-      paste(
-        "The SE coefficient is negative (%.3f, p = %.3g), meaning that larger distance",
-        "to the closest SE neighbour is associated with lower DGR."
-      ),
-      beta_se,
-      se_p
-    ),
-    sprintf(
-      paste(
-        "The model explains %.1f%% of the raw DGR variation in adjusted R2 terms,",
-        "with %.1f%% deviance explained overall."
-      ),
-      100 * model_summary_tbl$adj_r_squared[1],
-      100 * model_summary_tbl$deviance_explained[1]
+      "For Model 2, the SW smooth had p = %.3g and the SE smooth had p = %.3g; adjusted R2 = %.3f, deviance explained = %.1f%%, and AIC = %.1f.",
+      swse_smooth_tbl$p.value[swse_smooth_tbl$term == "s(log_closest_SW)"],
+      swse_smooth_tbl$p.value[swse_smooth_tbl$term == "s(log_closest_SE)"],
+      swse_model_summary$adj_r_squared[1],
+      100 * swse_model_summary$deviance_explained[1],
+      swse_model_summary$AIC[1]
     ),
     "",
-    "## Simple interpretation",
+    "## Practical interpretation",
     paste(
-      "Using raw DGR values increases the number of observations and keeps the same",
-      "main message: the SW and SE directions do not behave the same way."
+      "The SE-only GAM confirms that SE neighbour distance has a detectable relationship",
+      "with raw DGR even after accounting for repeated measurements within module."
     ),
     paste(
-      "In this model, moving farther from the closest SW neighbour is associated",
-      "with a slight increase in DGR, whereas moving farther from the closest SE",
-      "neighbour is associated with a decrease in DGR."
+      "The final SW+SE GAM shows that the best predictive model uses both directional",
+      "distances together, even if SW was weak when examined on its own earlier."
     ),
     paste(
-      "So there is no single rule such as 'greater neighbour distance always improves DGR'.",
-      "Instead, the relationship depends on direction."
+      "Because this is a GAM, there is no single straight-line equation to summarize",
+      "the effect. Instead, the estimated DGR for each module should be taken from the",
+      "prediction table generated from the final SW+SE model."
+    ),
+    "",
+    "## Output for module-level estimated DGR",
+    paste(
+      "Estimated DGR for each module, based only on its SW and SE nearest-neighbour",
+      "distances, is saved in",
+      "[module_distance_based_dgr_estimates.csv](</C:/Users/Simon/Nextcloud/Papers/First Authors/MadaKapPy_Paper_2026/Figures/Spatial_analysis/module_distance_based_dgr_estimates.csv:1>)."
     ),
     "",
     "## Plot support",
@@ -432,19 +449,22 @@ write_interpretation <- function(
       "[sw_se_presence_combinations_first_valid_threshold.png](</C:/Users/Simon/Nextcloud/Papers/First Authors/MadaKapPy_Paper_2026/Figures/Spatial_analysis/sw_se_presence_combinations_first_valid_threshold.png:1>)"
     ),
     paste(
-      "- Modelled effect of closest SW and SE distance:",
-      "[closest_sw_se_distance_effects.png](</C:/Users/Simon/Nextcloud/Papers/First Authors/MadaKapPy_Paper_2026/Figures/Spatial_analysis/closest_sw_se_distance_effects.png:1>)"
+      "- SE-only GAM effect:",
+      "[se_only_gam_effect.png](</C:/Users/Simon/Nextcloud/Papers/First Authors/MadaKapPy_Paper_2026/Figures/Spatial_analysis/se_only_gam_effect.png:1>)"
     ),
     paste(
-      "- Predicted DGR surface from the final model:",
-      "[closest_sw_se_predicted_dgr_surface.png](</C:/Users/Simon/Nextcloud/Papers/First Authors/MadaKapPy_Paper_2026/Figures/Spatial_analysis/closest_sw_se_predicted_dgr_surface.png:1>)"
+      "- Final SW+SE GAM effects:",
+      "[sw_se_gam_effects.png](</C:/Users/Simon/Nextcloud/Papers/First Authors/MadaKapPy_Paper_2026/Figures/Spatial_analysis/sw_se_gam_effects.png:1>)"
+    ),
+    paste(
+      "- Final SW+SE predicted DGR surface:",
+      "[sw_se_gam_predicted_dgr_surface.png](</C:/Users/Simon/Nextcloud/Papers/First Authors/MadaKapPy_Paper_2026/Figures/Spatial_analysis/sw_se_gam_predicted_dgr_surface.png:1>)"
     ),
     "",
     "## Caution",
     paste(
-      "This remains an exploratory spatial model. The directional distance terms may",
-      "reflect competition or hydrodynamic sheltering, but they may also be proxies",
-      "for larger environmental gradients."
+      "These are exploratory spatial models. Distance terms may reflect neighbour effects,",
+      "but they may also be proxies for unmeasured environmental gradients."
     )
   )
 
@@ -465,7 +485,9 @@ plot_prep <- prepare_plot_geometry(
 plot_sf <- plot_prep$data
 raw_dgr <- prepare_raw_dgr(
   harvest_path = harvest_path,
-  harvest_sheet = harvest_sheet
+  harvest_sheet = harvest_sheet,
+  min_culture_days = min_culture_days,
+  required_lines = required_lines
 )
 
 raw_joined <- raw_dgr |>
@@ -474,17 +496,22 @@ raw_joined <- raw_dgr |>
 
 cat("Original CRS:", plot_prep$metadata$original_crs, "\n")
 cat("Analysis CRS:", plot_prep$metadata$analysis_crs, "\n")
-cat("Raw DGR rows joined to mapped modules:", nrow(raw_joined), "\n")
-cat("Mapped modules represented:", dplyr::n_distinct(raw_joined$plot_id), "\n")
+cat("Raw rows after filtering and spatial join:", nrow(raw_joined), "\n")
+cat("Modules represented:", dplyr::n_distinct(raw_joined$plot_id), "\n")
 ```
 
 ## SW/SE Pair Table
 
 ```{r}
 pair_tbl <- build_sw_se_pairs(plot_sf)
+closest_distance_tbl <- compute_closest_distances(pair_tbl) |>
+  rename(
+    closest_SW_distance_m = closest_SW,
+    closest_SE_distance_m = closest_SE
+  )
 ```
 
-## Keep The Combination Plot
+## Keep The Presence-Combination Plot
 
 ```{r}
 first_valid_threshold_row <- compute_first_valid_threshold(
@@ -550,16 +577,9 @@ save_plot(
 combo_plot
 ```
 
-## Closest SW And SE Distances For Each Module
+## Final Modelling Dataset
 
 ```{r}
-closest_distance_tbl <- compute_closest_distances(pair_tbl) |>
-  rename(
-    plot_id = plot_id,
-    closest_SW_distance_m = closest_SW,
-    closest_SE_distance_m = closest_SE
-  )
-
 raw_model_data <- raw_joined |>
   left_join(closest_distance_tbl, by = "plot_id") |>
   filter(
@@ -578,80 +598,119 @@ utils::write.csv(
   file.path(output_dir, "closest_sw_se_distance_data.csv"),
   row.names = FALSE
 )
-
-cat("Raw observations used in the final model:", nrow(raw_model_data), "\n")
-cat("Modules represented in the final model:", dplyr::n_distinct(raw_model_data$plot_id), "\n")
 ```
 
-## Final Raw-Value Model
+## GAM 1: DGR ~ SE
 
 ```{r}
-distance_model <- mgcv::gam(
-  DGR ~ log_closest_SW + log_closest_SE + s(plot_id, bs = "re"),
+se_only_gam <- mgcv::bam(
+  DGR ~ s(log_closest_SE, k = 6) + s(plot_id, bs = "re"),
   data = raw_model_data,
-  method = "REML"
+  method = "fREML",
+  discrete = TRUE
 )
 
-coefficient_tbl <- extract_gam_parametric(distance_model)
-fit_summary <- summary(distance_model)
-
-model_summary_tbl <- tibble(
+se_only_smooth_tbl <- extract_smooth_table(se_only_gam)
+se_only_summary_tbl <- tibble(
   n_rows = nrow(raw_model_data),
   n_modules = dplyr::n_distinct(raw_model_data$plot_id),
-  adj_r_squared = fit_summary$r.sq,
-  deviance_explained = fit_summary$dev.expl,
-  scale_estimate = fit_summary$scale,
-  AIC = AIC(distance_model)
+  adj_r_squared = summary(se_only_gam)$r.sq,
+  deviance_explained = summary(se_only_gam)$dev.expl,
+  AIC = AIC(se_only_gam)
 )
 
 utils::write.csv(
-  coefficient_tbl,
-  file.path(output_dir, "closest_sw_se_log_linear_model_coefficients.csv"),
+  se_only_smooth_tbl,
+  file.path(output_dir, "se_only_gam_smooth_terms.csv"),
   row.names = FALSE
 )
 
 utils::write.csv(
-  model_summary_tbl,
-  file.path(output_dir, "closest_sw_se_log_linear_model_summary.csv"),
+  se_only_summary_tbl,
+  file.path(output_dir, "se_only_gam_summary.csv"),
   row.names = FALSE
 )
-
-coefficient_tbl
-model_summary_tbl
 ```
 
-## Plots For The Final Model
+## GAM 2: DGR ~ SW + SE
 
 ```{r}
-param_vcov <- vcov(distance_model)[c("(Intercept)", "log_closest_SW", "log_closest_SE"), c("(Intercept)", "log_closest_SW", "log_closest_SE")]
-
-median_sw <- median(raw_model_data$closest_SW_distance_m, na.rm = TRUE)
-median_se <- median(raw_model_data$closest_SE_distance_m, na.rm = TRUE)
-
-sw_effect_grid <- data.frame(
-  closest_SW_distance_m = exp(seq(
-    log(min(raw_model_data$closest_SW_distance_m)),
-    log(max(raw_model_data$closest_SW_distance_m)),
-    length.out = 200
-  )),
-  closest_SE_distance_m = median_se
-) |>
-  mutate(
-    log_closest_SW = log(closest_SW_distance_m),
-    log_closest_SE = log(closest_SE_distance_m)
-  ) |>
-  mutate(direction = "SW", distance_m = closest_SW_distance_m)
-
-sw_effect_grid <- bind_cols(
-  sw_effect_grid,
-  fixed_effect_prediction(
-    newdata = sw_effect_grid,
-    coefficient_tbl = coefficient_tbl,
-    vcov_matrix = param_vcov
-  )
+sw_se_gam <- mgcv::bam(
+  DGR ~ s(log_closest_SW, k = 6) + s(log_closest_SE, k = 6) + s(plot_id, bs = "re"),
+  data = raw_model_data,
+  method = "fREML",
+  discrete = TRUE
 )
 
-se_effect_grid <- data.frame(
+sw_se_smooth_tbl <- extract_smooth_table(sw_se_gam)
+sw_se_summary_tbl <- tibble(
+  n_rows = nrow(raw_model_data),
+  n_modules = dplyr::n_distinct(raw_model_data$plot_id),
+  adj_r_squared = summary(sw_se_gam)$r.sq,
+  deviance_explained = summary(sw_se_gam)$dev.expl,
+  AIC = AIC(sw_se_gam)
+)
+
+utils::write.csv(
+  sw_se_smooth_tbl,
+  file.path(output_dir, "sw_se_gam_smooth_terms.csv"),
+  row.names = FALSE
+)
+
+utils::write.csv(
+  sw_se_summary_tbl,
+  file.path(output_dir, "sw_se_gam_summary.csv"),
+  row.names = FALSE
+)
+```
+
+## Module-Level Estimated DGR
+
+```{r}
+module_prediction_data <- raw_model_data |>
+  distinct(plot_id, closest_SW_distance_m, closest_SE_distance_m, log_closest_SW, log_closest_SE)
+
+se_only_pred <- predict(
+  se_only_gam,
+  newdata = module_prediction_data,
+  exclude = "s(plot_id)",
+  se.fit = TRUE
+)
+
+sw_se_pred <- predict(
+  sw_se_gam,
+  newdata = module_prediction_data,
+  exclude = "s(plot_id)",
+  se.fit = TRUE
+)
+
+module_distance_based_estimates <- module_prediction_data |>
+  mutate(
+    predicted_DGR_se_only = as.numeric(se_only_pred$fit),
+    predicted_DGR_se_only_lwr = predicted_DGR_se_only - 1.96 * as.numeric(se_only_pred$se.fit),
+    predicted_DGR_se_only_upr = predicted_DGR_se_only + 1.96 * as.numeric(se_only_pred$se.fit),
+    predicted_DGR_sw_se = as.numeric(sw_se_pred$fit),
+    predicted_DGR_sw_se_lwr = predicted_DGR_sw_se - 1.96 * as.numeric(sw_se_pred$se.fit),
+    predicted_DGR_sw_se_upr = predicted_DGR_sw_se + 1.96 * as.numeric(sw_se_pred$se.fit)
+  ) |>
+  arrange(plot_id)
+
+utils::write.csv(
+  module_distance_based_estimates,
+  file.path(output_dir, "module_distance_based_dgr_estimates.csv"),
+  row.names = FALSE
+)
+```
+
+## Plot Support
+
+```{r}
+median_sw <- median(raw_model_data$closest_SW_distance_m, na.rm = TRUE)
+median_se <- median(raw_model_data$closest_SE_distance_m, na.rm = TRUE)
+reference_plot_id <- module_distance_based_estimates$plot_id[1]
+
+se_grid <- data.frame(
+  plot_id = factor(reference_plot_id, levels = levels(raw_model_data$plot_id)),
   closest_SW_distance_m = median_sw,
   closest_SE_distance_m = exp(seq(
     log(min(raw_model_data$closest_SE_distance_m)),
@@ -662,42 +721,142 @@ se_effect_grid <- data.frame(
   mutate(
     log_closest_SW = log(closest_SW_distance_m),
     log_closest_SE = log(closest_SE_distance_m)
-  ) |>
-  mutate(direction = "SE", distance_m = closest_SE_distance_m)
-
-se_effect_grid <- bind_cols(
-  se_effect_grid,
-  fixed_effect_prediction(
-    newdata = se_effect_grid,
-    coefficient_tbl = coefficient_tbl,
-    vcov_matrix = param_vcov
   )
+
+se_grid_pred <- predict(
+  se_only_gam,
+  newdata = se_grid,
+  exclude = "s(plot_id)",
+  se.fit = TRUE
 )
 
-effect_grid <- bind_rows(sw_effect_grid, se_effect_grid)
+se_grid <- se_grid |>
+  mutate(
+    fit = as.numeric(se_grid_pred$fit),
+    lwr = fit - 1.96 * as.numeric(se_grid_pred$se.fit),
+    upr = fit + 1.96 * as.numeric(se_grid_pred$se.fit)
+  )
 
-effect_point_data <- bind_rows(
+se_only_effect_plot <- ggplot() +
+  geom_point(
+    data = raw_model_data,
+    aes(x = closest_SE_distance_m, y = DGR),
+    alpha = 0.08,
+    size = 0.6,
+    colour = "#3C5488"
+  ) +
+  geom_ribbon(
+    data = se_grid,
+    aes(x = closest_SE_distance_m, ymin = lwr, ymax = upr),
+    alpha = 0.20,
+    fill = "#3C5488"
+  ) +
+  geom_line(
+    data = se_grid,
+    aes(x = closest_SE_distance_m, y = fit),
+    linewidth = 1.0,
+    colour = "#3C5488"
+  ) +
+  scale_x_log10() +
+  labs(
+    title = "SE-only GAM effect",
+    subtitle = "Population-level prediction from DGR ~ s(log(SE)) + random module effect",
+    x = "Closest SE neighbour distance (m, log scale)",
+    y = "Predicted raw DGR"
+  ) +
+  theme_spatial()
+
+save_plot(
+  se_only_effect_plot,
+  file.path(output_dir, "se_only_gam_effect.png"),
+  width = 8.8,
+  height = 6.0
+)
+
+sw_grid <- data.frame(
+  plot_id = factor(reference_plot_id, levels = levels(raw_model_data$plot_id)),
+  closest_SW_distance_m = exp(seq(
+    log(min(raw_model_data$closest_SW_distance_m)),
+    log(max(raw_model_data$closest_SW_distance_m)),
+    length.out = 200
+  )),
+  closest_SE_distance_m = median_se
+) |>
+  mutate(
+    log_closest_SW = log(closest_SW_distance_m),
+    log_closest_SE = log(closest_SE_distance_m)
+  )
+
+sw_grid_pred <- predict(
+  sw_se_gam,
+  newdata = sw_grid,
+  exclude = "s(plot_id)",
+  se.fit = TRUE
+)
+
+sw_grid <- sw_grid |>
+  mutate(
+    fit = as.numeric(sw_grid_pred$fit),
+    lwr = fit - 1.96 * as.numeric(sw_grid_pred$se.fit),
+    upr = fit + 1.96 * as.numeric(sw_grid_pred$se.fit),
+    direction = "SW",
+    distance_m = closest_SW_distance_m
+  )
+
+se_joint_grid <- data.frame(
+  plot_id = factor(reference_plot_id, levels = levels(raw_model_data$plot_id)),
+  closest_SW_distance_m = median_sw,
+  closest_SE_distance_m = exp(seq(
+    log(min(raw_model_data$closest_SE_distance_m)),
+    log(max(raw_model_data$closest_SE_distance_m)),
+    length.out = 200
+  ))
+) |>
+  mutate(
+    log_closest_SW = log(closest_SW_distance_m),
+    log_closest_SE = log(closest_SE_distance_m)
+  )
+
+se_joint_pred <- predict(
+  sw_se_gam,
+  newdata = se_joint_grid,
+  exclude = "s(plot_id)",
+  se.fit = TRUE
+)
+
+se_joint_grid <- se_joint_grid |>
+  mutate(
+    fit = as.numeric(se_joint_pred$fit),
+    lwr = fit - 1.96 * as.numeric(se_joint_pred$se.fit),
+    upr = fit + 1.96 * as.numeric(se_joint_pred$se.fit),
+    direction = "SE",
+    distance_m = closest_SE_distance_m
+  )
+
+joint_effect_grid <- bind_rows(sw_grid, se_joint_grid)
+
+joint_effect_points <- bind_rows(
   raw_model_data |>
     transmute(direction = "SW", distance_m = closest_SW_distance_m, DGR = DGR),
   raw_model_data |>
     transmute(direction = "SE", distance_m = closest_SE_distance_m, DGR = DGR)
 )
 
-distance_effect_plot <- ggplot() +
+sw_se_effect_plot <- ggplot() +
   geom_point(
-    data = effect_point_data,
+    data = joint_effect_points,
     aes(x = distance_m, y = DGR, colour = direction),
     alpha = 0.08,
     size = 0.6
   ) +
   geom_ribbon(
-    data = effect_grid,
+    data = joint_effect_grid,
     aes(x = distance_m, ymin = lwr, ymax = upr, fill = direction),
     alpha = 0.20,
     colour = NA
   ) +
   geom_line(
-    data = effect_grid,
+    data = joint_effect_grid,
     aes(x = distance_m, y = fit, colour = direction),
     linewidth = 1.0
   ) +
@@ -706,8 +865,8 @@ distance_effect_plot <- ggplot() +
   scale_colour_manual(values = c(SW = "#E64B35", SE = "#3C5488"), drop = FALSE) +
   scale_fill_manual(values = c(SW = "#E64B35", SE = "#3C5488"), drop = FALSE) +
   labs(
-    title = "Predicted raw DGR vs closest SW and SE neighbour distance",
-    subtitle = "Population-level fixed effects from the final mixed model",
+    title = "Final SW+SE GAM effects",
+    subtitle = "Population-level predictions from the joint model",
     x = "Closest-neighbour distance (m, log scale)",
     y = "Predicted raw DGR",
     colour = "Direction",
@@ -717,13 +876,14 @@ distance_effect_plot <- ggplot() +
   theme(legend.position = "none")
 
 save_plot(
-  distance_effect_plot,
-  file.path(output_dir, "closest_sw_se_distance_effects.png"),
+  sw_se_effect_plot,
+  file.path(output_dir, "sw_se_gam_effects.png"),
   width = 10.5,
   height = 6.5
 )
 
 surface_grid <- expand_grid(
+  plot_id = factor(reference_plot_id, levels = levels(raw_model_data$plot_id)),
   closest_SW_distance_m = exp(seq(
     log(min(raw_model_data$closest_SW_distance_m)),
     log(max(raw_model_data$closest_SW_distance_m)),
@@ -740,19 +900,24 @@ surface_grid <- expand_grid(
     log_closest_SE = log(closest_SE_distance_m)
   )
 
-surface_grid <- bind_cols(
-  surface_grid,
-  fixed_effect_prediction(
-    newdata = surface_grid,
-    coefficient_tbl = coefficient_tbl,
-    vcov_matrix = param_vcov
-  )
+surface_pred <- predict(
+  sw_se_gam,
+  newdata = surface_grid,
+  exclude = "s(plot_id)",
+  se.fit = TRUE
 )
+
+surface_grid <- surface_grid |>
+  mutate(
+    fit = as.numeric(surface_pred$fit),
+    lwr = fit - 1.96 * as.numeric(surface_pred$se.fit),
+    upr = fit + 1.96 * as.numeric(surface_pred$se.fit)
+  )
 
 utils::write.csv(
   surface_grid |>
     select(closest_SW_distance_m, closest_SE_distance_m, fit, lwr, upr),
-  file.path(output_dir, "closest_sw_se_prediction_grid.csv"),
+  file.path(output_dir, "sw_se_gam_prediction_grid.csv"),
   row.names = FALSE
 )
 
@@ -767,8 +932,7 @@ surface_plot <- ggplot(
     alpha = 0.65
   ) +
   geom_point(
-    data = raw_model_data |>
-      distinct(plot_id, closest_SW_distance_m, closest_SE_distance_m),
+    data = module_distance_based_estimates,
     aes(x = closest_SW_distance_m, y = closest_SE_distance_m),
     inherit.aes = FALSE,
     alpha = 0.22,
@@ -779,8 +943,8 @@ surface_plot <- ggplot(
   scale_y_log10() +
   scale_fill_viridis_c(option = "D", name = "Predicted raw DGR") +
   labs(
-    title = "Predicted raw DGR from closest SW and SE distances",
-    subtitle = "Population-level predictions from the final mixed model",
+    title = "Predicted raw DGR from the final SW+SE GAM",
+    subtitle = "Population-level surface for module-level distance combinations",
     x = "Closest SW neighbour distance (m, log scale)",
     y = "Closest SE neighbour distance (m, log scale)"
   ) +
@@ -788,27 +952,23 @@ surface_plot <- ggplot(
 
 save_plot(
   surface_plot,
-  file.path(output_dir, "closest_sw_se_predicted_dgr_surface.png"),
+  file.path(output_dir, "sw_se_gam_predicted_dgr_surface.png"),
   width = 8.8,
   height = 7.2
 )
 
-summary_figure <- (combo_plot | distance_effect_plot) / surface_plot +
+summary_figure <- (combo_plot | se_only_effect_plot) / (sw_se_effect_plot | surface_plot) +
   plot_annotation(
-    title = "Raw DGR, SW/SE cultivation context, and closest-neighbour distance model",
-    subtitle = "Final workflow based on raw DGR values rather than module-average DGR"
+    title = "Raw DGR, SW/SE cultivation context, and nearest-neighbour GAM models",
+    subtitle = "Final workflow using raw DGR values, >= 28 cultivation days, and 100-line harvests only"
   )
 
 save_plot(
   summary_figure,
-  file.path(output_dir, "closest_sw_se_distance_model_summary_figure.png"),
+  file.path(output_dir, "sw_se_gam_summary_figure.png"),
   width = 14,
   height = 11
 )
-
-distance_effect_plot
-surface_plot
-summary_figure
 ```
 
 ## Update Interpretation File
@@ -818,8 +978,10 @@ write_interpretation(
   output_file = file.path(output_dir, "spatial_analysis_interpretation.md"),
   first_valid_threshold = first_valid_threshold,
   combo_summary = combo_summary,
-  coefficient_tbl = coefficient_tbl,
-  model_summary_tbl = model_summary_tbl,
+  se_model_summary = se_only_summary_tbl,
+  swse_model_summary = sw_se_summary_tbl,
+  se_smooth_tbl = se_only_smooth_tbl,
+  swse_smooth_tbl = sw_se_smooth_tbl,
   n_rows = nrow(raw_model_data),
   n_modules = dplyr::n_distinct(raw_model_data$plot_id)
 )
@@ -828,23 +990,18 @@ write_interpretation(
 ## Console Summary
 
 ```{r}
-intercept <- coefficient_tbl$estimate[coefficient_tbl$term == "(Intercept)"]
-beta_sw <- coefficient_tbl$estimate[coefficient_tbl$term == "log_closest_SW"]
-beta_se <- coefficient_tbl$estimate[coefficient_tbl$term == "log_closest_SE"]
-
-cat("\nRaw-value SW/SE closest-neighbour distance analysis complete.\n")
+cat("\nRaw-value SW/SE GAM analysis complete.\n")
 cat("Outputs saved to:", normalizePath(output_dir, winslash = "/"), "\n")
 cat(
   sprintf(
     paste(
-      "Final fixed-effect equation:",
-      "DGR_hat = %.3f + %.3f * log(SW_distance_m) %.3f * log(SE_distance_m).",
-      "Adjusted R2 = %.3f.\n"
+      "Model 1 (SE only): adjusted R2 = %.3f, AIC = %.1f.",
+      "Model 2 (SW + SE): adjusted R2 = %.3f, AIC = %.1f.\n"
     ),
-    intercept,
-    beta_sw,
-    beta_se,
-    model_summary_tbl$adj_r_squared[1]
+    se_only_summary_tbl$adj_r_squared[1],
+    se_only_summary_tbl$AIC[1],
+    sw_se_summary_tbl$adj_r_squared[1],
+    sw_se_summary_tbl$AIC[1]
   )
 )
 ```

@@ -1,5 +1,5 @@
 ---
-title: "MadaKapPy: A tool for in situ biomass estimation of kappaphycus cultures"
+title: "MadaKapPy: A tool for in situ biomass estimation of *kappaphycus* cultures"
 shorttitle: MadaKapPy
 author:
   - name: Simon Oiry
@@ -88,12 +88,12 @@ use_condaenv("MadakapyPaper2026", required = TRUE,
 
 # Introduction
 
-In 2022, global production of red macroalgae was estimated at approximately 20.38 million tons [@FAO2024SOFIA]. Within this group, the genera Eucheuma and Kappaphycus, collectively referred to as eucheumatoids, are of major economic importance because of their carrageenan content [@Zhang2024Carrageenan]. This high-value hydrocolloid is widely used in the food industry for its gelling, thickening, and stabilising properties [@Hurtado2017TropicalSeaweed]. Although Asia overwhelmingly dominates global production, Eastern Africa has emerged as the principal carrageenophyte-producing region on the African continent, with Zanzibar (Tanzania) and Madagascar as its main production centres [@Hayashi2017Kappaphycus]. In Madagascar, the main cultivated carrageenophytes are *Kappaphycus alvarezii* (commonly known as cottonii; hereafter referred to as Kappaphycus), *Kappaphycus striatus*, and *Eucheuma denticulatum*. In 2020, national export volumes reached 17,000 t fresh weight (FW) for Kappaphycus and 3,000 t FW for Eucheuma [@msuya2022seaweed]. Since these estimates, production has reportedly increased, largely driven by the expansion of private companies such as Nosy Boraha Seaweed (NBS) and Sovalg in the Sainte-Marie lagoon [@urbina2026mapping]. With an export biomass of 22,000 t FW of Kappaphycus in 2025, it is now the leading production area, accounting for 43% of national production (S. Jan, pers. comm.).
+In 2022, global production of red macroalgae was estimated at approximately 20.38 million tons [@FAO2024SOFIA]. Within this group, the genera Eucheuma and *Kappaphycus*, collectively referred to as eucheumatoids, are of major economic importance because of their carrageenan content [@Zhang2024Carrageenan]. This high-value hydrocolloid is widely used in the food industry for its gelling, thickening, and stabilising properties [@Hurtado2017TropicalSeaweed]. Although Asia overwhelmingly dominates global production, Eastern Africa has emerged as the principal carrageenophyte-producing region on the African continent, with Zanzibar (Tanzania) and Madagascar as its main production centres [@Hayashi2017Kappaphycus]. In Madagascar, the main cultivated carrageenophytes are *Kappaphycus alvarezii* (commonly known as cottonii; hereafter referred to as *Kappaphycus*), *Kappaphycus striatus*, and *Eucheuma denticulatum*. In 2020, national export volumes reached 17,000 t fresh weight (FW) for *Kappaphycus* and 3,000 t FW for Eucheuma [@msuya2022seaweed]. Since these estimates, production has reportedly increased, largely driven by the expansion of private companies such as Nosy Boraha Seaweed (NBS) and Sovalg in the Sainte-Marie lagoon [@urbina2026mapping]. With an export biomass of 22,000 t FW of *Kappaphycus* in 2025, it is now the leading production area, accounting for 43% of national production (S. Jan, pers. comm.).
 
 In Eastern Africa, the cultivation method uses off-bottom and long-line systems with a relatively short cultivation cycle ranging from 35 to 45 days, which is one of the main reasons for its economic attractiveness to small-scale farmers [@msuya2022seaweed; @urbina2026mapping]. The NBS company, which has developed an innovative community-based aquaculture model, coordinates the management of off-bottom cultivation plots (each plot is 40x12.5 m, with 100 cultivation lines) operated by approximately 120 farmers. Five technicians conduct weekly visual inspections to assess harvest readiness across more than 700 cultivation plots, covering a farming area of nearly 300 ha. At the end of the cultivation cycle, biomass can vary substantially among plots, typically ranging from 2 to 3 tons FW per plot. Given the scale of production, visual errors in plot-level biomass assessment can propagate into substantial uncertainty in total harvest estimates. To address this challenge, the company seeks to optimise harvesting through precision farm-management techniques [@vadassery2024integration]. In this context, drones (Unoccupied Aerial Vehicle, UAV) offer a promising solution, as they can acquire highly detailed data at low altitudes that can be processed with machine-learning algorithms to produce high-precision maps [@Joyce_Fickas_Kalamandeen_2023; @oiry2025mapping].
 
-The use of drones has already been demonstrated as an effective approach for mapping Kappaphycus cultivation in regions such as Brazil, Indonesia, and Madagascar [@innocentini2024analysis; @nurdin2025seasionality; @urbina2026mapping]. Their ultra-high spatial resolution, far exceeding that of satellite imagery, together with their operational flexibility for on-demand data acquisition, enables the mapping of areas in ways that satellites cannot achieve [@langford2021monitoring; @setyawidati2017situ]. While drone-based multispectral sensors allow for detailed characterisation of target reflectance and can enhance the discrimination of vegetation types, their use typically involves complex processing workflows, large data volumes, and substantial computational requirements. These constraints limit their accessibility and operational deployment, particularly for non-expert users and private companies seeking simple, robust, and cost-effective monitoring solutions. At very high spatial resolution, RGB imagery can nevertheless provide sufficient information to discriminate targets of interest within complex environments [@roman2026pixels]. In Madagascar, @urbina2026mapping showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated Kappaphycus. However, despite these promising results, there remains a need for simplified, transferable, and operational workflows based on RGB drone imagery that can be readily adopted by non-expert users for routine monitoring of seaweed farming systems.\
-\***\*** The objective of this study is to develop an operational drone-based approach for estimating Kappaphycus biomass at the cultivation-plot scale prior to harvest. Using RGB imagery acquired during routine farming operations in the Sainte-Marie lagoon (Madagascar), we investigate the capacity of drone-derived information to predict biomass and support precision monitoring. In addition, we aim to translate this approach into a standalone, open-source, user-friendly application directly accessible to aquaculture professionals.
+The use of drones has already been demonstrated as an effective approach for mapping *Kappaphycus* cultivation in regions such as Brazil, Indonesia, and Madagascar [@innocentini2024analysis; @nurdin2025seasionality; @urbina2026mapping]. Their ultra-high spatial resolution, far exceeding that of satellite imagery, together with their operational flexibility for on-demand data acquisition, enables the mapping of areas in ways that satellites cannot achieve [@langford2021monitoring; @setyawidati2017situ]. While drone-based multispectral sensors allow for detailed characterisation of target reflectance and can enhance the discrimination of vegetation types, their use typically involves complex processing workflows, large data volumes, and substantial computational requirements. These constraints limit their accessibility and operational deployment, particularly for non-expert users and private companies seeking simple, robust, and cost-effective monitoring solutions. At very high spatial resolution, RGB imagery can nevertheless provide sufficient information to discriminate targets of interest within complex environments [@roman2026pixels]. In Madagascar, @urbina2026mapping showed that RGB imagery combined with Random Forest classification can accurately discriminate cultivated *Kappaphycus*. However, despite these promising results, there remains a need for simplified, transferable, and operational workflows based on RGB drone imagery that can be readily adopted by non-expert users for routine monitoring of seaweed farming systems.\
+\***\*** The objective of this study is to develop an operational drone-based approach for estimating *Kappaphycus* biomass at the cultivation-plot scale prior to harvest. Using RGB imagery acquired during routine farming operations in the Sainte-Marie lagoon (Madagascar), we investigate the capacity of drone-derived information to predict biomass and support precision monitoring. In addition, we aim to translate this approach into a standalone, open-source, user-friendly application directly accessible to aquaculture professionals.
 
 # Materiels & Methods
 
@@ -122,7 +122,7 @@ total_volume <- rast("Data/Depth/Depth_S2_20250802.tif")%>%
 
 Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (@fig-study-area-map A & B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from \<1 to 5 m in channels at low tide (@fig-study-area-map C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is approximately `r round(total_volume / 1e6 ,1)` million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.
 
-Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of Kappaphycus alvarezii (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (@fig-study-area-map D-F). Individual cultivation lines are approximately 10 m long and are arranged in plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. The Nosy Boraha Seaweed company (NBS) is coordinating the management of 726 cultivation plots in the lagoon. While this activity provides an important alternative source of income amid declining fish stocks, it also contributes to increased spatial competition with traditional fishing practices within this confined coastal system.
+Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of *Kappaphycus alvarezii* (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (@fig-study-area-map D-F). Individual cultivation lines are approximately 10 m long and are arranged in plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. The Nosy Boraha Seaweed company (NBS) is coordinating the management of 726 cultivation plots in the lagoon. While this activity provides an important alternative source of income amid declining fish stocks, it also contributes to increased spatial competition with traditional fishing practices within this confined coastal system.
 
 More broadly, the lagoon is now included within the newly established AMTP Sorkay (Marine and Terrestrial Protected Area), a large-scale conservation initiative (\~265,000 ha) aimed at preserving the island’s marine biodiversity and promoting sustainable resource management through community-based governance.
 
@@ -820,7 +820,7 @@ The full workflow was implemented in a standalone desktop application developed 
 
 ## Spatio-temporal variability of seaweed production
 
-Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (\@fig-plot-productivity-map). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached approximately 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was visible both at the scale of individual module but also between module modules, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.
+Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (@fig-plot-productivity-map). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached approximately 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was visible both at the scale of individual module but also between modules, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.
 
 ```{python}
 #| label: make-plot-productivity-map
@@ -1342,7 +1342,7 @@ knitr::include_graphics("Figures/Map_Production/plot_productivity_map_2025-02.pn
 
 Cultivation plots were harvested at an average biomass of approximately 2900 kg (@fig-harvested-biomass-distribution A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.
 
-Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (@fig-harvested-biomass-distribution B). Plots located closest to the coral reef showed relatively stable DGR throughout the year, with an average value of 3.57 %.day⁻¹ in 2025. In these plots, DGR was slightly higher in autumn, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed stronger seasonal variability. Their maximum DGR was observed in spring, when values were comparable to those recorded near the coral reef. However, during summer, autumn, and winter, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching approximately 2.5 %.day⁻¹ in winter.
+Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (@fig-harvested-biomass-distribution B). Plots located closest to the coral reef showed relatively stable DGR throughout the year, with an average value of 3.57 %.day⁻¹ in 2025. In these plots, DGR was slightly higher in autumn, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed stronger seasonal variability. Their maximum DGR was observed in spring, when values were comparable to those recorded near the coral reef. However, during summer, autumn, and winter, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching values as low as 2.25 %.day⁻¹ in winter.
 
 ```{python}
 #| label: make-harvested-biomass-distribution
@@ -1696,6 +1696,126 @@ knitr::include_graphics("Figures/harvested_biomass_distribution_temporal_variabi
 
 ## Random Forest Classification
 
+```{r}
+#| label: make-rfplot
+#| eval: false
+#| echo: false
+#| warning: false
+#| message: false
+
+
+library(terra)
+library(sf)
+library(tidyterra)
+library(ggplot2)
+library(ggspatial)
+library(dplyr)
+
+# Paths
+drone_path <- "Data/RF/M3E_20251202_50m_Zone_CDE.tif"
+shp_path   <- "Data/RF/AOI_parts/aoi_24.shp"
+
+poly <- st_read(shp_path) %>% 
+  st_transform(crs("EPSG:4326"))
+# Load data
+drone <- rast(drone_path)%>% 
+  crop(poly) %>%  
+  project(crs("EPSG:32739")) 
+
+classes <- poly %>% 
+  mutate(class = case_when(class %in% c("KappaV","KappaM") ~ "Kappaphycus",
+                            T ~ "Bottom"),
+         class_num = case_when(class == "Kappaphycus" ~ 1,
+                               T ~ 0)) %>%
+  st_transform(crs("EPSG:32739")) %>% 
+  # mutate(class = as.factor(class)) %>% 
+  vect() %>% 
+  rasterize(
+    y = drone,
+    field = "class_num"
+  ) %>% 
+  terra::focal(
+    w = 3,
+    fun = "modal"
+  ) %>%
+  mutate(class_num = factor(focal_modal,
+                            levels = c(0, 1),
+                            labels = c("Bottom", "Kappaphycus")))
+ 
+  
+poly_class <- terra::as.polygons(
+  classes$class_num,
+  dissolve = TRUE,
+  na.rm = TRUE
+)
+
+names(poly_class) <- "class_num"
+
+# Make sure shapefile has same CRS as drone raster
+# classes <- st_transform(classes, crs(drone))
+
+# Optional: crop raster to shapefile extent for faster plotting
+# drone_crop <- crop(drone, vect(classes))
+
+# If drone is RGB with 3 bands
+p <- ggplot() +
+  geom_spatraster_rgb(
+    data = drone,
+    r = 1,
+    g = 2,
+    b = 3,
+    max_col_value = 255
+  ) +
+  geom_spatvector(
+    data = poly_class,
+    aes(
+      fill = factor(
+        class_num,
+        levels = c("Bottom", "Kappaphycus"),
+        labels = c("Bottom", "Kappaphycus")
+      )
+    ),
+    color = NA,
+    alpha = 0.7
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Bottom" = "grey60",
+      "Kappaphycus" = "darkgreen"
+    ),
+    na.value = "#00000000",
+    na.translate = FALSE,
+    name = "Class"
+  ) +
+  coord_sf(expand = FALSE) +
+  theme_void()
+
+p
+
+
+ggsave("Figures/RF_Classification/Rf_plot.svg",p, dpi = 800)
+
+```
+
+The first step of the MadaKapPy workflow consists of identifying *Kappaphycus* cultivation lines from the drone imagery provided by the user. This step is based on a Random Forest classifier trained to discriminate *Kappaphycus* from other image targets using RGB information. @fig-rf-classification-map illustrates the classification output for a single cultivation plot. The RGB orthomosaic shows that the cultivated seaweed is organized along regularly spaced lines, although individual thalli and line structures are locally heterogeneous in density and optical appearance (\@fig-rf-classification-map A). The classification output reproduced this spatial organization, with most cultivation lines correctly assigned to the *Kappaphycus* class (@fig-rf-classification-map B). The inset further shows that the classifier was able to detect fine-scale discontinuities within the cultivation lines, corresponding to gaps or lower-density areas visible in the RGB image.
+
+Overall, the Random Forest classification provided a coherent delineation of cultivated *Kappaphycus* biomass at the plot scale. However, some specific cases highlight the distinction between detecting *Kappaphycus* pixels and identifying harvestable biomass. During the cultivation cycle, cultivation ropes may break (@fig-rf-classification-map, green arrow), and fragments of *Kappaphycus* thalli may detach from the ropes and accumulate on the seafloor (@fig-rf-classification-map, blue arrow). In these situations, the classifier can still correctly assign these pixels to the *Kappaphycus* class, because their spectral and visual characteristics remain similar to attached cultivated thalli. However, detached or stranded material is unlikely to be recovered during harvest. Therefore, although these classifications are not necessarily errors from an image-classification perspective, they may introduce uncertainty when classified *Kappaphycus* area is subsequently used as a proxy for harvestable biomass.
+
+```{r}
+#| label: fig-rf-classification-map
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "RGB drone orthomosaics (A). Random Forest classification results for a cultivation plot (B). Brown polygons represent pixels classfied as Kappaphycus while grey polygons reprensent bottom pixels."
+#| out-width: "100%"
+
+knitr::include_graphics("Figures/RF_Classification/Rf_plot-01.jpg")
+```
+
+**?? VALIDATION ??**
+
 ## Biomass estimation
+
+## The MadaKapPy application
 
 # Bibliography
