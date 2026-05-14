@@ -1340,9 +1340,9 @@ ggsave(
 knitr::include_graphics("Figures/Map_Production/plot_productivity_map_2025-02.png")
 ```
 
-Cultivation plots were harvested at an average biomass of ca. 2900 kg (@fig-harvested-biomass-distribution A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.
+Cultivation plots were harvested at an average biomass of ca. 2900 kg (@fig-harvested-biomass-distribution A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. However, there was a large variability of harvested biomass ranging form 1000 to 5000 kg per cultivation plot.
 
-Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (@fig-harvested-biomass-distribution B). Plots located closest to the coral reef showed relatively stable DGR throughout the year, with an average value of 3.57 %.day⁻¹ in 2025. In these plots, DGR was slightly higher in autumn, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed stronger seasonal variability. Their maximum DGR was observed in spring, when values were comparable to those recorded near the coral reef. However, during summer, autumn, and winter, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching values as low as 2.25 %.day⁻¹ in winter.
+Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (@fig-harvested-biomass-distribution B). Plots located closest to the reef barrier showed relatively stable DGR throughout the year, with an average of 3.57 %.day⁻¹ in 2025. In these plots, DGR was higher in October, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed a stronger seasonal variability. Their maximum DGR was observed in April, when values were comparable to those recorded near the coral reef barrier. However, between June and February, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching values as low as 2.25 %.day⁻¹ in December and January.
 
 ```{python}
 #| label: make-harvested-biomass-distribution
@@ -1688,7 +1688,7 @@ plt.close(fig)
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Harvested biomass of cultivation plot in 2025. (A) Frequency distribution of harvested biomass. (B) Temporal variability of the Daily Growth Rate (DGR) of harvested plots in 2025. Colors distinguish Est and West plot positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals."
+#| fig-cap: "Harvested biomass of cultivation plot in 2025. (A) Frequency distribution of harvested biomass. (B) Seasonal variability of the Daily Growth Rate (DGR) of harvested plots in 2025. Colors distinguish Est and West plot positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals."
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/harvested_biomass_distribution_temporal_variability_low_k5.png")
@@ -1805,7 +1805,7 @@ Overall, the Random Forest classification provided a coherent delineation of cul
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "RGB drone orthomosaics (A). Random Forest classification results for a cultivation plot (B). Brown polygons represent pixels classfied as Kappaphycus while grey polygons reprensent bottom pixels."
+#| fig-cap: "RGB drone orthomosaics (A). Random Forest classification results for a cultivation plot (B). Brown polygons represent pixels classfied as Kappaphycus while grey polygons represent bottom pixels."
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/RF_Classification/Rf_plot-01.jpg")
@@ -2052,7 +2052,6 @@ ggsave(
 
 )
 ```
-
 
 The biomass model showed a strong agreement between observed and predicted harvested biomass (n = 84; @fig-biomass-performance). Predicted biomass values were closely distributed around the 1:1 line, indicating that the model captured most of the variability in harvested biomass among cultivation plots. Model performance was high, with an R² of 0.88, an RMSE of 253 kg, and an MAE of 186 kg. Most predictions were concentrated between 2000 and 4000 kg, corresponding to the main range of observed harvested biomass.
 
