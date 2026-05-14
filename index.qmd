@@ -1816,8 +1816,6 @@ knitr::include_graphics("Figures/RF_Classification/Rf_plot-01.jpg")
 
 ## Biomass estimation
 
-Model performance for the biomass estimation workflow is summarized in @fig-biomass-performance.
-
 ```{r biomass-figure-build}
 #| include: false
 #| warning: false
@@ -2055,9 +2053,14 @@ ggsave(
 )
 ```
 
+
+The biomass model showed a strong agreement between observed and predicted harvested biomass (n = 84; @fig-biomass-performance). Predicted biomass values were closely distributed around the 1:1 line, indicating that the model captured most of the variability in harvested biomass among cultivation plots. Model performance was high, with an R² of 0.88, an RMSE of 253 kg, and an MAE of 186 kg. Most predictions were concentrated between 2000 and 4000 kg, corresponding to the main range of observed harvested biomass.
+
+Despite the overall good agreement, some deviations from the 1:1 relationship were observed. The fitted regression line showed a slight tendency to overestimate biomass at the lower end of the observed range and to underestimate biomass for the highest observed values. This pattern suggests that model uncertainty increased for plots in edge cases of harvested biomass, which may be related to the lower number of training samples in these ranges or to specific characteristics of these plots that were not fully captured by the model features.
+
 ```{r fig-biomass-performance}
 #| echo: false
-#| fig-cap: "Observed versus predicted biomass produced by the feed-forward neural network used in the biomass estimation workflow. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend."
+#| fig-cap: "Observed versus predicted biomass produced by the neural network used in the biomass estimation of MadaKapPy. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend."
 #| out-width: "88%"
 
 knitr::include_graphics("Figures/Biomass/biomass_model_performance-01.png")

@@ -2119,7 +2119,6 @@ Figure&nbsp;6: RGB drone orthomosaics (A). Random Forest classification results 
 </section>
 <section id="biomass-estimation" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="biomass-estimation"><span class="header-section-number">3.3</span> Biomass estimation</h2>
-<p>Model performance for the biomass estimation workflow is summarized in <a href="#fig-biomass-performance" class="quarto-xref">Figure&nbsp;7</a>.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -2351,16 +2350,18 @@ Figure&nbsp;6: RGB drone orthomosaics (A). Random Forest classification results 
 <span id="cb31-228"><a href="#cb31-228" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-229"><a href="#cb31-229" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
+<p>The biomass model showed a strong agreement between observed and predicted harvested biomass (n = 84; <a href="#fig-biomass-performance" class="quarto-xref">Figure&nbsp;7</a>). Predicted biomass values were closely distributed around the 1:1 line, indicating that the model captured most of the variability in harvested biomass among cultivation plots. Model performance was high, with an R² of 0.88, an RMSE of 253 kg, and an MAE of 186 kg. Most predictions were concentrated between 2000 and 4000 kg, corresponding to the main range of observed harvested biomass.</p>
+<p>Despite the overall good agreement, some deviations from the 1:1 relationship were observed. The fitted regression line showed a slight tendency to overestimate biomass at the lower end of the observed range and to underestimate biomass for the highest observed values. This pattern suggests that model uncertainty increased for plots in edge cases of harvested biomass, which may be related to the lower number of training samples in these ranges or to specific characteristics of these plots that were not fully captured by the model features.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [16]:</pre></div><div id="cell-fig-biomass-performance" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Biomass/biomass_model_performance-01.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div id="fig-biomass-performance" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-biomass-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="Figures/Biomass/biomass_model_performance-01.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;7: Observed versus predicted biomass produced by the feed-forward neural network used in the biomass estimation workflow. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend."><img src="Figures/Biomass/biomass_model_performance-01.png" class="img-fluid figure-img" style="width:88.0%"></a>
+<a href="Figures/Biomass/biomass_model_performance-01.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;7: Observed versus predicted biomass produced by the neural network used in the biomass estimation of MadaKapPy. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend."><img src="Figures/Biomass/biomass_model_performance-01.png" class="img-fluid figure-img" style="width:88.0%"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-biomass-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7: Observed versus predicted biomass produced by the feed-forward neural network used in the biomass estimation workflow. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend.
+Figure&nbsp;7: Observed versus predicted biomass produced by the neural network used in the biomass estimation of MadaKapPy. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend.
 </figcaption>
 </figure>
 </div>
