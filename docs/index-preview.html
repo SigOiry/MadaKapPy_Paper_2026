@@ -461,8 +461,8 @@
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(volume)<span class="sc">%&gt;%</span></span>
 <span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<p>Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (<a href="#fig-study-area-map" class="quarto-xref">Figure&nbsp;1</a> A &amp; B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from &lt;1 to 5 m in channels at low tide (<a href="#fig-study-area-map" class="quarto-xref">Figure&nbsp;1</a> C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is approximately 30.3 million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.</p>
-<p>Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of <em>Kappaphycus alvarezii</em> (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (<a href="#fig-study-area-map" class="quarto-xref">Figure&nbsp;1</a> D-F). Individual cultivation lines are approximately 10 m long and are arranged in plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. The Nosy Boraha Seaweed company (NBS) is coordinating the management of 726 cultivation plots in the lagoon. While this activity provides an important alternative source of income amid declining fish stocks, it also contributes to increased spatial competition with traditional fishing practices within this confined coastal system.</p>
+<p>Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (<a href="#fig-study-area-map" class="quarto-xref">Figure&nbsp;1</a> A &amp; B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from &lt;1 to 5 m in channels at low tide (<a href="#fig-study-area-map" class="quarto-xref">Figure&nbsp;1</a> C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is ca. 30.3 million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.</p>
+<p>Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of <em>Kappaphycus alvarezii</em> (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (<a href="#fig-study-area-map" class="quarto-xref">Figure&nbsp;1</a> D-F). Individual cultivation lines are approximately 10 m long and are arranged in plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. Farm are grouped by 4 or 5 to form a cultivation block. The Nosy Boraha Seaweed company (NBS) is coordinating the management of 726 cultivation plots in the lagoon. While this activity provides an important alternative source of income amid declining fish stocks, it also contributes to increased spatial competition with traditional fishing practices within this confined coastal system.</p>
 <p>More broadly, the lagoon is now included within the newly established AMTP Sorkay (Marine and Terrestrial Protected Area), a large-scale conservation initiative (~265,000 ha) aimed at preserving the island’s marine biodiversity and promoting sustainable resource management through community-based governance.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div class="cell" data-python.reticulate="false">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -1151,7 +1151,7 @@ Figure&nbsp;3: Schematic representation of the workflow implemented for the deve
 <h1 data-number="3"><span class="header-section-number">3</span> Results</h1>
 <section id="spatio-temporal-variability-of-seaweed-production" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="spatio-temporal-variability-of-seaweed-production"><span class="header-section-number">3.1</span> Spatio-temporal variability of seaweed production</h2>
-<p>Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (<a href="#fig-plot-productivity-map" class="quarto-xref">Figure&nbsp;4</a>). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached approximately 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was visible both at the scale of individual module but also between modules, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.</p>
+<p>Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (<a href="#fig-plot-productivity-map" class="quarto-xref">Figure&nbsp;4</a>). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached ca. 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was consistent across the entire lagoon, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell" data-python.reticulate="false">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1648,16 +1648,16 @@ Figure&nbsp;3: Schematic representation of the workflow implemented for the deve
 <div id="fig-plot-productivity-map" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-plot-productivity-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="Figures/Map_Production/plot_productivity_map_2025-02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Spatial variability in the productivity of seaweed modules in 2025. Each polygons represent a 40*10m cultivation plot."><img src="Figures/Map_Production/plot_productivity_map_2025-02.png" class="img-fluid figure-img" style="width:100.0%"></a>
+<a href="Figures/Map_Production/plot_productivity_map_2025-02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figure&nbsp;4: Spatial variability in the Daily Growth Rate (annual average) of seaweed cultivation plots in 2025. Each polygons represent a 40*10m cultivation plot. The insert shows one block of five farms (each farm is composed of six cultivation plots)."><img src="Figures/Map_Production/plot_productivity_map_2025-02.png" class="img-fluid figure-img" style="width:100.0%"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-productivity-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Spatial variability in the productivity of seaweed modules in 2025. Each polygons represent a 40*10m cultivation plot.
+Figure&nbsp;4: Spatial variability in the Daily Growth Rate (annual average) of seaweed cultivation plots in 2025. Each polygons represent a 40*10m cultivation plot. The insert shows one block of five farms (each farm is composed of six cultivation plots).
 </figcaption>
 </figure>
 </div>
 </div>
 </div></div>
-<p>Cultivation plots were harvested at an average biomass of approximately 2900 kg (<a href="#fig-harvested-biomass-distribution" class="quarto-xref">Figure&nbsp;5</a> A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.</p>
+<p>Cultivation plots were harvested at an average biomass of ca. 2900 kg (<a href="#fig-harvested-biomass-distribution" class="quarto-xref">Figure&nbsp;5</a> A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.</p>
 <p>Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (<a href="#fig-harvested-biomass-distribution" class="quarto-xref">Figure&nbsp;5</a> B). Plots located closest to the coral reef showed relatively stable DGR throughout the year, with an average value of 3.57 %.day⁻¹ in 2025. In these plots, DGR was slightly higher in autumn, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed stronger seasonal variability. Their maximum DGR was observed in spring, when values were comparable to those recorded near the coral reef. However, during summer, autumn, and winter, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching values as low as 2.25 %.day⁻¹ in winter.</p>
 <div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div class="cell" data-python.reticulate="false">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
@@ -1994,10 +1994,10 @@ Figure&nbsp;4: Spatial variability in the productivity of seaweed modules in 202
 <div id="fig-harvested-biomass-distribution" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-harvested-biomass-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
-<a href="Figures/harvested_biomass_distribution_temporal_variability_low_k5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Harvested biomass of cultivation modules in 2025. (A) Frequency distribution of harvested biomass. (B) Daily growth rate of harvested modules through 2025. Colors distinguish Est and West module positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals."><img src="Figures/harvested_biomass_distribution_temporal_variability_low_k5.png" class="img-fluid figure-img" style="width:100.0%"></a>
+<a href="Figures/harvested_biomass_distribution_temporal_variability_low_k5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figure&nbsp;5: Harvested biomass of cultivation plot in 2025. (A) Frequency distribution of harvested biomass. (B) Temporal variability of the Daily Growth Rate (DGR) of harvested plots in 2025. Colors distinguish Est and West plot positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals."><img src="Figures/harvested_biomass_distribution_temporal_variability_low_k5.png" class="img-fluid figure-img" style="width:100.0%"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-harvested-biomass-distribution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Harvested biomass of cultivation modules in 2025. (A) Frequency distribution of harvested biomass. (B) Daily growth rate of harvested modules through 2025. Colors distinguish Est and West module positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals.
+Figure&nbsp;5: Harvested biomass of cultivation plot in 2025. (A) Frequency distribution of harvested biomass. (B) Temporal variability of the Daily Growth Rate (DGR) of harvested plots in 2025. Colors distinguish Est and West plot positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals.
 </figcaption>
 </figure>
 </div>
@@ -2119,6 +2119,253 @@ Figure&nbsp;6: RGB drone orthomosaics (A). Random Forest classification results 
 </section>
 <section id="biomass-estimation" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="biomass-estimation"><span class="header-section-number">3.3</span> Biomass estimation</h2>
+<p>Model performance for the biomass estimation workflow is summarized in <a href="#fig-biomass-performance" class="quarto-xref">Figure&nbsp;7</a>.</p>
+<div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>figure_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"Figures"</span>, <span class="st">"Biomass"</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(figure_dir, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>biomass_fig_png_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(figure_dir, <span class="st">"biomass_model_performance.png"</span>)</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>biomass_fig_svg_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(figure_dir, <span class="st">"biomass_model_performance.svg"</span>)</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="fu">use_python</span>(<span class="fu">Sys.which</span>(<span class="st">"python"</span>), <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="fu">py_run_string</span>(<span class="fu">paste</span>(</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"import h5py"</span>,</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"import numpy as np"</span>,</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">""</span>,</span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"def predict_biomass_h5(model_path, X):"</span>,</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"    X = np.asarray(X, dtype=np.float32)"</span>,</span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"    with h5py.File(model_path, 'r') as f:"</span>,</span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"        root = f['model_weights']"</span>,</span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"        w1 = root['dense']['sequential']['dense']['kernel'][()]"</span>,</span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"        b1 = root['dense']['sequential']['dense']['bias'][()]"</span>,</span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"        w2 = root['dense_1']['sequential']['dense_1']['kernel'][()]"</span>,</span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"        b2 = root['dense_1']['sequential']['dense_1']['bias'][()]"</span>,</span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"        w3 = root['dense_2']['sequential']['dense_2']['kernel'][()]"</span>,</span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"        b3 = root['dense_2']['sequential']['dense_2']['bias'][()]"</span>,</span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"    z1 = np.maximum(0.0, X @ w1 + b1)"</span>,</span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"    z2 = np.maximum(0.0, z1 @ w2 + b2)"</span>,</span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"    y = z2 @ w3 + b3"</span>,</span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"    return y.reshape(-1)"</span>,</span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>harvest_path <span class="ot">&lt;-</span> <span class="st">"Data/NBS - Récolte 2025.xlsx"</span></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a>model_path <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(<span class="st">"Data/Model/Biomass_NN_3000Epoch.h5"</span>, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-39"><a href="#cb31-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-40"><a href="#cb31-40" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(harvest_path) <span class="sc">%&gt;%</span></span>
+<span id="cb31-41"><a href="#cb31-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-42"><a href="#cb31-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">HarvestingDate =</span> <span class="fu">as.Date</span>(HarvestingDate),</span>
+<span id="cb31-43"><a href="#cb31-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">Farm_chr =</span> <span class="fu">str_pad</span>(<span class="fu">as.character</span>(FarmID), <span class="at">width =</span> <span class="dv">3</span>, <span class="at">side =</span> <span class="st">"left"</span>, <span class="at">pad =</span> <span class="st">"0"</span>),</span>
+<span id="cb31-44"><a href="#cb31-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot_id =</span> <span class="fu">paste0</span>(Farm_chr, <span class="st">"_"</span>, ModuleNumber)</span>
+<span id="cb31-45"><a href="#cb31-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-46"><a href="#cb31-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb31-47"><a href="#cb31-47" aria-hidden="true" tabindex="-1"></a>    HarvestingDate <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2025-12-01"</span>),</span>
+<span id="cb31-48"><a href="#cb31-48" aria-hidden="true" tabindex="-1"></a>    HarvestingDate <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2025-12-05"</span>)</span>
+<span id="cb31-49"><a href="#cb31-49" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-50"><a href="#cb31-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(plot_id, <span class="at">Biomass =</span> Harvested_Weight)</span>
+<span id="cb31-51"><a href="#cb31-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-52"><a href="#cb31-52" aria-hidden="true" tabindex="-1"></a>cadaster <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"Data/shp/Cadaster_NBS_Dec2025.shp"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-53"><a href="#cb31-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">plot_id =</span> ID) <span class="sc">%&gt;%</span></span>
+<span id="cb31-54"><a href="#cb31-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(plot_id)</span>
+<span id="cb31-55"><a href="#cb31-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-56"><a href="#cb31-56" aria-hidden="true" tabindex="-1"></a>classified_area <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"Data/Multivariate_Analysis/RF_Morphotypes_classification.shp"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-57"><a href="#cb31-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_cast</span>(<span class="st">"POLYGON"</span>, <span class="at">warn =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-58"><a href="#cb31-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(plot_id, rf_class) <span class="sc">%&gt;%</span></span>
+<span id="cb31-59"><a href="#cb31-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">area_rf =</span> <span class="fu">sum</span>(<span class="fu">st_area</span>(geometry))) <span class="sc">%&gt;%</span></span>
+<span id="cb31-60"><a href="#cb31-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>()</span>
+<span id="cb31-61"><a href="#cb31-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-62"><a href="#cb31-62" aria-hidden="true" tabindex="-1"></a>prod_2025 <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(harvest_path) <span class="sc">%&gt;%</span></span>
+<span id="cb31-63"><a href="#cb31-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-64"><a href="#cb31-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">FarmID =</span> <span class="fu">sprintf</span>(<span class="st">"%03d"</span>, FarmID),</span>
+<span id="cb31-65"><a href="#cb31-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">Module_ID =</span> <span class="fu">paste</span>(FarmID, ModuleNumber, <span class="at">sep =</span> <span class="st">"_"</span>),</span>
+<span id="cb31-66"><a href="#cb31-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">Growth_per_day =</span> (Harvested_Weight <span class="sc">-</span> <span class="dv">700</span>) <span class="sc">/</span> CultureDuration_days <span class="sc">/</span> LinesCount</span>
+<span id="cb31-67"><a href="#cb31-67" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-68"><a href="#cb31-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Module_ID, Growth_per_day) <span class="sc">%&gt;%</span></span>
+<span id="cb31-69"><a href="#cb31-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Module_ID) <span class="sc">%&gt;%</span></span>
+<span id="cb31-70"><a href="#cb31-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(</span>
+<span id="cb31-71"><a href="#cb31-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">med =</span> <span class="fu">median</span>(Growth_per_day, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb31-72"><a href="#cb31-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(Growth_per_day, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-73"><a href="#cb31-73" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-74"><a href="#cb31-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">plot_id =</span> Module_ID)</span>
+<span id="cb31-75"><a href="#cb31-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-76"><a href="#cb31-76" aria-hidden="true" tabindex="-1"></a>cadaster_filtered <span class="ot">&lt;-</span> cadaster <span class="sc">%&gt;%</span></span>
+<span id="cb31-77"><a href="#cb31-77" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(plot_id <span class="sc">%in%</span> <span class="fu">unique</span>(classified_area<span class="sc">$</span>plot_id)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-78"><a href="#cb31-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">area =</span> <span class="fu">st_area</span>(geometry)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-79"><a href="#cb31-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>()</span>
+<span id="cb31-80"><a href="#cb31-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-81"><a href="#cb31-81" aria-hidden="true" tabindex="-1"></a>percent_cover <span class="ot">&lt;-</span> classified_area <span class="sc">%&gt;%</span></span>
+<span id="cb31-82"><a href="#cb31-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(cadaster_filtered, <span class="at">by =</span> <span class="st">"plot_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-83"><a href="#cb31-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(plot_id) <span class="sc">%&gt;%</span></span>
+<span id="cb31-84"><a href="#cb31-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>(<span class="at">area_rf =</span> <span class="fu">sum</span>(area_rf), <span class="at">area =</span> <span class="fu">unique</span>(area)) <span class="sc">%&gt;%</span></span>
+<span id="cb31-85"><a href="#cb31-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-86"><a href="#cb31-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">area_rf =</span> <span class="fu">as.numeric</span>(area_rf),</span>
+<span id="cb31-87"><a href="#cb31-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">pc =</span> <span class="fu">as.numeric</span>((area_rf <span class="sc">/</span> area) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb31-88"><a href="#cb31-88" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb31-89"><a href="#cb31-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(df, <span class="at">by =</span> <span class="st">"plot_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-90"><a href="#cb31-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>area) <span class="sc">%&gt;%</span></span>
+<span id="cb31-91"><a href="#cb31-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Biomass <span class="sc">&gt;</span> <span class="dv">1000</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-92"><a href="#cb31-92" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(prod_2025, <span class="at">by =</span> <span class="st">"plot_id"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-93"><a href="#cb31-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_all</span>(<span class="fu">c</span>(Biomass, area_rf, pc, med, sd), <span class="sc">~</span> <span class="fu">is.finite</span>(.x)))</span>
+<span id="cb31-94"><a href="#cb31-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-95"><a href="#cb31-95" aria-hidden="true" tabindex="-1"></a>biomass_model_df <span class="ot">&lt;-</span> percent_cover <span class="sc">%&gt;%</span></span>
+<span id="cb31-96"><a href="#cb31-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
+<span id="cb31-97"><a href="#cb31-97" aria-hidden="true" tabindex="-1"></a>    plot_id,</span>
+<span id="cb31-98"><a href="#cb31-98" aria-hidden="true" tabindex="-1"></a>    Biomass,</span>
+<span id="cb31-99"><a href="#cb31-99" aria-hidden="true" tabindex="-1"></a>    area_rf,</span>
+<span id="cb31-100"><a href="#cb31-100" aria-hidden="true" tabindex="-1"></a>    pc,</span>
+<span id="cb31-101"><a href="#cb31-101" aria-hidden="true" tabindex="-1"></a>    med,</span>
+<span id="cb31-102"><a href="#cb31-102" aria-hidden="true" tabindex="-1"></a>    sd</span>
+<span id="cb31-103"><a href="#cb31-103" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-104"><a href="#cb31-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-105"><a href="#cb31-105" aria-hidden="true" tabindex="-1"></a><span class="co"># Rebuild the feature standardization used outside the saved Keras model.</span></span>
+<span id="cb31-106"><a href="#cb31-106" aria-hidden="true" tabindex="-1"></a>feature_matrix <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(biomass_model_df[, <span class="fu">c</span>(<span class="st">"area_rf"</span>, <span class="st">"pc"</span>, <span class="st">"med"</span>, <span class="st">"sd"</span>)])</span>
+<span id="cb31-107"><a href="#cb31-107" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(feature_matrix)</span>
+<span id="cb31-108"><a href="#cb31-108" aria-hidden="true" tabindex="-1"></a>sig <span class="ot">&lt;-</span> <span class="fu">apply</span>(feature_matrix, <span class="dv">2</span>, sd)</span>
+<span id="cb31-109"><a href="#cb31-109" aria-hidden="true" tabindex="-1"></a>sig[sig <span class="sc">==</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb31-110"><a href="#cb31-110" aria-hidden="true" tabindex="-1"></a>x_scaled <span class="ot">&lt;-</span> <span class="fu">sweep</span>(<span class="fu">sweep</span>(feature_matrix, <span class="dv">2</span>, mu, <span class="st">"-"</span>), <span class="dv">2</span>, sig, <span class="st">"/"</span>)</span>
+<span id="cb31-111"><a href="#cb31-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-112"><a href="#cb31-112" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> biomass_model_df <span class="sc">%&gt;%</span></span>
+<span id="cb31-113"><a href="#cb31-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb31-114"><a href="#cb31-114" aria-hidden="true" tabindex="-1"></a>    <span class="at">pred =</span> <span class="fu">exp</span>(<span class="fu">as.numeric</span>(<span class="fu">py_to_r</span>(py<span class="sc">$</span><span class="fu">predict_biomass_h5</span>(model_path, <span class="fu">r_to_py</span>(x_scaled)))))</span>
+<span id="cb31-115"><a href="#cb31-115" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-116"><a href="#cb31-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-117"><a href="#cb31-117" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(plot_df<span class="sc">$</span>Biomass, plot_df<span class="sc">$</span>pred, <span class="at">use =</span> <span class="st">"complete.obs"</span>)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb31-118"><a href="#cb31-118" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((plot_df<span class="sc">$</span>Biomass <span class="sc">-</span> plot_df<span class="sc">$</span>pred)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb31-119"><a href="#cb31-119" aria-hidden="true" tabindex="-1"></a>mae <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(plot_df<span class="sc">$</span>Biomass <span class="sc">-</span> plot_df<span class="sc">$</span>pred))</span>
+<span id="cb31-120"><a href="#cb31-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-121"><a href="#cb31-121" aria-hidden="true" tabindex="-1"></a>axis_limits <span class="ot">&lt;-</span> <span class="fu">range</span>(<span class="fu">c</span>(plot_df<span class="sc">$</span>Biomass, plot_df<span class="sc">$</span>pred), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-122"><a href="#cb31-122" aria-hidden="true" tabindex="-1"></a>axis_padding <span class="ot">&lt;-</span> <span class="fu">diff</span>(axis_limits) <span class="sc">*</span> <span class="fl">0.05</span></span>
+<span id="cb31-123"><a href="#cb31-123" aria-hidden="true" tabindex="-1"></a>axis_limits <span class="ot">&lt;-</span> <span class="fu">c</span>(axis_limits[<span class="dv">1</span>] <span class="sc">-</span> axis_padding, axis_limits[<span class="dv">2</span>] <span class="sc">+</span> axis_padding)</span>
+<span id="cb31-124"><a href="#cb31-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-125"><a href="#cb31-125" aria-hidden="true" tabindex="-1"></a>stats_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb31-126"><a href="#cb31-126" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> axis_limits[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">diff</span>(axis_limits) <span class="sc">*</span> <span class="fl">0.04</span>,</span>
+<span id="cb31-127"><a href="#cb31-127" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> axis_limits[<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">diff</span>(axis_limits) <span class="sc">*</span> <span class="fl">0.04</span>,</span>
+<span id="cb31-128"><a href="#cb31-128" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> <span class="fu">paste0</span>(</span>
+<span id="cb31-129"><a href="#cb31-129" aria-hidden="true" tabindex="-1"></a>    <span class="st">"n = "</span>, <span class="fu">nrow</span>(plot_df),</span>
+<span id="cb31-130"><a href="#cb31-130" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">R² = "</span>, <span class="fu">sprintf</span>(<span class="st">"%.2f"</span>, r2),</span>
+<span id="cb31-131"><a href="#cb31-131" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">RMSE = "</span>, <span class="fu">comma</span>(<span class="fu">round</span>(rmse)),</span>
+<span id="cb31-132"><a href="#cb31-132" aria-hidden="true" tabindex="-1"></a>    <span class="st">"</span><span class="sc">\n</span><span class="st">MAE = "</span>, <span class="fu">comma</span>(<span class="fu">round</span>(mae))</span>
+<span id="cb31-133"><a href="#cb31-133" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-134"><a href="#cb31-134" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-135"><a href="#cb31-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-136"><a href="#cb31-136" aria-hidden="true" tabindex="-1"></a>performance_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> Biomass, <span class="at">y =</span> pred)) <span class="sc">+</span></span>
+<span id="cb31-137"><a href="#cb31-137" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(</span>
+<span id="cb31-138"><a href="#cb31-138" aria-hidden="true" tabindex="-1"></a>    <span class="at">slope =</span> <span class="dv">1</span>,</span>
+<span id="cb31-139"><a href="#cb31-139" aria-hidden="true" tabindex="-1"></a>    <span class="at">intercept =</span> <span class="dv">0</span>,</span>
+<span id="cb31-140"><a href="#cb31-140" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"22"</span>,</span>
+<span id="cb31-141"><a href="#cb31-141" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.55</span>,</span>
+<span id="cb31-142"><a href="#cb31-142" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"#556B76"</span></span>
+<span id="cb31-143"><a href="#cb31-143" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-144"><a href="#cb31-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb31-145"><a href="#cb31-145" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb31-146"><a href="#cb31-146" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb31-147"><a href="#cb31-147" aria-hidden="true" tabindex="-1"></a>    <span class="at">se =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb31-148"><a href="#cb31-148" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.8</span>,</span>
+<span id="cb31-149"><a href="#cb31-149" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"#C56A43"</span></span>
+<span id="cb31-150"><a href="#cb31-150" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-151"><a href="#cb31-151" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb31-152"><a href="#cb31-152" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">fill =</span> pc),</span>
+<span id="cb31-153"><a href="#cb31-153" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="dv">21</span>,</span>
+<span id="cb31-154"><a href="#cb31-154" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.4</span>,</span>
+<span id="cb31-155"><a href="#cb31-155" aria-hidden="true" tabindex="-1"></a>    <span class="at">stroke =</span> <span class="fl">0.45</span>,</span>
+<span id="cb31-156"><a href="#cb31-156" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"white"</span>,</span>
+<span id="cb31-157"><a href="#cb31-157" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.95</span></span>
+<span id="cb31-158"><a href="#cb31-158" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-159"><a href="#cb31-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(</span>
+<span id="cb31-160"><a href="#cb31-160" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> stats_df,</span>
+<span id="cb31-161"><a href="#cb31-161" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label),</span>
+<span id="cb31-162"><a href="#cb31-162" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb31-163"><a href="#cb31-163" aria-hidden="true" tabindex="-1"></a>    <span class="at">hjust =</span> <span class="dv">0</span>,</span>
+<span id="cb31-164"><a href="#cb31-164" aria-hidden="true" tabindex="-1"></a>    <span class="at">vjust =</span> <span class="dv">1</span>,</span>
+<span id="cb31-165"><a href="#cb31-165" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.9</span>,</span>
+<span id="cb31-166"><a href="#cb31-166" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"#FFFFFFF2"</span>,</span>
+<span id="cb31-167"><a href="#cb31-167" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"#21343D"</span>,</span>
+<span id="cb31-168"><a href="#cb31-168" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.35</span>,</span>
+<span id="cb31-169"><a href="#cb31-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">label.padding =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fl">0.18</span>, <span class="st">"lines"</span>)</span>
+<span id="cb31-170"><a href="#cb31-170" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-171"><a href="#cb31-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(</span>
+<span id="cb31-172"><a href="#cb31-172" aria-hidden="true" tabindex="-1"></a>    <span class="at">colours =</span> <span class="fu">c</span>(<span class="st">"#0B3C49"</span>, <span class="st">"#177E89"</span>, <span class="st">"#49A078"</span>, <span class="st">"#F4C95D"</span>),</span>
+<span id="cb31-173"><a href="#cb31-173" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Plot cover (%)"</span>,</span>
+<span id="cb31-174"><a href="#cb31-174" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">accuracy =</span> <span class="dv">1</span>)</span>
+<span id="cb31-175"><a href="#cb31-175" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-176"><a href="#cb31-176" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb31-177"><a href="#cb31-177" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> axis_limits,</span>
+<span id="cb31-178"><a href="#cb31-178" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb31-179"><a href="#cb31-179" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="dv">0</span>)</span>
+<span id="cb31-180"><a href="#cb31-180" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-181"><a href="#cb31-181" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(</span>
+<span id="cb31-182"><a href="#cb31-182" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> axis_limits,</span>
+<span id="cb31-183"><a href="#cb31-183" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">label_comma</span>(),</span>
+<span id="cb31-184"><a href="#cb31-184" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="dv">0</span>)</span>
+<span id="cb31-185"><a href="#cb31-185" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-186"><a href="#cb31-186" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
+<span id="cb31-187"><a href="#cb31-187" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb31-188"><a href="#cb31-188" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Observed biomass"</span>,</span>
+<span id="cb31-189"><a href="#cb31-189" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Predicted biomass"</span></span>
+<span id="cb31-190"><a href="#cb31-190" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-191"><a href="#cb31-191" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(</span>
+<span id="cb31-192"><a href="#cb31-192" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="fu">guide_colourbar</span>(</span>
+<span id="cb31-193"><a href="#cb31-193" aria-hidden="true" tabindex="-1"></a>      <span class="at">title.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb31-194"><a href="#cb31-194" aria-hidden="true" tabindex="-1"></a>      <span class="at">barwidth =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">52</span>, <span class="st">"mm"</span>),</span>
+<span id="cb31-195"><a href="#cb31-195" aria-hidden="true" tabindex="-1"></a>      <span class="at">barheight =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="dv">4</span>, <span class="st">"mm"</span>)</span>
+<span id="cb31-196"><a href="#cb31-196" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-197"><a href="#cb31-197" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-198"><a href="#cb31-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb31-199"><a href="#cb31-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb31-200"><a href="#cb31-200" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb31-201"><a href="#cb31-201" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"#D7E2E7"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>),</span>
+<span id="cb31-202"><a href="#cb31-202" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour =</span> <span class="st">"#1F2F38"</span>),</span>
+<span id="cb31-203"><a href="#cb31-203" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">"#304651"</span>),</span>
+<span id="cb31-204"><a href="#cb31-204" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb31-205"><a href="#cb31-205" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">colour =</span> <span class="st">"#1F2F38"</span>),</span>
+<span id="cb31-206"><a href="#cb31-206" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">"#304651"</span>),</span>
+<span id="cb31-207"><a href="#cb31-207" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">colour =</span> <span class="cn">NA</span>),</span>
+<span id="cb31-208"><a href="#cb31-208" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"white"</span>, <span class="at">colour =</span> <span class="cn">NA</span>)</span>
+<span id="cb31-209"><a href="#cb31-209" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb31-210"><a href="#cb31-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-211"><a href="#cb31-211" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb31-212"><a href="#cb31-212" aria-hidden="true" tabindex="-1"></a>  biomass_fig_png_path,</span>
+<span id="cb31-213"><a href="#cb31-213" aria-hidden="true" tabindex="-1"></a>  performance_plot,</span>
+<span id="cb31-214"><a href="#cb31-214" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">180</span>,</span>
+<span id="cb31-215"><a href="#cb31-215" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">160</span>,</span>
+<span id="cb31-216"><a href="#cb31-216" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="st">"mm"</span>,</span>
+<span id="cb31-217"><a href="#cb31-217" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">600</span>,</span>
+<span id="cb31-218"><a href="#cb31-218" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="st">"white"</span></span>
+<span id="cb31-219"><a href="#cb31-219" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-220"><a href="#cb31-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-221"><a href="#cb31-221" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb31-222"><a href="#cb31-222" aria-hidden="true" tabindex="-1"></a>  biomass_fig_svg_path,</span>
+<span id="cb31-223"><a href="#cb31-223" aria-hidden="true" tabindex="-1"></a>  performance_plot,</span>
+<span id="cb31-224"><a href="#cb31-224" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">180</span>,</span>
+<span id="cb31-225"><a href="#cb31-225" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">160</span>,</span>
+<span id="cb31-226"><a href="#cb31-226" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="st">"mm"</span>,</span>
+<span id="cb31-227"><a href="#cb31-227" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">600</span></span>
+<span id="cb31-228"><a href="#cb31-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-229"><a href="#cb31-229" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div></div>
+<div class="cell-container"><div class="cell-decorator"><pre>In [16]:</pre></div><div id="cell-fig-biomass-performance" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Figures/Biomass/biomass_model_performance-01.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-biomass-performance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-biomass-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="">
+<a href="Figures/Biomass/biomass_model_performance-01.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;7: Observed versus predicted biomass produced by the feed-forward neural network used in the biomass estimation workflow. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend."><img src="Figures/Biomass/biomass_model_performance-01.png" class="img-fluid figure-img" style="width:88.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-biomass-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Observed versus predicted biomass produced by the feed-forward neural network used in the biomass estimation workflow. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend.
+</figcaption>
+</figure>
+</div>
+</div>
+</div></div>
 </section>
 <section id="the-madakappy-application" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="the-madakappy-application"><span class="header-section-number">3.4</span> The MadaKapPy application</h2>

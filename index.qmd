@@ -120,9 +120,9 @@ total_volume <- rast("Data/Depth/Depth_S2_20250802.tif")%>%
 
 ```
 
-Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (@fig-study-area-map A & B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from \<1 to 5 m in channels at low tide (@fig-study-area-map C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is approximately `r round(total_volume / 1e6 ,1)` million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.
+Sainte-Marie (also known as Nosy Boraha) is a small island located off the east coast of Madagascar in the Indian Ocean (@fig-study-area-map A & B). The study area is situated near the village of Ankobahoba, on the eastern side of the island, within a narrow (15 km long × 1.5 km wide) and very shallow lagoon. Water depths generally range from \<1 to 5 m in channels at low tide (@fig-study-area-map C). The lagoon is enclosed by a barrier reef and connected to the open ocean through several reef passes. Its total water volume is ca. `r round(total_volume / 1e6 ,1)` million cubic meters. Substrates are dominated by sand and coral rubble, supporting seagrass meadows, macroalgal beds, and patch reefs, which become increasingly frequent toward the reef front.
 
-Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of *Kappaphycus alvarezii* (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (@fig-study-area-map D-F). Individual cultivation lines are approximately 10 m long and are arranged in plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. The Nosy Boraha Seaweed company (NBS) is coordinating the management of 726 cultivation plots in the lagoon. While this activity provides an important alternative source of income amid declining fish stocks, it also contributes to increased spatial competition with traditional fishing practices within this confined coastal system.
+Aquaculture represents a major and expanding use of the eastern lagoon, where seaweed farming has become a key component of coastal livelihoods. The activity is dominated by the cultivation of *Kappaphycus alvarezii* (“cottonii”), primarily concentrated in the northern sector of the lagoon. Farming is conducted using off-bottom longline techniques adapted to very shallow environments (@fig-study-area-map D-F). Individual cultivation lines are approximately 10 m long and are arranged in plots comprising 100 lines, forming units of approximately 10 m × 40 m. A farm typically consists of six adjacent plots managed by a single farmer. Farm are grouped by 4 or 5 to form a cultivation block. The Nosy Boraha Seaweed company (NBS) is coordinating the management of 726 cultivation plots in the lagoon. While this activity provides an important alternative source of income amid declining fish stocks, it also contributes to increased spatial competition with traditional fishing practices within this confined coastal system.
 
 More broadly, the lagoon is now included within the newly established AMTP Sorkay (Marine and Terrestrial Protected Area), a large-scale conservation initiative (\~265,000 ha) aimed at preserving the island’s marine biodiversity and promoting sustainable resource management through community-based governance.
 
@@ -820,7 +820,7 @@ The full workflow was implemented in a standalone desktop application developed 
 
 ## Spatio-temporal variability of seaweed production
 
-Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (@fig-plot-productivity-map). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached approximately 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was visible both at the scale of individual module but also between modules, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.
+Across the lagoon, the daily growth rate (DGR) of cultivation plots displayed a marked spatial structure (@fig-plot-productivity-map). Higher mean DGR values were generally observed in plots located along the eastern side of the lagoon, closer to the coral barrier, where several plots reached ca. 4 %.day⁻¹. In contrast, plots positioned toward the central channel and the inner lagoon showed consistently lower DGR values, in some cases close to 2 %.day⁻¹. This pattern was consistent across the entire lagoon, suggesting that DGR may be influenced by a dominant environmental gradient across the lagoon. Within several modules, DGR also varied among adjacent plots, indicating substantial fine-scale heterogeneity. The main exception to the overall spatial gradient was the northernmost cultivation module, where low DGR values were observed across most plots, irrespective of their relative position within the module.
 
 ```{python}
 #| label: make-plot-productivity-map
@@ -1334,13 +1334,13 @@ ggsave(
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Spatial variability in the productivity of seaweed modules in 2025. Each polygons represent a 40*10m cultivation plot."
+#| fig-cap: "Spatial variability in the Daily Growth Rate (annual average) of seaweed cultivation plots in 2025. Each polygons represent a 40*10m cultivation plot. The insert shows one block of five farms (each farm is composed of six cultivation plots)."
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/Map_Production/plot_productivity_map_2025-02.png")
 ```
 
-Cultivation plots were harvested at an average biomass of approximately 2900 kg (@fig-harvested-biomass-distribution A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.
+Cultivation plots were harvested at an average biomass of ca. 2900 kg (@fig-harvested-biomass-distribution A). Depending on plot-specific daily growth rates (DGR), this target biomass was generally reached after 4 to 6 weeks of cultivation. This biomass range appears to represent an operational compromise, allowing sufficient biomass accumulation for profitable harvest while limiting the risk of line breakage and biomass losses during harvesting. Under exceptional conditions, some plots reached up to 5000 kg before harvest.
 
 Temporal patterns in DGR differed according to the position of cultivation plots within the lagoon (@fig-harvested-biomass-distribution B). Plots located closest to the coral reef showed relatively stable DGR throughout the year, with an average value of 3.57 %.day⁻¹ in 2025. In these plots, DGR was slightly higher in autumn, reaching 3.88 %.day⁻¹. In contrast, plots located closest to the channel displayed stronger seasonal variability. Their maximum DGR was observed in spring, when values were comparable to those recorded near the coral reef. However, during summer, autumn, and winter, DGR in channel-adjacent plots was significantly lower than in reef-adjacent plots, reaching values as low as 2.25 %.day⁻¹ in winter.
 
@@ -1688,7 +1688,7 @@ plt.close(fig)
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Harvested biomass of cultivation modules in 2025. (A) Frequency distribution of harvested biomass. (B) Daily growth rate of harvested modules through 2025. Colors distinguish Est and West module positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals."
+#| fig-cap: "Harvested biomass of cultivation plot in 2025. (A) Frequency distribution of harvested biomass. (B) Temporal variability of the Daily Growth Rate (DGR) of harvested plots in 2025. Colors distinguish Est and West plot positions, solid curves show generalized additive model (GAM) trends fitted with cubic regression splines, and shaded envelopes indicate 95% confidence intervals."
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/harvested_biomass_distribution_temporal_variability_low_k5.png")
@@ -1702,7 +1702,6 @@ knitr::include_graphics("Figures/harvested_biomass_distribution_temporal_variabi
 #| echo: false
 #| warning: false
 #| message: false
-
 
 library(terra)
 library(sf)
@@ -1810,11 +1809,259 @@ Overall, the Random Forest classification provided a coherent delineation of cul
 #| out-width: "100%"
 
 knitr::include_graphics("Figures/RF_Classification/Rf_plot-01.jpg")
+
 ```
 
 **?? VALIDATION ??**
 
 ## Biomass estimation
+
+Model performance for the biomass estimation workflow is summarized in @fig-biomass-performance.
+
+```{r biomass-figure-build}
+#| include: false
+#| warning: false
+#| message: false
+#| eval: false
+
+library(ggplot2)
+library(dplyr)
+library(readxl)
+library(stringr)
+library(sf)
+library(scales)
+library(reticulate)
+
+figure_dir <- file.path("Figures", "Biomass")
+dir.create(figure_dir, recursive = TRUE, showWarnings = FALSE)
+biomass_fig_png_path <- file.path(figure_dir, "biomass_model_performance.png")
+biomass_fig_svg_path <- file.path(figure_dir, "biomass_model_performance.svg")
+
+use_python(Sys.which("python"), required = TRUE)
+
+py_run_string(paste(
+  "import h5py",
+  "import numpy as np",
+  "",
+  "def predict_biomass_h5(model_path, X):",
+  "    X = np.asarray(X, dtype=np.float32)",
+  "    with h5py.File(model_path, 'r') as f:",
+  "        root = f['model_weights']",
+  "        w1 = root['dense']['sequential']['dense']['kernel'][()]",
+  "        b1 = root['dense']['sequential']['dense']['bias'][()]",
+  "        w2 = root['dense_1']['sequential']['dense_1']['kernel'][()]",
+  "        b2 = root['dense_1']['sequential']['dense_1']['bias'][()]",
+  "        w3 = root['dense_2']['sequential']['dense_2']['kernel'][()]",
+  "        b3 = root['dense_2']['sequential']['dense_2']['bias'][()]",
+  "    z1 = np.maximum(0.0, X @ w1 + b1)",
+  "    z2 = np.maximum(0.0, z1 @ w2 + b2)",
+  "    y = z2 @ w3 + b3",
+  "    return y.reshape(-1)",
+  sep = "\n"
+))
+
+harvest_path <- "Data/NBS - Récolte 2025.xlsx"
+model_path <- normalizePath("Data/Model/Biomass_NN_3000Epoch.h5", winslash = "/", mustWork = TRUE)
+
+df <- read_xlsx(harvest_path) %>%
+  mutate(
+    HarvestingDate = as.Date(HarvestingDate),
+    Farm_chr = str_pad(as.character(FarmID), width = 3, side = "left", pad = "0"),
+    plot_id = paste0(Farm_chr, "_", ModuleNumber)
+  ) %>%
+  filter(
+    HarvestingDate >= as.Date("2025-12-01"),
+    HarvestingDate <= as.Date("2025-12-05")
+  ) %>%
+  select(plot_id, Biomass = Harvested_Weight)
+
+cadaster <- read_sf("Data/shp/Cadaster_NBS_Dec2025.shp") %>%
+  rename(plot_id = ID) %>%
+  select(plot_id)
+
+classified_area <- read_sf("Data/Multivariate_Analysis/RF_Morphotypes_classification.shp") %>%
+  st_cast("POLYGON", warn = FALSE) %>%
+  group_by(plot_id, rf_class) %>%
+  reframe(area_rf = sum(st_area(geometry))) %>%
+  st_drop_geometry()
+
+prod_2025 <- read_xlsx(harvest_path) %>%
+  mutate(
+    FarmID = sprintf("%03d", FarmID),
+    Module_ID = paste(FarmID, ModuleNumber, sep = "_"),
+    Growth_per_day = (Harvested_Weight - 700) / CultureDuration_days / LinesCount
+  ) %>%
+  select(Module_ID, Growth_per_day) %>%
+  group_by(Module_ID) %>%
+  reframe(
+    med = median(Growth_per_day, na.rm = TRUE),
+    sd = sd(Growth_per_day, na.rm = TRUE)
+  ) %>%
+  rename(plot_id = Module_ID)
+
+cadaster_filtered <- cadaster %>%
+  filter(plot_id %in% unique(classified_area$plot_id)) %>%
+  mutate(area = st_area(geometry)) %>%
+  st_drop_geometry()
+
+percent_cover <- classified_area %>%
+  left_join(cadaster_filtered, by = "plot_id") %>%
+  group_by(plot_id) %>%
+  reframe(area_rf = sum(area_rf), area = unique(area)) %>%
+  mutate(
+    area_rf = as.numeric(area_rf),
+    pc = as.numeric((area_rf / area) * 100)
+  ) %>%
+  left_join(df, by = "plot_id") %>%
+  select(-area) %>%
+  filter(Biomass > 1000) %>%
+  left_join(prod_2025, by = "plot_id") %>%
+  filter(if_all(c(Biomass, area_rf, pc, med, sd), ~ is.finite(.x)))
+
+biomass_model_df <- percent_cover %>%
+  transmute(
+    plot_id,
+    Biomass,
+    area_rf,
+    pc,
+    med,
+    sd
+  )
+
+# Rebuild the feature standardization used outside the saved Keras model.
+feature_matrix <- as.matrix(biomass_model_df[, c("area_rf", "pc", "med", "sd")])
+mu <- colMeans(feature_matrix)
+sig <- apply(feature_matrix, 2, sd)
+sig[sig == 0] <- 1
+x_scaled <- sweep(sweep(feature_matrix, 2, mu, "-"), 2, sig, "/")
+
+plot_df <- biomass_model_df %>%
+  mutate(
+    pred = exp(as.numeric(py_to_r(py$predict_biomass_h5(model_path, r_to_py(x_scaled)))))
+  )
+
+r2 <- cor(plot_df$Biomass, plot_df$pred, use = "complete.obs")^2
+rmse <- sqrt(mean((plot_df$Biomass - plot_df$pred)^2))
+mae <- mean(abs(plot_df$Biomass - plot_df$pred))
+
+axis_limits <- range(c(plot_df$Biomass, plot_df$pred), na.rm = TRUE)
+axis_padding <- diff(axis_limits) * 0.05
+axis_limits <- c(axis_limits[1] - axis_padding, axis_limits[2] + axis_padding)
+
+stats_df <- tibble(
+  x = axis_limits[1] + diff(axis_limits) * 0.04,
+  y = axis_limits[2] - diff(axis_limits) * 0.04,
+  label = paste0(
+    "n = ", nrow(plot_df),
+    "\nR² = ", sprintf("%.2f", r2),
+    "\nRMSE = ", comma(round(rmse)),
+    "\nMAE = ", comma(round(mae))
+  )
+)
+
+performance_plot <- ggplot(plot_df, aes(x = Biomass, y = pred)) +
+  geom_abline(
+    slope = 1,
+    intercept = 0,
+    linetype = "22",
+    linewidth = 0.55,
+    colour = "#556B76"
+  ) +
+  geom_smooth(
+    method = "lm",
+    formula = y ~ x,
+    se = FALSE,
+    linewidth = 0.8,
+    colour = "#C56A43"
+  ) +
+  geom_point(
+    aes(fill = pc),
+    shape = 21,
+    size = 3.4,
+    stroke = 0.45,
+    colour = "white",
+    alpha = 0.95
+  ) +
+  geom_label(
+    data = stats_df,
+    aes(x = x, y = y, label = label),
+    inherit.aes = FALSE,
+    hjust = 0,
+    vjust = 1,
+    size = 3.9,
+    fill = "#FFFFFFF2",
+    colour = "#21343D",
+    linewidth = 0.35,
+    label.padding = grid::unit(0.18, "lines")
+  ) +
+  scale_fill_gradientn(
+    colours = c("#0B3C49", "#177E89", "#49A078", "#F4C95D"),
+    name = "Plot cover (%)",
+    labels = label_number(accuracy = 1)
+  ) +
+  scale_x_continuous(
+    limits = axis_limits,
+    labels = label_comma(),
+    expand = expansion(mult = 0)
+  ) +
+  scale_y_continuous(
+    limits = axis_limits,
+    labels = label_comma(),
+    expand = expansion(mult = 0)
+  ) +
+  coord_equal() +
+  labs(
+    x = "Observed biomass",
+    y = "Predicted biomass"
+  ) +
+  guides(
+    fill = guide_colourbar(
+      title.position = "top",
+      barwidth = grid::unit(52, "mm"),
+      barheight = grid::unit(4, "mm")
+    )
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "#D7E2E7", linewidth = 0.3),
+    axis.title = element_text(face = "bold", colour = "#1F2F38"),
+    axis.text = element_text(colour = "#304651"),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold", colour = "#1F2F38"),
+    legend.text = element_text(colour = "#304651"),
+    plot.background = element_rect(fill = "white", colour = NA),
+    panel.background = element_rect(fill = "white", colour = NA)
+  )
+
+ggsave(
+  biomass_fig_png_path,
+  performance_plot,
+  width = 180,
+  height = 160,
+  units = "mm",
+  dpi = 600,
+  bg = "white"
+)
+
+ggsave(
+  biomass_fig_svg_path,
+  performance_plot,
+  width = 180,
+  height = 160,
+  units = "mm",
+  dpi = 600
+
+)
+```
+
+```{r fig-biomass-performance}
+#| echo: false
+#| fig-cap: "Observed versus predicted biomass produced by the feed-forward neural network used in the biomass estimation workflow. The dashed line shows the 1:1 relationship, and the solid line shows the fitted trend."
+#| out-width: "88%"
+
+knitr::include_graphics("Figures/Biomass/biomass_model_performance-01.png")
+```
 
 ## The MadaKapPy application
 
